@@ -1,13 +1,10 @@
-class UIElement
+class Element
     attr_accessor :x
     attr_accessor :y
-    attr_accessor :sub_elements
-    def initialize (window, x:0, y:0, parent: nil)
-        @x, @y, @window = x, y, window
+    attr_accessor :parent
+    def initialize (x:0, y:0, parent: false)
         @elements = {}
-    end
-    def build
-
+        @x, @y, @parent = x, y, parent
     end
     public
     def update
@@ -16,7 +13,7 @@ class UIElement
         end
     end
     def draw
-        @sub_elements.each do |elem_name, elem|
+        @elements.each do |elem_name, elem|
             elem.draw
         end
     end

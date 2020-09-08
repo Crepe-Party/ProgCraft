@@ -5,10 +5,12 @@ class SpriteElement < Element
     def initialize (x: ,y:, parent)
         super (x:x, y:y, parent:parent)
         @sprite = Sprite.new
-        @abs_pos_x
     end
     def draw
 
         self
+    end
+    def final_draw abs_x, abs_y
+        
     end
 end

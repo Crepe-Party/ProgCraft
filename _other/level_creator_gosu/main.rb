@@ -1,5 +1,6 @@
 require 'gosu'
-require_relative 'elements/window'
+require_relative 'vector2'
+require_relative 'elements/button'
 class LevelEditorWindow < Gosu::Window
     def initialize
         super 1280, 720, {resizable: true}
@@ -21,6 +22,15 @@ class LevelEditorWindow < Gosu::Window
     #Show the mouse
     def needs_cursor?
         true
+    end
+
+    public
+    def add_event (type:, x:, y:, width:, height:)
+        case type
+        when :click 
+        else
+            raise Exception.new("invalid event type #{type.to_s}")
+        end
     end
 end
 

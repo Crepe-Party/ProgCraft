@@ -11,7 +11,7 @@ walk_forward, walk_backward, turn_right, turn_left, turn_back, take, interact, d
 Robert can interact with the player by asking for informations or talking.
 
 ## Documentation
-[On the wiki](./wiki)
+[On the wiki](https://github.com/Crepe-Party/ProgCraft/wiki)
 
 ## Project Management
 [IceScrum](https://cloud.icescrum.com/p/MAW21XXG1/#/project)

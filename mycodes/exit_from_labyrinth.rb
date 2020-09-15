@@ -14,6 +14,7 @@ while pos_x != 2 and pos_y != 6
         turn_back()
     end
 end
+say("you took "+step_counter+" steps")
 
 def turn_back()
     turn_left()

@@ -4,7 +4,7 @@ step_counter = 0
 
 while pos_x != 2 and pos_y != 6
     if is_clear_path()
-        move_forward()
+        walk_forward()
         step_counter += 1
     elsif is_clear_right()
         turn_right()
@@ -17,6 +17,6 @@ end
 say("you took "+step_counter+" steps")
 
 def turn_back()
-    turn_left()
-    turn_left()
+    turn_right()
+    turn_right()
 end

@@ -19,4 +19,16 @@ class Rectangle2
     def initialize x=0, y=0, width=0, height=0
       @x, @y, @width, @height = x, y ,width, height
     end
+    def position
+        Vector2.new @x, @y
+    end
+    def size
+        Vector2.new @width, @height
+    end
+    def right
+        @x + @width
+    end
+    def bottom
+        @y + @height
+    end
 end

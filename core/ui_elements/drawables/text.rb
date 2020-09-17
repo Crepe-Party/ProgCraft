@@ -2,9 +2,9 @@ require_relative 'drawable'
 require_relative '../../tools/vector'
 class Text < Drawable
     attr_accessor :string, :font, :color, :scale, :center_text
-    def initialize game, rectangle = nil, string = "", font: Gosu::Font.new(20), color: Gosu::Color::BLACK, scale: 1, center_text: true
+    def initialize game, string = "", rectangle = nil, font: Gosu::Font.new(20), color: Gosu::Color::BLACK, scale: 1, center_text: true, &constraint
         @string, @font, @color, @scale, @center_text = string, font, color, scale, center_text
-        super game, rectangle
+        super(game, rectangle, &constraint)
     end
     def draw
         x_pos = @rectangle.x

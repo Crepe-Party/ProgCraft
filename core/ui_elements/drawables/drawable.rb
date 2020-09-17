@@ -4,6 +4,5 @@ class Drawable < UIElement
         [self]
     end
     def draw
-
     end
 end

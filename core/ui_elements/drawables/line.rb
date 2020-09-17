@@ -1,10 +1,11 @@
-# line
-class Line
-    attr_accessor :x_start, :y_start, :x_end, :y_end, :color
-    def initialize x_start, y_start, x_end, y_end, color=Gosu::Color::BLACK
-        @x_start, @y_start, @x_end, @y_end, @color = x_start, y_start, x_end, y_end, color
+require_relative 'drawable'
+class Line < Drawable
+    attr_accessor :color
+    def initialize game, color=Gosu::Color::BLACK, rectangle = nil, &constraint
+        @color = color
+        super(game, rectangle, &constraint)
     end
     def draw
-        Gosu.draw_line(@x_start, @y_start, Gosu::Color::BLACK, @x_end, @y_end, Gosu::Color::BLACK)
+        Gosu.draw_line(@rectangle.x, @rectangle.y, @color, @rectangle.right, @rectangle.bottom, @color)
     end
 end

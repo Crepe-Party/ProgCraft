@@ -11,4 +11,9 @@ class Button < UIElement
         self.background_color= @background_color
         @sub_elements[:text] = Text.new(@game, @text, center_text: true){@rectangle}
     end
+    def onclick &handler
+        @handler = handler
+        @game.register_event_listener :click, self, handler
+        self
+    end
 end

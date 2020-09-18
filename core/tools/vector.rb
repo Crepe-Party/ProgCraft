@@ -31,4 +31,7 @@ class Rectangle2
     def bottom
         @y + @height
     end
+    def contains? vector
+        (vector.x.between? @x, right) && (vector.y.between? @y, bottom)
+    end
 end

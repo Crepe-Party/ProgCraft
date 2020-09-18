@@ -25,5 +25,8 @@ class LevelEditorWindow < Gosu::Window
     def needs_cursor?
         true
     end
+    def button_down id
+        @editor.on_click_event({key: id, position: Vector2.new(mouse_x, mouse_y)}) if id.between? Gosu::MsLeft, Gosu::MsRight
+    end
 end
 LevelEditorWindow.new.show

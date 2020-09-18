@@ -16,11 +16,11 @@ class EditorUI < UIElement
         #game
         @sub_elements[:map_editor] = MapEditorDisplay.new(@game){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width - LEFT_MENU_WIDTH - RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT)}
         #menus
-        @sub_elements[:top_bar] = EditorTopBar.new(@game){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.y, @rectangle.right - RIGHT_MENU_WIDTH - LEFT_MENU_WIDTH, TOP_BAR_HEIGHT)}
+        @sub_elements[:objects_menu] = ObjectsMenu.new(@game){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y, RIGHT_MENU_WIDTH, @rectangle.height - BOTTOM_BAR_HEIGHT)}
+        @sub_elements[:objectives_bar] = ObjectivesBar.new(@game){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.bottom - BOTTOM_BAR_HEIGHT, @rectangle.width - LEFT_MENU_WIDTH, BOTTOM_BAR_HEIGHT)}
         @sub_elements[:maps_menu] = MapsMenu.new(@game){Rectangle2.new(@rectangle.x, @rectangle.y, LEFT_MENU_WIDTH, MAPS_MENU_HEIGHT)}
         @sub_elements[:contextual_menu] = EditorContextualMenu.new(@game){Rectangle2.new(@rectangle.x, @rectangle.y + MAPS_MENU_HEIGHT, LEFT_MENU_WIDTH, @rectangle.height - MAPS_MENU_HEIGHT)}
-        @sub_elements[:objectives_bar] = ObjectivesBar.new(@game){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.bottom - BOTTOM_BAR_HEIGHT, @rectangle.width - LEFT_MENU_WIDTH, BOTTOM_BAR_HEIGHT)}
-        @sub_elements[:objects_menu] = ObjectsMenu.new(@game){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y, RIGHT_MENU_WIDTH, @rectangle.height - BOTTOM_BAR_HEIGHT)}
+        @sub_elements[:top_bar] = EditorTopBar.new(@game){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.y, @rectangle.right - RIGHT_MENU_WIDTH - LEFT_MENU_WIDTH, TOP_BAR_HEIGHT)}
         #fps
         @sub_elements[:fps_text] = Text.new(@game, nil, "...fps", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end

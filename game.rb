@@ -1,3 +1,5 @@
 #game
-require './core/tools/file_manager'
-puts File_manager.instance.read_level_file './MyMaps/exemples.json'
+require './core/level'
+level = Level.new
+level.load './MyMaps/exemple.json'
+puts level.name

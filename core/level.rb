@@ -8,8 +8,8 @@ class Level
         @objectives = Array.new
         @name = ''
     end
-    def load path
-        @level = File_manager.instance.read_level_file path
+    def load path_file
+        @level = File_manager.instance.read_level_file path_file
         exit if level.nil?
         @name = @level['name']
         @level['maps'].each do |map|

@@ -12,7 +12,11 @@ class Map
         @player_spawn.x = map['player_spawn']['position']['x']
         @player_spawn.y = map['player_spawn']['position']['y']
         map['player_spawn']['inventory'].each do |item|
-            element = item['object']['type'].camelize.constantize.new
+            object = item['object']['type'].camelize.constantize.new
+            @player_inventory << object
+        end
+        map['elements'].each do |item|
+            element = item['type'].camelize.constantize.new
             @elements << element
         end
         puts @elements

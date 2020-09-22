@@ -12,8 +12,11 @@ class Button < UIElement
         @sub_elements[:text] = Text.new(@game, @text, center_text: true){@rectangle}
     end
     def on_click &handler
-        @handler = handler
-        @game.register_event_listener :click, self, handler
+        add_event EventHandler.new :click, self, handler
+        self
+    end
+    def on_enter &handler
+        add_event EventHandler.new :enter, self, handler
         self
     end
 end

@@ -23,6 +23,9 @@ class EditorTopBar < UIElement
                     'initialfile' => Time.now.strftime("%Y-%m-%d"),
                     'initialdir' => MAPS_DIR,
                     'filetypes' => "{{ProgCraft map} {.json}}")
+            }.on_enter{                
+                # @sub_elements[:save_button].background_color = Gosu::Color::YELLOW
+                puts "you are in #{@sub_elements[:save_button].text}'s button"
             }
         super
     end

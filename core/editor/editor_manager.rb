@@ -1,9 +1,10 @@
 require 'pp'
 require_relative 'elements/editor_ui'
+require_relative '../events/event_handler'
 class EditorManager
     attr_reader :window
     def initialize window
-        @event_handlers=[]
+        @events=[]
         @window = window
         @editor_ui = EditorUI.new self, Rectangle2.new(0,0)
     end
@@ -20,20 +21,11 @@ class EditorManager
         @editor_ui.rectangle.height = window.height
         @editor_ui.apply_constraints
     end
-    def register_event_listener type, element, handler
-        @event_handlers.push(EventHandler.new type, element, handler)
+    def event data, type
+        @events.each{|event| event.trigger(data) if event.type == type }
     end
-    def on_click_event evt
-        @event_handlers.each{|hdl| hdl.trigger evt}
-    end
-end
-class EventHandler
-    def initialize type, element, handler
-        @type, @element, @handler = type, element, handler
-    end
-
-    def trigger evt
-        pp @element.rectangle, evt[:position]
-        @handler.call evt if @element.rectangle.contains? evt[:position]
+    
+    def add_event event
+        @events.push(event)
     end
 end

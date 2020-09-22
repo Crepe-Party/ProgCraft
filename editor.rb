@@ -11,7 +11,7 @@ class LevelEditorWindow < Gosu::Window
     def update
         delta_time = self.update_interval / 1000
         @editor.update delta_time
-
+        @editor.event({position: Vector2.new(mouse_x, mouse_y)}, :enter)
         #res change
         if @current_window_width != self.width || @current_window_height != self.height
             puts "resolution changed! #{self.width} #{self.height}"
@@ -26,7 +26,7 @@ class LevelEditorWindow < Gosu::Window
         true
     end
     def button_down id
-        @editor.on_click_event({key: id, position: Vector2.new(mouse_x, mouse_y)}) if id.between? Gosu::MsLeft, Gosu::MsRight
+        @editor.event({key: id, position: Vector2.new(mouse_x, mouse_y)}, :click) if id.between? Gosu::MsLeft, Gosu::MsRight
     end
 end
 LevelEditorWindow.new.show

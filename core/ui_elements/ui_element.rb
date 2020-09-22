@@ -29,6 +29,9 @@ class UIElement
         self
     end
     
+    def add_event event
+        @game.add_event(event)
+    end
     #default rect bg
     def background_color= color
         require_relative 'drawables/rectangle'

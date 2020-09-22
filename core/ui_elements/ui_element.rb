@@ -8,6 +8,7 @@ class UIElement
         @rectangle = rectangle || Rectangle2.new
         @sub_elements = {}
         build
+        apply_constraints
     end
     def build
 

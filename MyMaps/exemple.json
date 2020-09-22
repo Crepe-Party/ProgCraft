@@ -1,0 +1,87 @@
+{
+    "level": {
+        "name": "stage learning",
+        "objectives": [
+            {
+                "id": "logs",
+                "type": "have_item",
+                "name": "take 5 logs",
+                "required": true,
+                "data":{
+                    "item_type" : "log",
+                    "item_count" : 5
+                }
+            },
+            {
+                "id": "moving",
+                "type": "location",
+                "name": "go front of the house",
+                "required": true,
+                "data":{
+                    "location": {
+                        "x": 200,
+                        "y": 300
+                    }
+                }
+            },
+            {
+                "id": "lumberjack",
+                "type": "interact",
+                "name": "chop 3 trees",
+                "required": false,
+                "data":{
+                    "with_item_type": "axe",
+                    "on_object_type": "tree",
+                    "item_count": 3                  
+                }
+            },
+            {
+                "id": "idiot",
+                "type": "interact",
+                "name": "chop the first tree with an illogical item",
+                "required": false,
+                "data":{
+                    "with_item_type": "apple",
+                    "on_object_type": "tree"                  
+                }
+            }
+        ],
+        "maps": [{
+            "name": "Example_plain",
+            "player_spawn": {
+                "position": {
+                    "x": 200,
+                    "y": 200
+                },
+                "inventory": [
+                    {
+                        "object": {
+                            "id": "apple01",
+                            "type": "apple",
+                            "name": "apple",
+                            "data": {
+                                "texture": "apple_core"
+                            }
+                        },
+                        "holding": true
+                    }
+                ]
+            },
+            "elements": [
+                {
+                    "id": "tree01",
+                    "type": "tree",
+                    "name": "Sapin",
+                    "position": {
+                        "x": 85,
+                        "y": 60
+                    },
+                    "data": {
+                        "texture": "basic_tree",
+                        "num_logs": 5
+                    }
+                }
+            ]
+        }]
+    }
+}

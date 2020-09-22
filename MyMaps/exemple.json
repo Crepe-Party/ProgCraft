@@ -56,7 +56,7 @@
                 {
                     "object": {
                         "id": "apple01",
-                        "type": "apple",
+                        "type": "Apple",
                         "name": "apple",
                         "data": {
                             "texture": "apple_core"
@@ -69,7 +69,7 @@
         "elements": [
             {
                 "id": "tree01",
-                "type": "tree",
+                "type": "Tree",
                 "name": "Sapin",
                 "position": {
                     "x": 85,

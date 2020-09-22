@@ -28,6 +28,10 @@ class UIElement
         @constraint = constraint
         self
     end
+
+    def mouse_over?
+        @game.mouse.x.between(rectangle.x, rectangle.right) && @game.mouse.y.between(rectangle.y, rectangle.height)
+    end
     
     def add_event event
         @game.add_event(event)

@@ -1,8 +1,10 @@
-require_relative 'event'
-class EventHandler < Event
+class EventHandler 
+    attr_reader :type
+    def initialize type, element
+        
+    end
     def initialize type, element, handler
-        super type, element
-        @handler = handler
+        @type, @element, @handler = type, element, handler
     end
 
     def trigger evt

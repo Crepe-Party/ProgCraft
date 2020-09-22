@@ -37,6 +37,9 @@ class UIElement
         require_relative 'drawables/rectangle'
         @sub_elements[:background_color] = Rectangle.new(@game, color){@rectangle}
     end
+    def background_elem
+        @sub_elements[:background_color]
+    end
     def background_color
         @sub_elements[:background_color].color
     end

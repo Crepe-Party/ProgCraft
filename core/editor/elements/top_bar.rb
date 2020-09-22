@@ -25,6 +25,7 @@ class EditorTopBar < UIElement
                     'filetypes' => "{{ProgCraft map} {.json}}")
             }.on_enter{                
                 # @sub_elements[:save_button].background_color = Gosu::Color::YELLOW
+                @sub_elements[:save_button].background_elem.color = Gosu::Color::YELLOW
                 puts "you are in #{@sub_elements[:save_button].text}'s button"
             }
         super

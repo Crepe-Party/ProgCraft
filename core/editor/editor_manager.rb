@@ -1,7 +1,7 @@
 require 'pp'
 require_relative 'elements/editor_ui'
 class EditorManager
-    attr_reader :window
+    attr_reader :window, :editor_ui
     def initialize window
         @window = window
         @editor_ui = EditorUI.new self, Rectangle2.new(0,0)

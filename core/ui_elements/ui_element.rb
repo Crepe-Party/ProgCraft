@@ -1,6 +1,7 @@
 require_relative '../tools/vector'
 class UIElement
     attr_accessor :rectangle
+    attr_reader :sub_elements
     def initialize game, rectangle = nil, &constraint
         @constraint = constraint if constraint
         @game = game
@@ -15,8 +16,10 @@ class UIElement
     def update dt
         @sub_elements.each{|elem_name, sub_elem| sub_elem.update dt}
     end
-    def render
-        @sub_elements.map{|elem_name, sub_elem| sub_elem.render}
+    def render extra_elements: nil
+        to_render = @sub_elements.map{|elem_name, sub_elem| sub_elem.render}
+        to_render += extra_elements if extra_elements
+        to_render
     end
     def apply_constraints
         @rectangle = @constraint.call if @constraint

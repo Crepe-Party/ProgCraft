@@ -19,6 +19,10 @@ class LevelEditorWindow < Gosu::Window
             @editor.apply_constraints
         end
     end
+    def button_down id
+        # test scroll
+        @editor.editor_ui.sub_elements[:objects_menu].scroll_offset-=15
+    end
     def draw
         @editor.render
     end

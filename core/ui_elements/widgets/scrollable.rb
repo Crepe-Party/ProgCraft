@@ -4,6 +4,7 @@ class Scrollable < UIElement
     attr_reader :scroll_offset
     SCROLL_BUTTONS_SIZE = 30
     def build
+        @overflow = :hidden
         @scroll_offset = 0
         @sub_elements[:before_button] = Button.new(@game, vertical? ? "▲" : "◄"){
             next Rectangle2.new(@rectangle.right - SCROLL_BUTTONS_SIZE - 5, @rectangle.y + 5, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE) if vertical?

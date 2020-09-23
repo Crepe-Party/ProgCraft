@@ -1,12 +1,12 @@
 require_relative '../tools/vector'
 class UIElement
-    attr_accessor :rectangle
+    attr_accessor :rectangle, :overflow
     attr_reader :sub_elements
     def initialize game, rectangle = nil, &constraint
         @constraint = constraint if constraint
         @game = game
-        #default rect
         @rectangle = rectangle || Rectangle2.new
+        @overflow = :visible
         @sub_elements = {}
         build
     end
@@ -16,9 +16,20 @@ class UIElement
     def update dt
         @sub_elements.each{|elem_name, sub_elem| sub_elem.update dt}
     end
-    def render extra_elements: nil
-        to_render = @sub_elements.map{|elem_name, sub_elem| sub_elem.render}
-        to_render += extra_elements if extra_elements
+    def render extra_elements: nil, clipping_rect: nil
+        #overflow clipping
+        if overflow == :hidden
+            if clipping_rect
+                unless(clipping_rect = clipping_rect.intersection @rectangle)
+                    #nothing left to render
+                    return {}
+                end
+            else
+                clipping_rect = @rectangle
+            end
+        end
+        to_render = @sub_elements.map{|elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect}
+        to_render += extra_elements.map{|elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect} if extra_elements
         to_render
     end
     def apply_constraints

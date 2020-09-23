@@ -4,6 +4,7 @@ require_relative 'core/editor/editor_manager'
 class LevelEditorWindow < Gosu::Window
     def initialize
         super 1280, 720, {resizable: true}
+        self.caption = "ProgCraft - The Level Editor 🤩"
         @editor = EditorManager.new self
         @current_window_width; @current_window_height
         puts "#{@current_window_width} #{@current_window_height}"

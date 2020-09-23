@@ -41,5 +41,8 @@ class Rectangle2
         int_right = [self.right, rectangle.right].min
         int_bottom = [self.bottom, rectangle.bottom].min
         Rectangle2.new(int_x, int_y, int_right - int_x, int_bottom - int_y)
+    end  
+    def over? pos_x, pos_y
+        pos_x.between?(x, right) && pos_y.between?(y, bottom)
     end
 end

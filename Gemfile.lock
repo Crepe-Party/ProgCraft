@@ -2,12 +2,14 @@ GEM
   remote: https://rubygems.org/
   specs:
     gosu (0.15.2-x64-mingw32)
+    tk (0.2.0)
 
 PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
   gosu (~> 0.15.2)
+  tk (~> 0.2.0)
 
 BUNDLED WITH
    2.1.4

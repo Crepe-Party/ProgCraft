@@ -1,0 +1,39 @@
+{
+    "name": "stage learning",
+    "maps": [{
+        "name": "Example_plain",
+        "player_spawn": {
+            "position": {
+                "x": 200,
+                "y": 200
+            },
+            "inventory": [
+                {
+                    "object": {
+                        "id": "apple01",
+                        "type": "Apple",
+                        "name": "apple",
+                        "data": {
+                            "texture": "apple_core"
+                        }
+                    },
+                    "holding": true
+                }
+            ]
+        },
+        "elements": [
+            {
+                "id": "bush1",
+                "type": "Bush",
+                "name": "Buisson",
+                "position": {
+                    "x": 85,
+                    "y": 60
+                },
+                "data": {
+                    "texture": "basic_bush"
+                }
+            }
+        ]
+    }]
+}

@@ -1,50 +1,5 @@
 {
     "name": "stage learning",
-    "objectives": [
-        {
-            "id": "logs",
-            "type": "have_item",
-            "name": "take 5 logs",
-            "required": true,
-            "data":{
-                "item_type" : "Log",
-                "item_count" : 5
-            }
-        },
-        {
-            "id": "moving",
-            "type": "location",
-            "name": "go front of the house",
-            "required": true,
-            "data":{
-                "location": {
-                    "x": 200,
-                    "y": 300
-                }
-            }
-        },
-        {
-            "id": "lumberjack",
-            "type": "interact",
-            "name": "chop 3 trees",
-            "required": false,
-            "data":{
-                "with_item_type": "Axe",
-                "on_object_type": "Tree",
-                "item_count": 3                  
-            }
-        },
-        {
-            "id": "idiot",
-            "type": "interact",
-            "name": "chop the first tree with an illogical item",
-            "required": false,
-            "data":{
-                "with_item_type": "Apple",
-                "on_object_type": "Tree"                  
-            }
-        }
-    ],
     "maps": [{
         "name": "Example_plain",
         "player_spawn": {
@@ -68,29 +23,15 @@
         },
         "elements": [
             {
-                "id": "tree01",
-                "type": "Tree",
-                "name": "Sapin",
+                "id": "bush1",
+                "type": "Bush",
+                "name": "Buisson",
                 "position": {
                     "x": 85,
                     "y": 60
                 },
                 "data": {
-                    "texture": "basic_tree",
-                    "num_logs": 5
-                }
-            },
-            {
-                "id": "tree02",
-                "type": "Tree",
-                "name": "Sapin",
-                "position": {
-                    "x": 85,
-                    "y": 60
-                },
-                "data": {
-                    "texture": "basic_tree",
-                    "num_logs": 5
+                    "texture": "basic_bush"
                 }
             }
         ]

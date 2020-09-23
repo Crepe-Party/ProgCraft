@@ -11,6 +11,14 @@
             "program": "${workspaceFolder}/editor.rb",
             "programArgs": [],
             "useBundler": false
+        },
+        {
+            "type": "ruby-debug",
+            "request": "launch",
+            "name": "Launch Game",
+            "program": "${workspaceFolder}/game.rb",
+            "programArgs": [],
+            "useBundler": false
         }
     ]
 }

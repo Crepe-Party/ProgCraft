@@ -24,7 +24,7 @@
         "elements": [
             {
                 "id": "bush1",
-                "type": "busH",
+                "type": "bush",
                 "name": "Buisson",
                 "position": {
                     "x": 85,

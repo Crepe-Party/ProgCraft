@@ -2,11 +2,12 @@ require 'pp'
 require_relative 'elements/editor_ui'
 require_relative '../events/events_manager'
 class EditorManager
-    attr_reader :window, :editor_ui
+    attr_reader :window, :editor_ui, :events_manager
     def initialize window
         @events_manager = EventsManager.new window
         @window = window
         @editor_ui = EditorUI.new self, Rectangle2.new(0,0)
+        @keys_down = []
     end
     def update dt
         @editor_ui.update dt

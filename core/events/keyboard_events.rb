@@ -1,7 +1,12 @@
 
 require_relative 'event_handler'
 module EventHandlers
-    class ButtonDown < EventHandler
+    class ButtonHandler < EventHandler
+        def button_down? id
+            @window.button_down?(@button) || @window.keys_down.include?(id)
+        end
+    end
+    class ButtonDown < ButtonHandler
         def initialize window, element, handler, button
             @button = button
             super window, element, handler
@@ -12,7 +17,7 @@ module EventHandlers
             @is_button_down = is_button_down
         end
     end
-    class ButtonUp < EventHandler
+    class ButtonUp < ButtonHandler
         def initialize window, element, handler, button
             @button = button
             super window, element, handler

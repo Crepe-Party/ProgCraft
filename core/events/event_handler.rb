@@ -1,13 +1,10 @@
-class EventHandler 
-    attr_reader :type
-    def initialize type, element
-        
+class EventHandler
+    def initialize window, element, handler
+        @window, @element, @handler = window, element, handler
     end
-    def initialize type, element, handler
-        @type, @element, @handler = type, element, handler
+    def check
     end
-
-    def trigger evt
-        @handler.call evt if @element.rectangle.contains? evt[:position]
+    def trigger
+        @handler.call
     end
 end

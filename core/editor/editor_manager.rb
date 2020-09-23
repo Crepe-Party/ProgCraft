@@ -1,15 +1,16 @@
 require 'pp'
 require_relative 'elements/editor_ui'
-require_relative '../events/event_handler'
+require_relative '../events/events_manager'
 class EditorManager
     attr_reader :window
     def initialize window
-        @events=[]
+        @events_manager = EventsManager.new window
         @window = window
         @editor_ui = EditorUI.new self, Rectangle2.new(0,0)
     end
     def update dt
         @editor_ui.update dt
+        @events_manager.update
     end
     def render
         # final draw
@@ -21,11 +22,8 @@ class EditorManager
         @editor_ui.rectangle.height = window.height
         @editor_ui.apply_constraints
     end
-    def event data, type
-        @events.each{|event| event.trigger(data) if event.type == type }
-    end
     
-    def add_event event
-        @events.push(event)
+    def add_event element, type, options = {}, &handler
+        @events_manager.add_event(element, type, options, handler)
     end
 end

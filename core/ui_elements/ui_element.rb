@@ -1,6 +1,7 @@
 require_relative '../tools/vector'
 class UIElement
     attr_accessor :rectangle
+    attr_reader :game
     def initialize game, rectangle = nil, &constraint
         @constraint = constraint if constraint
         @game = game
@@ -29,13 +30,11 @@ class UIElement
         self
     end
 
-    def mouse_over?
-        @game.mouse.x.between(rectangle.x, rectangle.right) && @game.mouse.y.between(rectangle.y, rectangle.height)
+    def add_event type, options = {}
+        @game.add_event(self, type, options){yield}
+        self
     end
-    
-    def add_event event
-        @game.add_event(event)
-    end
+
     #default rect bg
     def background_color= color
         require_relative 'drawables/rectangle'

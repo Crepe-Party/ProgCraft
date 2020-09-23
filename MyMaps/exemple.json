@@ -11,7 +11,7 @@
                 {
                     "object": {
                         "id": "apple01",
-                        "type": "Apple",
+                        "type": "apple",
                         "name": "apple",
                         "data": {
                             "texture": "apple_core"
@@ -24,7 +24,7 @@
         "elements": [
             {
                 "id": "bush1",
-                "type": "Bush",
+                "type": "busH",
                 "name": "Buisson",
                 "position": {
                     "x": 85,

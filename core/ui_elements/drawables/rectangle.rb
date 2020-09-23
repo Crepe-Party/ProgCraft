@@ -1,8 +1,8 @@
 require_relative 'drawable'
 class Rectangle < Drawable
     attr_accessor :color
-    def initialize game, rectangle = nil, color=Gosu::Color::BLACK
-        super game, rectangle
+    def initialize game, color=Gosu::Color::BLACK, rectangle = nil, &constraint
+        super(game, rectangle, &constraint)
         @color = color
     end
     def draw

@@ -9,7 +9,7 @@ class Level
         @name = ''
     end
     def load path_file
-        @level = File_manager.instance.read_level_file path_file
+        @level = File_manager.read_level_file path_file
         exit if level.nil?
         @name = @level['name']
         @level['maps'].each do |map|

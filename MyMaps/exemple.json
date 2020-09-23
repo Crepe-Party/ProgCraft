@@ -7,7 +7,7 @@
             "name": "take 5 logs",
             "required": true,
             "data":{
-                "item_type" : "log",
+                "item_type" : "Log",
                 "item_count" : 5
             }
         },
@@ -29,8 +29,8 @@
             "name": "chop 3 trees",
             "required": false,
             "data":{
-                "with_item_type": "axe",
-                "on_object_type": "tree",
+                "with_item_type": "Axe",
+                "on_object_type": "Tree",
                 "item_count": 3                  
             }
         },
@@ -40,8 +40,8 @@
             "name": "chop the first tree with an illogical item",
             "required": false,
             "data":{
-                "with_item_type": "apple",
-                "on_object_type": "tree"                  
+                "with_item_type": "Apple",
+                "on_object_type": "Tree"                  
             }
         }
     ],
@@ -69,6 +69,19 @@
         "elements": [
             {
                 "id": "tree01",
+                "type": "Tree",
+                "name": "Sapin",
+                "position": {
+                    "x": 85,
+                    "y": 60
+                },
+                "data": {
+                    "texture": "basic_tree",
+                    "num_logs": 5
+                }
+            },
+            {
+                "id": "tree02",
                 "type": "Tree",
                 "name": "Sapin",
                 "position": {

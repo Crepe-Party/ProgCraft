@@ -20,8 +20,9 @@ class LevelEditorWindow < Gosu::Window
         end
     end
     def button_down id
-        # test scroll
-        @editor.editor_ui.sub_elements[:objects_menu].scroll_offset-=15
+        #TODO: remove test scroll
+        @editor.editor_ui.sub_elements[:objects_menu].scroll_offset-=30 if id == Gosu::MS_WHEEL_DOWN 
+        @editor.editor_ui.sub_elements[:objects_menu].scroll_offset+=30 if id == Gosu::MS_WHEEL_UP 
     end
     def draw
         @editor.render

@@ -7,6 +7,16 @@ class List < UIElement
         self(game, &constraint)
         @element_class, @direction = element_class, direction
         @list_elements = []
+
+        # ANONYMOUS CLASS
+        # fred = Class.new do
+        #     def meth1
+        #       "hello"
+        #     end
+        #     def meth2
+        #       "bye"
+        #     end
+        #   end
     end
     def build
     end

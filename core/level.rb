@@ -9,6 +9,7 @@ class Level
         @name = ''
     end
     def load path_file
+        @maps.clear
         @level = File_manager.read_level_file path_file
         exit if level.nil?
         @name = @level['name']
@@ -19,6 +20,9 @@ class Level
         end
     end
     def save path
+        
+    end
+    def render
         
     end
 end

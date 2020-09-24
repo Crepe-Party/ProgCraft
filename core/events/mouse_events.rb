@@ -32,8 +32,7 @@ module EventHandlers
     class MouseUp < MouseHandler
         def initialize window, element, handler, button
             @button_event = ButtonUp.new window, element, handler, button
-            @button = button
-            super element, handler
+            super window, element, handler
         end
         def check
             @button_event.check if mouse_inside?()

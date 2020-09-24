@@ -5,12 +5,14 @@ class Level
     attr :level
     def initialize
         @maps = Array.new
+        @maps << Map.new
         @objectives = Array.new
         @name = ''
     end
     def load path_file
+        @maps.clear
         @level = File_manager.read_level_file path_file
-        exit if level.nil?
+        return if level.nil?
         @name = @level['name']
         @level['maps'].each do |map|
             nmap = Map.new
@@ -20,5 +22,8 @@ class Level
     end
     def save path
         
+    end
+    def render map_number
+        @maps[map_number].render
     end
 end

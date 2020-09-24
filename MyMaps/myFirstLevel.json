@@ -4,7 +4,7 @@
         "name": "Example_plain",
         "player_spawn": {
             "position": {
-                "x": 200,
+                "x": 500,
                 "y": 200
             },
             "inventory": [
@@ -27,11 +27,35 @@
                 "type": "bush",
                 "name": "Buisson",
                 "position": {
-                    "x": 85,
-                    "y": 60
+                    "x": 300,
+                    "y": 100
                 },
                 "data": {
-                    "texture": "basic_bush"
+                    "texture": "basic_bush.png"
+                }
+            },
+            {
+                "id": "bush2",
+                "type": "bush",
+                "name": "Buisson",
+                "position": {
+                    "x": 900,
+                    "y": 100
+                },
+                "data": {
+                    "texture": "basic_bush.png"
+                }
+            },
+            {
+                "id": "bush3",
+                "type": "bush",
+                "name": "Buisson",
+                "position": {
+                    "x": 600,
+                    "y": 300
+                },
+                "data": {
+                    "texture": "basic_bush.png"
                 }
             }
         ]

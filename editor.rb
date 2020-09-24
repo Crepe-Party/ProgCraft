@@ -7,9 +7,10 @@ class LevelEditorWindow < Gosu::Window
         super 1280, 720, {resizable: true}
         self.caption = "ProgCraft - The Level Editor 🤩"
         @editor = EditorManager.new self
-        @current_window_width; @current_window_height
+        @current_window_width
+        @current_window_height
 
-        @keys_down = []
+        @keys_down = [] #allowing for sub-frame key press
 
         puts "#{@current_window_width} #{@current_window_height}"
     end
@@ -23,16 +24,13 @@ class LevelEditorWindow < Gosu::Window
             @current_window_width, @current_window_height = self.width, self.height
             @editor.apply_constraints
         end
-
-        #keys
-        released_keys = []
-        @keys_down.each{ |key_id|
-            released_keys.push key_id if button_down? key_id
-        }
-        @keys_down -= released_keys
     end
     def button_down id
         @keys_down.push id
+        @editor.events_manager.update
+    end
+    def button_up id
+        @keys_down -= [id]
         @editor.events_manager.update
     end
     def draw

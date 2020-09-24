@@ -29,7 +29,10 @@ class UIElement
             end
         end
         to_render = @sub_elements.map{|elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect}
-        to_render += extra_elements.map{|elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect} if extra_elements
+        if extra_elements
+            to_render += extra_elements.map{|sub_elem| sub_elem.render(clipping_rect: clipping_rect)} if extra_elements.instance_of? Array
+            to_render += extra_elements.map{|elem_name, sub_elem| sub_elem.render(clipping_rect: clipping_rect)} if extra_elements.instance_of? Hash
+        end
         to_render
     end
     def apply_constraints

@@ -12,7 +12,7 @@ class Level
     def load path_file
         @maps.clear
         @level = File_manager.read_level_file path_file
-        exit if level.nil?
+        return if level.nil?
         @name = @level['name']
         @level['maps'].each do |map|
             nmap = Map.new

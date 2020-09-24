@@ -36,7 +36,7 @@ class EditorManager
                 Gosu.draw_line(0, y, Gosu::Color.new(200,200,200), window.width, y, Gosu::Color.new(200,200,200))
                 y+=grid_size
             end
-            @level.render 0
+            @level.render 0 if @level_available
             @player.draw
         end
     end
@@ -46,8 +46,8 @@ class EditorManager
         @editor_ui.apply_constraints
     end
     def load_map path_file
-        @level.load path_file
-        @player.set_pos @level.maps[0].player_spawn.x, @level.maps[0].player_spawn.y
+        @level_available = @level.load path_file
+        @player.set_pos @level.maps[0].player_spawn.x, @level.maps[0].player_spawn.y unless @level_available.nil?
     end
 
     def add_event element, type, options = {}, &handler

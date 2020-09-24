@@ -22,7 +22,7 @@ class Level
     def save path
         
     end
-    def render
-        
+    def render map_number
+        @maps[map_number].render
     end
 end

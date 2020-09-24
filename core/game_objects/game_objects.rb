@@ -7,7 +7,7 @@ module GameObjects
         
     end
     class Bush < Interactable
-
+        
     end
     class Door < Interactable
 

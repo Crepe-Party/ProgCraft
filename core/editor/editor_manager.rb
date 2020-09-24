@@ -21,7 +21,7 @@ class EditorManager
         elements_to_draw = @editor_ui.render.flatten
         elements_to_draw.each{|drawable| drawable.draw_with_clipping}
         # temp TODO remove
-        @level.render
+        @level.render 0
     end
     def apply_constraints
         @editor_ui.rectangle.width = window.width

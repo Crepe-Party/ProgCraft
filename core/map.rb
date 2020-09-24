@@ -1,5 +1,5 @@
 require_relative './tools/vector'
-Dir[__dir__+'/game_objects/interactable/*'].each { |file|
+Dir[__dir__+'/game_objects/*'].each { |file|
     require_relative file
 }
 class Map
@@ -19,8 +19,13 @@ class Map
             @player_inventory << object
         end
         map['elements'].each do |item|
-            element = Object.const_get(item['type'].capitalize).new
+            element = Object.const_get(item['type'].capitalize).new item['id'], item['name'], __dir__+'/assets/'+item['data']['texture'], Vector2.new(item['position']['x'], item['position']['y'])
             @elements << element
+        end
+    end
+    def render
+        @elements.each do |element|
+            element.draw
         end
     end
 end

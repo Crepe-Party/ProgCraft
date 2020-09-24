@@ -5,6 +5,7 @@ class Level
     attr :level
     def initialize
         @maps = Array.new
+        @maps << Map.new
         @objectives = Array.new
         @name = ''
     end

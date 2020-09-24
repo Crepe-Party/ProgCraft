@@ -1,7 +1,7 @@
-require_relative './tools/vector'
+require_relative '../tools/vector'
 class GameObject
     attr :id, :name, :texture, :position 
-    def initialize id=nil, name=nil , texture='../assets/basic_texture.png', position=Vector2.new(0,0)
+    def initialize id=nil, name=nil , texture=__dir__+'/../assets/basic_texture.png', position=Vector2.new(0,0)
         @id, @name, @texture, @position = id, name, Gosu::Image.new(texture), position 
     end 
     def draw

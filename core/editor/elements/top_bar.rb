@@ -8,7 +8,7 @@ class EditorTopBar < UIElement
         @sub_elements[:open_button] = Button.new(@game, "Open")
             .constrain{Rectangle2.new(@rectangle.x + 10, @rectangle.y + 5, 200, 40)}
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-                @game.loadmap Tk.getOpenFile(  'title' => 'Select Files',
+                @game.load_map Tk.getOpenFile(  'title' => 'Select Files',
                     'multiple' => false, 
                     'defaultextension' => 'json',
                     'initialdir' => MAPS_DIR,

@@ -34,6 +34,12 @@ class Rectangle2
     def intersects? rectangle
         return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
     end
+    def assign rectangle
+        @x = rectangle.x || @x
+        @y = rectangle.y || @y
+        @width = rectangle.width || @width
+        @height = rectangle.height || @height
+    end
     def intersection rectangle
         return nil unless self.intersects? rectangle #no intersection
         int_x = [self.x, rectangle.x].max

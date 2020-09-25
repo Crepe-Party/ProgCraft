@@ -1,4 +1,5 @@
 require_relative '../../ui_elements/widgets/scrollable'
+require_relative '../../ui_elements/widgets/list'
 class ObjectivesBar < Scrollable
     ADD_BTN_MARGIN = 20
     
@@ -9,24 +10,7 @@ class ObjectivesBar < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(50,50,50,255)
         #list
-        @sub_elements[:list] = List.new(@game, Class.new(UIElement) do
-            include Listable
-            
-            def build
-                @sub_elements[:icon] = Image.new(@game, OBV_DEFAULT_ICON){Rectangle2.new(@rectangle.x + (@rectangle.width - OBV_ICON_SIZE) / 2, @rectangle.y + (@rectangle.height - OBV_TXT_SCT_HEIGHT - OBV_ICON_SIZE)/2, OBV_ICON_SIZE, OBV_ICON_SIZE)}
-                @sub_elements[:name] = Text.new(@game, "Test text", font_size: OBV_FONT_SIZE){Rectangle2.new(@rectangle.x, @rectangle.bottom - OBV_TXT_SCT_HEIGHT, @rectangle.width, OBV_TXT_SCT_HEIGHT)}
-            end
-            def update_data data
-                icon_path = File.join(File.dirname(__FILE__), "../../assets/editor_objectives/#{data[:type]}_64x.png")
-                icon_path = OBV_DEFAULT_ICON unless File.exists? icon_path
-                @sub_elements[:icon].source = icon_path
-                @sub_elements[:name].string = data[:name]
-            end
-            def list_constraint parent_rect
-                size = parent_rect.height - 2*@parent_list.spacing
-                Rectangle2.new(0, parent_rect.y + @parent_list.spacing, size, size)
-            end
-        end, direction: :horizontal, spacing: 10)
+        @sub_elements[:list] = List.new(@game, ObjectiveAdapter, direction: :horizontal, spacing: 10)
         .constrain{Rectangle2.new(@scrl_rect.x, @scrl_rect.y, nil, @scrl_rect.height)}
         
         # @game.plan_action :next_frame do
@@ -56,5 +40,24 @@ class ObjectivesBar < Scrollable
     end
     def vertical?
         false
+    end
+
+    class ObjectiveAdapter < UIElement
+        include Listable
+        
+        def build
+            @sub_elements[:icon] = Image.new(@game, OBV_DEFAULT_ICON){Rectangle2.new(@rectangle.x + (@rectangle.width - OBV_ICON_SIZE) / 2, @rectangle.y + (@rectangle.height - OBV_TXT_SCT_HEIGHT - OBV_ICON_SIZE)/2, OBV_ICON_SIZE, OBV_ICON_SIZE)}
+            @sub_elements[:name] = Text.new(@game, "Test text", font_size: OBV_FONT_SIZE, color: Gosu::Color::WHITE){Rectangle2.new(@rectangle.x, @rectangle.bottom - OBV_TXT_SCT_HEIGHT, @rectangle.width, OBV_TXT_SCT_HEIGHT)}
+        end
+        def update_data data
+            icon_path = File.join(File.dirname(__FILE__), "../../assets/editor_objectives/#{data[:type]}_64x.png")
+            icon_path = OBV_DEFAULT_ICON unless File.exists? icon_path
+            @sub_elements[:icon].source = icon_path
+            @sub_elements[:name].string = data[:name]
+        end
+        def list_constraint parent_rect
+            size = parent_rect.height - 2*@parent_list.spacing
+            Rectangle2.new(0, parent_rect.y + @parent_list.spacing, size, size)
+        end
     end
 end

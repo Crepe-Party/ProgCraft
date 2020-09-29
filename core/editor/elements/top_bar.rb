@@ -18,7 +18,7 @@ class EditorTopBar < UIElement
         @sub_elements[:save_button] = Button.new(@game, "Save")
             .constrain{Rectangle2.new(@rectangle.right - 200 - 10, @rectangle.y + 5, 200, 40)}
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-                puts Tk.getSaveFile( 'title' => 'Save a ProgCraft map',
+                @game.save_map Tk.getSaveFile( 'title' => 'Save a ProgCraft map',
                     'defaultextension' => 'json',
                     'initialfile' => Time.now.strftime("%Y-%m-%d"),
                     'initialdir' => MAPS_DIR,

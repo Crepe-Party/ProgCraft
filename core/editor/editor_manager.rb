@@ -47,9 +47,11 @@ class EditorManager
     end
     def load_map path_file
         @level_available = @level.load path_file
-        @player.set_pos @level.maps[0].player_spawn.x, @level.maps[0].player_spawn.y unless @level_available.nil?
+        @player.set_pos @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y unless @level_available.nil?
     end
-
+    def save_map path_file
+        @level.save path_file
+    end
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end

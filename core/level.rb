@@ -20,8 +20,13 @@ class Level
             @maps << nmap
         end
     end
-    def save path
-        
+    def save path_file
+        maps = []
+        @maps.each do |map|
+            maps << map.hash
+        end
+        json = {"name": @name, "maps": maps}
+        File_manager.write_level_file path_file, json
     end
     def render map_number
         @maps[map_number].render

@@ -2,7 +2,7 @@
 # ProgCraft
 ## Description
 
-It's an application to learn logic programmation at the news developpers.  
+It's an application to learn logic programmation at the new developpers.  
 Player has to code basic instruction to move Robert on the map and interact with objects.  
 
 Basic instructions of Robert:  

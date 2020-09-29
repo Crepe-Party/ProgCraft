@@ -31,10 +31,17 @@ class Rectangle2
     def bottom
         @y + @height
     end
-    def contains? vector
-        (vector.x.between? @x, right) && (vector.y.between? @y, bottom)
-    end    
-    
+    def intersects? rectangle
+        return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
+    end
+    def intersection rectangle
+        return nil unless self.intersects? rectangle #no intersection
+        int_x = [self.x, rectangle.x].max
+        int_y = [self.y, rectangle.y].max
+        int_right = [self.right, rectangle.right].min
+        int_bottom = [self.bottom, rectangle.bottom].min
+        Rectangle2.new(int_x, int_y, int_right - int_x, int_bottom - int_y)
+    end  
     def over? pos_x, pos_y
         pos_x.between?(x, right) && pos_y.between?(y, bottom)
     end

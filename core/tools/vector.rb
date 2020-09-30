@@ -31,6 +31,11 @@ class Rectangle2
     def bottom
         @y + @height
     end
+    def relative_to rel_x_or_rect=0,rel_y=0,rel_width=0,rel_height=0, rel_dimensions: false
+        rel_x_or_rect, rel_y, rel_width, rel_height = rel_x_or_rect.x, rel_x_or_rect.y, rel_x_or_rect.width, rel_x_or_rect.height if rel_x_or_rect.instance_of? Rectangle2
+        return Rectangle2.new(@x + rel_x_or_rect, @y + rel_y, rel_width, rel_height) unless rel_dimensions
+        Rectangle2.new(@x + rel_x_or_rect, @y + rel_y, @width + rel_width, @height + rel_height)
+    end
     def intersects? rectangle
         return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
     end
@@ -50,5 +55,8 @@ class Rectangle2
     end  
     def over? pos_x, pos_y
         pos_x.between?(x, right) && pos_y.between?(y, bottom)
+    end
+    def to_a
+        [@x, @y, @width, @height]
     end
 end

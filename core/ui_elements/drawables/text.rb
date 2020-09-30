@@ -16,6 +16,6 @@ class Text < Drawable
             x_pos += ((@rectangle.width - text_width) / 2)
             y_pos += ((@rectangle.height - @font.height) / 2)
         end
-        @font.draw_text(@string, x_pos, y_pos, 1, @scale, @scale, @color)
+        @font.draw_text(@string, x_pos, y_pos, 0, @scale, @scale, @color)
     end
 end

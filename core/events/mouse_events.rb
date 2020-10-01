@@ -3,7 +3,7 @@ require_relative 'keyboard_events'
 module EventHandlers
     class MouseHandler < EventHandler        
         def mouse_inside?
-            @element.rectangle.over?  @window.mouse_x, @window.mouse_y
+            @element.rectangle.includes?  @window.mouse_x, @window.mouse_y
         end
     end
     class MouseEnter < MouseHandler

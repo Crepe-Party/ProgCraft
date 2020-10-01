@@ -16,12 +16,10 @@ class Map
         @robert_spawn.y = map['robert']['position']['y']
         map['robert']['inventory'].each do |item|
             object = Object.const_get(item['type']).new
-            puts object
             @robert_inventory << object
         end
         map['elements'].each do |item|
             class_GameObject = Object.const_get(item['type'])
-            puts class_GameObject
             element = class_GameObject.new item['id'], item['name'], item['data']['texture'], Vector2.new(item['position']['x'], item['position']['y'])
             @elements << element
         end

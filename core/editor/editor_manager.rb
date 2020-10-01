@@ -69,6 +69,7 @@ class EditorManager
     def busy= value
         @busy = value
         if @busy    
+            @events_manager.available = false
             @editor_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
                 def build
                     self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
@@ -78,6 +79,7 @@ class EditorManager
             @editor_ui.apply_constraints
         else
             @editor_ui.sub_elements.delete(:busy_loader)
+            @events_manager.available = true
         end
     end
 

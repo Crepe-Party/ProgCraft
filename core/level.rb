@@ -21,10 +21,7 @@ class Level
         end
     end
     def save path_file
-        maps = []
-        @maps.each do |map|
-            maps << map.hash
-        end
+        maps = @maps.map(&:hash)
         json = {"name": @name, "maps": maps}
         File_manager.write_json path_file, json
     end

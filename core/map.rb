@@ -37,8 +37,6 @@ class Map
         {"name": @name, "robert": robert, "elements": elements}
     end
     def render
-        @elements.each do |element|
-            element.draw
-        end
+        @elements.each(&:draw)
     end
 end

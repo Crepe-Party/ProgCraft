@@ -47,7 +47,7 @@ class EditorManager
                 Gosu.draw_line(0, y, Gosu::Color.new(200,200,200), window.width, y, Gosu::Color.new(200,200,200))
                 y+=grid_size
             end
-            @level.render 0 unless @level_available.nil?
+            @level.render(0) if @level_available
             @player.draw
         end
     end

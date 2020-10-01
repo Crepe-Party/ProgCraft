@@ -3,23 +3,26 @@ require_relative 'elements/editor_ui'
 require_relative '../events/events_manager'
 require_relative '../level'
 require_relative '../game_objects/player'
+require_relative '../tools/window_manager'
 class EditorManager
-    attr_reader :window, :editor_ui, :events_manager, :ready_for_constraints
+    attr_reader :window, :editor_ui, :events_manager, :window_manager, :busy, :ready_for_constraints
     attr :level, :player
-    def initialize window
+    def initialize window   
         @window = window
-
+        
+        @busy=false
         @planned_actions = {}
         @keys_down = []
 
-        @ready_for_constraints = false
-
+        @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
-        @editor_ui = EditorUI.new self, Rectangle2.new(0,0)
+
+        @ready_for_constraints = false
+        @editor_ui = EditorUI.new self
+        @ready_for_constraints = true
+
         @level = Level.new
         @player = Player.new(600, 300)
-
-        @ready_for_constraints = true
     end
     def update dt
         update_planned_actions
@@ -44,7 +47,7 @@ class EditorManager
                 Gosu.draw_line(0, y, Gosu::Color.new(200,200,200), window.width, y, Gosu::Color.new(200,200,200))
                 y+=grid_size
             end
-            @level.render 0 if @level_available
+            @level.render 0 unless @level_available.nil?
             @player.draw
         end
     end
@@ -62,6 +65,22 @@ class EditorManager
     def save_map path_file
         @level.save path_file
     end
+    
+    def busy= value
+        @busy = value
+        if @busy    
+            @editor_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
+                def build
+                    self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
+                    @sub_elements[:background_text] = Text.new(@game, "Loading...", center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
+                end
+            end.new(self){Rectangle2.new(0,0,self.window.width, self.window.height)}
+            @editor_ui.apply_constraints
+        else
+            @editor_ui.sub_elements.delete(:busy_loader)
+        end
+    end
+
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end

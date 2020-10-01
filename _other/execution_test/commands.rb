@@ -19,7 +19,7 @@ def turn_right
     when :left then :up
     end
 
-    game.robert.rotate_to(new_direction){execution.instruction_finished}
+    game.robert.rotate_to(new_direction, clockwise: true){execution.instruction_finished}
 end
 def turn_left
     execution.wait_for_clearance

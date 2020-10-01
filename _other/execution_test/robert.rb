@@ -30,7 +30,8 @@ class Robert
     def rotate_to new_direction, clockwise: true, &completion_handler
         p "robert rotate to #{new_direction}"
         angle_diff = DIRECTIONS_ANGLES[new_direction] - DIRECTIONS_ANGLES[@direction]
-        angle_diff += 360 if  DIRECTIONS_ANGLES[new_direction] < DIRECTIONS_ANGLES[@direction] && clockwise #prevent broken rotation
+        angle_diff += 360 if DIRECTIONS_ANGLES[new_direction] < DIRECTIONS_ANGLES[@direction] && clockwise #prevent broken rotation
+        angle_diff -= 360 if DIRECTIONS_ANGLES[new_direction] > DIRECTIONS_ANGLES[@direction] && !clockwise #prevent broken rotation
         animate(1.0, 
             on_progression: ->(linear_progress) do
                 @angle_offset = angle_diff * smooth_progression(linear_progress)

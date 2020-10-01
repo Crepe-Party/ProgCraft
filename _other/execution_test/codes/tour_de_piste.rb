@@ -11,6 +11,4 @@ move_forward
 turn_right
 move_forward
 move_forward
-turn_right
-
-1.upto(4){turn_right}
+1.upto(3){turn_left}

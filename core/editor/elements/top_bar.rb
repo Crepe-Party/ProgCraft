@@ -9,8 +9,10 @@ class EditorTopBar < UIElement
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
                 @game.busy = true
                 @game.window_manager.open_file(MAPS_DIR) do |path_file| 
-                    @game.load_map path_file
-                    @game.busy = false
+                    @game.plan_action(0) do 
+                        @game.load_map path_file
+                        @game.busy = false
+                    end
                 end
             end
                 

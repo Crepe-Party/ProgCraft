@@ -2,7 +2,9 @@ require_relative '../tools/vector'
 class GameObject
     attr :id, :name, :texture, :position, :img_path 
     def initialize id=nil, name=nil , img_path='basic_texture.png', position=Vector2.new(0,0)
-        @id, @name, @texture, @position, @img_path = id, name, Gosu::Image.new("#{__dir__}/../assets/#{img_path}"), position, img_path 
+        puts "image path #{img_path}"
+        file_path = File.expand_path(File.join("..", "assets", img_path), File.dirname(__FILE__))
+        @id, @name, @texture, @position, @img_path = id, name, Gosu::Image.new(file_path), position, img_path
     end 
     def draw
         @texture.draw(@position.x, @position.y, 0)

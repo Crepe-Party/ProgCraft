@@ -5,6 +5,8 @@ class Scrollable < UIElement
     SCROLL_BUTTONS_SIZE = 30
     SCROLL_FACTOR = 30
     def build
+        #please call super() at the end of your build method to prevent sketchy behaviors with buttons
+        @scrl_rect = Rectangle2.new
         @overflow = :hidden
         @scroll_offset = 0
         @sub_elements[:before_button] = Button.new(@game, vertical? ? "▲" : "◄"){
@@ -17,7 +19,8 @@ class Scrollable < UIElement
         setup_scroll_events
     end
     def apply_constraints
-        @rectangle = @constraint.call if @constraint
+        return unless @game.ready_for_constraints
+        @rectangle.assign(@constraint.call) if @constraint
         @scrl_rect = @rectangle.clone
         @scrl_rect.x += @scroll_offset unless vertical?
         @scrl_rect.y += @scroll_offset if vertical?

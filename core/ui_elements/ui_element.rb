@@ -8,6 +8,7 @@ class UIElement
         @rectangle = rectangle || Rectangle2.new
         @overflow = :visible
         @sub_elements = {}
+
         build
     end
     def build
@@ -18,7 +19,7 @@ class UIElement
     end
     def render extra_elements: nil, clipping_rect: nil
         #overflow clipping
-        if overflow == :hidden
+        if @overflow == :hidden
             if clipping_rect
                 unless(clipping_rect = clipping_rect.intersection @rectangle)
                     #nothing left to render
@@ -36,7 +37,8 @@ class UIElement
         to_render
     end
     def apply_constraints
-        @rectangle = @constraint.call if @constraint
+        return unless @game.ready_for_constraints
+        @rectangle.assign(@constraint.call) if @constraint
         @sub_elements.each{|elem_name, sub_elem| sub_elem.apply_constraints}
     end
 

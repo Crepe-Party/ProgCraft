@@ -6,7 +6,7 @@ class ObjectivesBar < Scrollable
     OBV_ICON_SIZE = 64
     OBV_FONT_SIZE = 20
     OBV_TXT_SCT_HEIGHT = 40
-    OBV_DEFAULT_ICON = File.join(File.dirname(__FILE__), '../../assets/editor_objectives/nothing_64x.png')
+    OBV_DEFAULT_ICON = File.join(File.dirname(__FILE__), '../../assets/objectives/nothing_64x.png')
     def build
         self.background_color = Gosu::Color.rgba(50,50,50,255)
         #list
@@ -50,7 +50,7 @@ class ObjectivesBar < Scrollable
             @sub_elements[:name] = Text.new(@game, "Test text", font_size: OBV_FONT_SIZE, color: Gosu::Color::WHITE){Rectangle2.new(@rectangle.x, @rectangle.bottom - OBV_TXT_SCT_HEIGHT, @rectangle.width, OBV_TXT_SCT_HEIGHT)}
         end
         def update_data data
-            icon_path = File.join(File.dirname(__FILE__), "../../assets/editor_objectives/#{data[:type]}_64x.png")
+            icon_path = File.join(File.dirname(__FILE__), "../../assets/objectives/#{data[:type]}_64x.png")
             icon_path = OBV_DEFAULT_ICON unless File.exists? icon_path
             @sub_elements[:icon].source = icon_path
             @sub_elements[:name].string = data[:name]

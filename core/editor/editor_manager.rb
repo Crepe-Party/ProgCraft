@@ -8,22 +8,21 @@ class EditorManager
     attr_reader :window, :editor_ui, :events_manager, :window_manager, :busy, :ready_for_constraints
     attr :level, :player
     def initialize window   
-        @busy=false
-        @window_manager = WindowManager.new
-        @events_manager = EventsManager.new window
         @window = window
-        @editor_ui = EditorUI.new self
+        
+        @busy=false
         @planned_actions = {}
         @keys_down = []
 
-        @ready_for_constraints = false
-
+        @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
-        @editor_ui = EditorUI.new self, Rectangle2.new(0,0)
+
+        @ready_for_constraints = false
+        @editor_ui = EditorUI.new self
+        @ready_for_constraints = true
+
         @level = Level.new
         @player = Player.new(600, 300)
-
-        @ready_for_constraints = true
     end
     def update dt
         update_planned_actions

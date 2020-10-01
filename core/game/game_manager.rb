@@ -3,23 +3,26 @@ require_relative 'elements/game_ui'
 require_relative '../events/events_manager'
 require_relative '../level'
 require_relative '../game_objects/player'
+require_relative '../tools/window_manager'
 class GameManager
-    attr_reader :window, :game_ui, :events_manager, :ready_for_constraints
+    attr_reader :window, :game_ui, :events_manager, :window_manager, :busy, :ready_for_constraints
     attr :level, :player
     def initialize window
         @window = window
 
+        @busy=false
         @planned_actions = {}
         @keys_down = []
 
-        @ready_for_constraints = false
-
+        @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
-        @game_ui = GameUI.new self, Rectangle2.new(0,0)
+        
+        @ready_for_constraints = false
+        @game_ui = GameUI.new self
+        @ready_for_constraints = true
+        
         @level = Level.new
         @player = Player.new(600, 300)
-
-        @ready_for_constraints = true
     end
     def update dt
         update_planned_actions
@@ -47,6 +50,20 @@ class GameManager
     end
     def save_program path_file
         
+    end
+    def busy= value
+        @busy = value
+        if @busy    
+            @game_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
+                def build
+                    self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
+                    @sub_elements[:background_text] = Text.new(@game, "Loading...", center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
+                end
+            end.new(self){Rectangle2.new(0,0,self.window.width, self.window.height)}
+            @game_ui.apply_constraints
+        else
+            @game_ui.sub_elements.delete(:busy_loader)
+        end
     end
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)

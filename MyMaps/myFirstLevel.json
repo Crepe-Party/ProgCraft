@@ -1,63 +1,66 @@
 {
     "name": "stage learning",
-    "maps": [{
-        "name": "Example_plain",
-        "player_spawn": {
-            "position": {
-                "x": 500,
-                "y": 200
-            },
-            "inventory": [
-                {
-                    "object": {
-                        "id": "apple01",
-                        "type": "apple",
-                        "name": "apple",
+    "maps": [
+        {
+            "name": "Example_plain",
+            "robert": {
+                "position": {
+                    "x": 500,
+                    "y": 200
+                },
+                "inventory": [
+                    {
+                        "id": null,
+                        "type": "GameObjects::Apple",
+                        "name": null,
+                        "position": {
+                            "x": 0,
+                            "y": 0
+                        },
                         "data": {
-                            "texture": "apple_core"
+                            "texture": "basic_texture.png"
                         }
+                    }
+                ]
+            },
+            "elements": [
+                {
+                    "id": "bush1",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 400,
+                        "y": 100
                     },
-                    "holding": true
+                    "data": {
+                        "texture": "basic_bush.png"
+                    }
+                },
+                {
+                    "id": "bush2",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 900,
+                        "y": 100
+                    },
+                    "data": {
+                        "texture": "basic_bush.png"
+                    }
+                },
+                {
+                    "id": "bush3",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 600,
+                        "y": 500
+                    },
+                    "data": {
+                        "texture": "basic_bush.png"
+                    }
                 }
             ]
-        },
-        "elements": [
-            {
-                "id": "bush1",
-                "type": "bush",
-                "name": "Buisson",
-                "position": {
-                    "x": 300,
-                    "y": 100
-                },
-                "data": {
-                    "texture": "basic_bush.png"
-                }
-            },
-            {
-                "id": "bush2",
-                "type": "bush",
-                "name": "Buisson",
-                "position": {
-                    "x": 900,
-                    "y": 100
-                },
-                "data": {
-                    "texture": "basic_bush.png"
-                }
-            },
-            {
-                "id": "bush3",
-                "type": "bush",
-                "name": "Buisson",
-                "position": {
-                    "x": 600,
-                    "y": 300
-                },
-                "data": {
-                    "texture": "basic_bush.png"
-                }
-            }
-        ]
-    }]
+        }
+    ]
 }

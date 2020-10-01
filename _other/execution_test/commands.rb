@@ -12,14 +12,12 @@ end
 def turn_right
     execution.wait_for_clearance
 
-    game.robert.direction = case game.robert.direction
+    new_direction = case game.robert.direction
     when :up then :right
     when :right then :down
     when :down then :left
     when :left then :up
     end
-    #animation
-    sleep 0.2
 
-    execution.instruction_finished
+    game.robert.rotate_to(new_direction){execution.instruction_finished}
 end

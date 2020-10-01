@@ -13,6 +13,7 @@ class Robert
         reset
     end
     def reset
+        @angle_offset = 0
         @current_animation = nil
         @rectangle = Rectangle2.new(@start_pos.x, @start_pos.y, TILE_SIZE, TILE_SIZE)
         @direction = :right
@@ -26,8 +27,18 @@ class Robert
             @rectangle.position = initial_pos + (target_pos - initial_pos)*ease_progress
         end, on_finish: complete_handler)
     end
-    def rotate_to direction, clockwise: true
-        # todo for animation
+    def rotate_to new_direction, &completion_handler
+        angle_diff = DIRECTIONS_ANGLES[new_direction] - DIRECTIONS_ANGLES[@direction]
+        angle_diff += 360 if  DIRECTIONS_ANGLES[new_direction] < DIRECTIONS_ANGLES[@direction] #prevent broken rotation
+        animate(1.0, 
+            on_progression: ->(linear_progress) do
+                @angle_offset = angle_diff * smooth_progression(linear_progress)
+            end, on_finish: ->() do 
+                @direction = new_direction
+                @angle_offset = 0
+                completion_handler.call if completion_handler
+            end
+        )
     end
     def update
         time = Time.now.to_f
@@ -41,7 +52,8 @@ class Robert
         end
     end
     def draw top
-        angle = DIRECTIONS_ANGLES[@direction]
+        # p DIRECTIONS_ANGLES, @direction, @angle_offset
+        angle = DIRECTIONS_ANGLES[@direction] + @angle_offset
         x, y = @rectangle.x * TILE_SIZE, @rectangle.y * TILE_SIZE + top
         center_point = Rectangle2.new(x, y, @rectangle.width, @rectangle.height).center
         # p center_point, x, y

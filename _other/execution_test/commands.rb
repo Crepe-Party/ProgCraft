@@ -21,3 +21,15 @@ def turn_right
 
     game.robert.rotate_to(new_direction){execution.instruction_finished}
 end
+def turn_left
+    execution.wait_for_clearance
+
+    new_direction = case game.robert.direction
+    when :up then :left
+    when :right then :up
+    when :down then :right
+    when :left then :down
+    end
+
+    game.robert.rotate_to(new_direction, clockwise: false){execution.instruction_finished}
+end

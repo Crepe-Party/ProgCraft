@@ -11,9 +11,9 @@ class ExecutionManager
         @program_text = nil
     end
     def wait_for_clearance
-        p "waiting for clearance"
+        # p "waiting for clearance"
         sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused
-        p "cleared!"
+        # p "cleared!"
         @last_instruction_finished = false
     end
     def instruction_finished

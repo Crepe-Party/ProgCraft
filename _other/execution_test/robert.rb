@@ -19,7 +19,7 @@ class Robert
         @direction = :right
     end
     def move_to x, y, &complete_handler
-        p "robert move to #{x} #{y}"
+        p "robert move to #{x}, #{y}"
         initial_pos = @rectangle.position
         target_pos = Vector2.new x, y
         animate(1.0, on_progression: ->(linear_progress)do
@@ -27,9 +27,10 @@ class Robert
             @rectangle.position = initial_pos + (target_pos - initial_pos)*ease_progress
         end, on_finish: complete_handler)
     end
-    def rotate_to new_direction, &completion_handler
+    def rotate_to new_direction, clockwise: true, &completion_handler
+        p "robert rotate to #{new_direction}"
         angle_diff = DIRECTIONS_ANGLES[new_direction] - DIRECTIONS_ANGLES[@direction]
-        angle_diff += 360 if  DIRECTIONS_ANGLES[new_direction] < DIRECTIONS_ANGLES[@direction] #prevent broken rotation
+        angle_diff += 360 if  DIRECTIONS_ANGLES[new_direction] < DIRECTIONS_ANGLES[@direction] && clockwise #prevent broken rotation
         animate(1.0, 
             on_progression: ->(linear_progress) do
                 @angle_offset = angle_diff * smooth_progression(linear_progress)

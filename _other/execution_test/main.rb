@@ -63,6 +63,8 @@ class ExecTestWindow < Gosu::Window
     end
     def stop_btn_pressed
         p "stop_btn_pressed"
+        @execution_manager.stop_program
+        @robert.reset
     end
 end
 def draw_centered_text(font, string, x, y, width, height, color)

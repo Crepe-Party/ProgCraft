@@ -1,8 +1,8 @@
 require_relative 'drawable'
 class Triangle < Drawable
     attr_accessor :pos_2, :pos_3, :color, :angle
-    def initialize game, pos_1, pos_2, pos_3, color: Gosu::Color::BLACK, angle: 0, &constraint
-        super(game, &constraint)
+    def initialize root, pos_1, pos_2, pos_3, color: Gosu::Color::BLACK, angle: 0, &constraint
+        super(root, &constraint)
         @pos_1, @pos_2, @pos_3, @color, @angle = pos_1, pos_2, pos_3, color, angle
         @rectangle.x, @rectangle.y = pos_1.x, pos_1.y
     end

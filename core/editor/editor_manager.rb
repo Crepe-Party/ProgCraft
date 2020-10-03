@@ -70,7 +70,7 @@ class EditorManager
             @editor_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
                 def build
                     self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
-                    @sub_elements[:background_text] = Text.new(@game, "Loading...", center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
+                    @sub_elements[:background_text] = Text.new(@root, "Loading...", center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
                 end
             end.new(self){Rectangle2.new(0,0,self.window.width, self.window.height)}
             @editor_ui.apply_constraints

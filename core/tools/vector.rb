@@ -41,7 +41,7 @@ end
 
 class Rectangle2
     attr_accessor :x, :y, :width, :height
-    def initialize x=0, y=0, width=0, height=0
+    def initialize x=nil, y=nil, width=nil, height=nil
       @x, @y, @width, @height = x, y ,width, height
     end
     def position
@@ -73,11 +73,16 @@ class Rectangle2
     def intersects? rectangle
         return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
     end
-    def assign rectangle
-        @x = rectangle.x || @x
-        @y = rectangle.y || @y
-        @width = rectangle.width || @width
-        @height = rectangle.height || @height
+    def assign! rectangle=nil, x:nil, y:nil, width:nil, height:nil
+        x,y,width,height = rectangle.to_a if rectangle
+        @x = x if x
+        @y = y if y
+        @width = width if width
+        @height = height if height
+        self
+    end
+    def assign rectangle=nil, x:nil, y:nil, width:nil, height:nil
+        self.clone.assign!(rectangle, x:x, y:y, width:width, height:height)
     end
     def intersection rectangle
         return nil unless self.intersects? rectangle #no intersection

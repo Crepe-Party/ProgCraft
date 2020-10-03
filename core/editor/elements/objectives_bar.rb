@@ -10,17 +10,17 @@ class ObjectivesBar < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(50,50,50,255)
         #list
-        @sub_elements[:list] = List.new(@game, ObjectiveAdapter, direction: :horizontal, spacing: 10)
+        @sub_elements[:list] = List.new(@root, ObjectiveAdapter, direction: :horizontal, spacing: 10)
         .constrain{Rectangle2.new(@scrl_rect.x, @scrl_rect.y, nil, @scrl_rect.height)}
         
-        # @game.plan_action :next_frame do
+        # @root.plan_action :next_frame do
             @sub_elements[:list].data = 10.times.map{{name: '...', type: nil}}#preload
         # end
 
         def on_data_get data
             @sub_elements[:list].data = data
             #btn
-            @sub_elements[:add_btn] = Button.new(@game, "+").constrain do
+            @sub_elements[:add_btn] = Button.new(@root, "+").constrain do
                 list_rect = @sub_elements[:list].rectangle
                 # puts "list_rect #{list_rect.width}"
                 Rectangle2.new(list_rect.right + ADD_BTN_MARGIN, @scrl_rect.y + ADD_BTN_MARGIN, @scrl_rect.height - 2*ADD_BTN_MARGIN, @scrl_rect.height - 2*ADD_BTN_MARGIN)
@@ -29,7 +29,7 @@ class ObjectivesBar < Scrollable
         end
 
         # fake load with test data
-        @game.plan_action 1 do
+        @root.plan_action 1 do
             on_data_get [
                 {type: 'use_item', name: 'Chop a tree'},
                 {type: 'have_item', name: 'Pick up a log'},
@@ -46,8 +46,8 @@ class ObjectivesBar < Scrollable
         include Listable
         
         def build
-            @sub_elements[:icon] = Image.new(@game, OBV_DEFAULT_ICON){Rectangle2.new(@rectangle.x + (@rectangle.width - OBV_ICON_SIZE) / 2, @rectangle.y + (@rectangle.height - OBV_TXT_SCT_HEIGHT - OBV_ICON_SIZE)/2, OBV_ICON_SIZE, OBV_ICON_SIZE)}
-            @sub_elements[:name] = Text.new(@game, "Test text", font_size: OBV_FONT_SIZE, color: Gosu::Color::WHITE){Rectangle2.new(@rectangle.x, @rectangle.bottom - OBV_TXT_SCT_HEIGHT, @rectangle.width, OBV_TXT_SCT_HEIGHT)}
+            @sub_elements[:icon] = Image.new(@root, OBV_DEFAULT_ICON){Rectangle2.new(@rectangle.x + (@rectangle.width - OBV_ICON_SIZE) / 2, @rectangle.y + (@rectangle.height - OBV_TXT_SCT_HEIGHT - OBV_ICON_SIZE)/2, OBV_ICON_SIZE, OBV_ICON_SIZE)}
+            @sub_elements[:name] = Text.new(@root, "Test text", font_size: OBV_FONT_SIZE, color: Gosu::Color::WHITE){Rectangle2.new(@rectangle.x, @rectangle.bottom - OBV_TXT_SCT_HEIGHT, @rectangle.width, OBV_TXT_SCT_HEIGHT)}
         end
         def update_data data
             icon_path = File.join(File.dirname(__FILE__), "../../assets/editor_objectives/#{data[:type]}_64x.png")

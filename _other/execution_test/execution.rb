@@ -1,9 +1,9 @@
 require_relative 'commands'
 class ExecutionManager
     CLEARANCE_CHECK_INTERVAL = 1/10.0
-    attr_reader :game, :execution
-    def initialize game
-        @game = game
+    attr_reader :root, :execution
+    def initialize root
+        @root = root
         @execution = self
         @last_instruction_finished = true
         @is_paused = true

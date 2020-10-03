@@ -1,12 +1,15 @@
 require 'gosu'
 require_relative 'ui_elements/main_ui'
+require_relative '../../events/events_manager'
 class FileSelector < Gosu::Window
     attr_reader :keys_down, :ready_for_constraints
     def initialize
-        @keys_down = [] #allowing for sub-frame key press
         #window
         super 900, 500, {resizable: true}
         self.caption = "The File Selector 🤔"
+        #init
+        @keys_down = [] #allowing for sub-frame key press
+        @events_manager = EventsManager.new self
         #build
         @ready_for_constraints = false
         @main_ui = FileSelectorUI::MainUI.new(self){Rectangle2.new(0,0,self.width,self.height)}
@@ -28,18 +31,23 @@ class FileSelector < Gosu::Window
         @main_ui.update delta_time
     end
     def draw
-        @main_ui.render
+        # final draw
+        elements_to_draw = @main_ui.render.flatten
+        elements_to_draw.each{|drawable| drawable.draw_with_clipping}
+    end
+    def add_event element, type, options = {}, &handler
+        @events_manager.add_event(element, type, options, handler)
     end
     def needs_cursor?
         true
     end
     def button_down id
         @keys_down.push id
-        @editor.events_manager.update
+        @events_manager.update
     end
     def button_up id
         @keys_down -= [id]
-        @editor.events_manager.update
+        @events_manager.update
     end
 end
 FileSelector.new

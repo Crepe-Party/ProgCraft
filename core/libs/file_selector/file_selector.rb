@@ -35,6 +35,11 @@ class FileSelector < Gosu::Window
         elements_to_draw = @main_ui.render.flatten
         elements_to_draw.each{|drawable| drawable.draw_with_clipping}
     end
+    def apply_constraints
+        return unless @ready_for_constraints
+        #start applying constraints to children
+        @main_ui.apply_constraints
+    end
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end

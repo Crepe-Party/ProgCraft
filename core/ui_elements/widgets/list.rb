@@ -1,22 +1,12 @@
 class List < UIElement
     attr_reader :builder, :data, :direction, :spacing, :start_offset
     #elements class should implement "Listable"
-    def initialize root, element_class, direction: :vertical, spacing: 0, start_offset: 0, &constraint
+    def initialize root, element_class, direction: :vertical, spacing: 0, start_offset: 0, parent_element: nil, &constraint
         #direction: :vertical, :horizontal, :wrap
         raise 'element_class does not contain Listable module' unless element_class.included_modules.include? Listable
-        super(root, &constraint)
+        super(root, parent_element: parent_element, &constraint)
         @element_class, @direction, @spacing, @start_offset = element_class, direction, spacing, start_offset
         @list_elements = []
-
-        # ANONYMOUS CLASS
-        # fred = Class.new do
-        #     def meth1
-        #       "hello"
-        #     end
-        #     def meth2
-        #       "bye"
-        #     end
-        #   end
     end
     def build
     end
@@ -50,12 +40,12 @@ class List < UIElement
         @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
         puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
         #propagate size change to parents. may be overkill
-        @root.apply_constraints #TODO: maybe overkill?
+        @root.apply_constraints if @root.ready_for_constraints #TODO: maybe overkill?
         new_data
     end
 end
 
-module Listable
+module Listable #use include to use module
     attr_reader :data
     attr_accessor :index
     def initialize(root, *args, parent_list: nil, index: nil, &constraint)

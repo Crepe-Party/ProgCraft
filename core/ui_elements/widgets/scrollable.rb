@@ -9,13 +9,15 @@ class Scrollable < UIElement
         @scrl_rect = Rectangle2.new
         @overflow = :hidden
         @scroll_offset = 0
-        @sub_elements[:before_button] = Button.new(@root, vertical? ? "▲" : "◄"){
-            next Rectangle2.new(@rectangle.right - SCROLL_BUTTONS_SIZE - 5, @rectangle.y + 5, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE) if vertical?
-            next Rectangle2.new(@rectangle.x + 5, @rectangle.bottom - 5 - SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE)
-        }
-        @sub_elements[:after_button] = Button.new(@root, vertical? ? "▼" : "►"){
-            Rectangle2.new(@rectangle.right - SCROLL_BUTTONS_SIZE - 5, @rectangle.bottom - 5 - SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE)
-        }
+        if scroll_buttons?
+            @sub_elements[:before_button] = Button.new(@root, vertical? ? "▲" : "◄"){
+                next Rectangle2.new(@rectangle.right - SCROLL_BUTTONS_SIZE - 5, @rectangle.y + 5, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE) if vertical?
+                next Rectangle2.new(@rectangle.x + 5, @rectangle.bottom - 5 - SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE)
+            }
+            @sub_elements[:after_button] = Button.new(@root, vertical? ? "▼" : "►"){
+                Rectangle2.new(@rectangle.right - SCROLL_BUTTONS_SIZE - 5, @rectangle.bottom - 5 - SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE, SCROLL_BUTTONS_SIZE)
+            }
+        end
         setup_scroll_events
     end
     def apply_constraints
@@ -33,8 +35,10 @@ class Scrollable < UIElement
     def setup_scroll_events
         add_event(:mouse_up, {button: Gosu::MS_WHEEL_DOWN}){ self.scroll_offset-=SCROLL_FACTOR }
         add_event(:mouse_up, {button: Gosu::MS_WHEEL_UP}){ self.scroll_offset+=SCROLL_FACTOR }
-        @sub_elements[:after_button].add_event(:mouse_down, {button: Gosu::MS_LEFT}){ self.scroll_offset-=SCROLL_FACTOR }
-        @sub_elements[:before_button].add_event(:mouse_down, {button: Gosu::MS_LEFT}){ self.scroll_offset+=SCROLL_FACTOR }
+        if scroll_buttons?
+            @sub_elements[:after_button].add_event(:mouse_down, {button: Gosu::MS_LEFT}){ self.scroll_offset-=SCROLL_FACTOR }
+            @sub_elements[:before_button].add_event(:mouse_down, {button: Gosu::MS_LEFT}){ self.scroll_offset+=SCROLL_FACTOR }
+        end
     end
     def scroll_offset= scroll_offset
         pp @rectangle,@scrl_rect
@@ -50,6 +54,9 @@ class Scrollable < UIElement
     end
     def horizontal?
         !vertical?
+    end
+    def scroll_buttons?
+        true
     end
     def last_element excluding = [:before_button, :after_button, :background_color]
         sub_elems_to_use = @sub_elements.reject{|name, val| excluding.include?(name)}

@@ -41,7 +41,7 @@ end
 
 class Rectangle2
     attr_accessor :x, :y, :width, :height
-    def initialize x=nil, y=nil, width=nil, height=nil
+    def initialize x=0, y=0, width=0, height=0
       @x, @y, @width, @height = x, y ,width, height
     end
     def position

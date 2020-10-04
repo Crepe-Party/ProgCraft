@@ -1,4 +1,3 @@
-require_relative '../../../ui_elements/widgets/scrollable'
 require_relative '../../../ui_elements/ui_element'
 require_relative 'path_section'
 require_relative '../../../ui_elements/drawables/rectangle'

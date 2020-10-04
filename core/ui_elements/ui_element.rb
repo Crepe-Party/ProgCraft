@@ -1,9 +1,9 @@
 require_relative '../tools/vector'
 class UIElement
     attr_accessor :rectangle, :overflow
-    attr_reader :sub_elements, :root
-    def initialize root, rectangle = nil, &constraint
-        @root = root
+    attr_reader :sub_elements, :root, :parent_element
+    def initialize root, rectangle = nil, parent_element: nil, &constraint
+        @root, @parent_element = root, parent_element
         @rectangle = rectangle || Rectangle2.new
         warn "no constraint provided for #{self.to_s}" unless constraint
         self.constrain(&constraint) if constraint

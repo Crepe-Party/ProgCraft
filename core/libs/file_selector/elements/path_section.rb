@@ -3,9 +3,8 @@ require_relative '../../../ui_elements/widgets/list'
 require_relative '../../../ui_elements/drawables/text'
 module FileSelectorUI
     class PathSection < Scrollable
-        PATH_LIST_HEIGHT = 20
         def build
-            @sub_elements[:list] = List.new(@root, PathElement, direction: :horizontal, parent_element: self){@rectangle.assign(height: PATH_LIST_HEIGHT)}
+            @sub_elements[:list] = List.new(@root, PathElement, direction: :horizontal, spacing: 10, parent_element: self){@rectangle}
             @sub_elements[:list].data = temp_on_change_path "c:/tools/ProgCraft" #TODO: no
             super
         end
@@ -26,7 +25,7 @@ module FileSelectorUI
         end
     end
     class PathElement < UIElement
-        TEXT_MARGIN = 10
+        TEXT_PADDING = 10
         include Listable
         def build
             @sub_elements[:button] = Button.new(@root, "..."){@rectangle}
@@ -41,7 +40,7 @@ module FileSelectorUI
             @sub_elements[:button].text = data.split('/').last
         end
         def list_constraint parent_rect
-            width = @sub_elements[:button].text_elem.font.text_width(@sub_elements[:button].text)
+            width = TEXT_PADDING*2 + @sub_elements[:button].text_elem.font.text_width(@sub_elements[:button].text)
             Rectangle2.new(0,0,width, parent_rect.height)
         end
     end

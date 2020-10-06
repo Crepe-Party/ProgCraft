@@ -65,6 +65,7 @@ class Rectangle2
     def center
         self.position + (self.size / 2.0)
     end
+    #TODO: remove if never used
     def relative_to rel_x_or_rect=0,rel_y=0,rel_width=0,rel_height=0, rel_dimensions: false
         rel_x_or_rect, rel_y, rel_width, rel_height = rel_x_or_rect.x, rel_x_or_rect.y, rel_x_or_rect.width, rel_x_or_rect.height if rel_x_or_rect.instance_of? Rectangle2
         return Rectangle2.new(@x + rel_x_or_rect, @y + rel_y, rel_width, rel_height) unless rel_dimensions

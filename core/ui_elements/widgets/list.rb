@@ -16,7 +16,9 @@ class List < UIElement
     def apply_constraints
         return unless @root.ready_for_constraints
         super
-        @list_elements.each(&:apply_list_contraints)
+        previous_rect = @rectangle.assign(y: @start_offset - @spacing, height: 0) if @direction == :vertical
+        previous_rect = @rectangle.assign(x: @start_offset - @spacing, width: 0) if @direction == :horizontal
+        @list_elements.each{|elem| previous_rect = elem.apply_list_contraints previous_rect}
         #update rect size
         unless @aaaa
             @rectangle.width = 500
@@ -58,16 +60,19 @@ module Listable #use include to use module
     def list_constraint parent_rect
         raise "Not implemented (or don't call super in this implementation)"
     end
-    def apply_list_contraints
+    def apply_list_contraints previous_rect
         raise "This method should only be called by a list builder" unless @parent_list
         raise "Listable item should use the list_constraint method instead of external constraints for positionning" if @constraint
         @rectangle.assign!(list_constraint @parent_list.rectangle)
         if @parent_list.direction == :vertical
-            @rectangle.y = @parent_list.rectangle.y + @parent_list.start_offset + (@rectangle.height + @parent_list.spacing) * @index 
+            @rectangle.y += (previous_rect.bottom + @parent_list.spacing)
+            # @rectangle.y = @parent_list.rectangle.y + @parent_list.start_offset + (@rectangle.height + @parent_list.spacing) * @index 
         else
-            @rectangle.x = @parent_list.rectangle.x + @parent_list.start_offset + (@rectangle.width + @parent_list.spacing) * @index
+            @rectangle.x += (previous_rect.right + @parent_list.spacing)
+            # @rectangle.x = @parent_list.rectangle.x + @parent_list.start_offset + (@rectangle.width + @parent_list.spacing) * @index
         end
         apply_constraints
+        return @rectangle
     end
     def data= data
         @data = data

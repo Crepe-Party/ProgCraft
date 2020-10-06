@@ -1,12 +1,12 @@
 require 'gosu'
-require_relative 'ui_elements/main_ui'
+require_relative 'elements/main_ui'
 require_relative '../../events/events_manager'
 class FileSelector < Gosu::Window
     attr_reader :keys_down, :ready_for_constraints
     def initialize
         #window
         super 900, 500, {resizable: true}
-        self.caption = "The File Selector 🤔"
+        self.caption = "ProgCraft - The File Selector 🤔"
         #init
         @keys_down = [] #allowing for sub-frame key press
         @events_manager = EventsManager.new self
@@ -22,6 +22,7 @@ class FileSelector < Gosu::Window
         time = Time.now.to_f
         delta_time = time - (@last_time || time)
         @last_time = time
+        @events_manager.update
         #res change
         if @current_window_width != self.width || @current_window_height != self.height
             puts "resolution changed! #{self.width} #{self.height}"

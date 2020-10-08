@@ -11,7 +11,7 @@ class Level
     end
     def load path_file
         @maps.clear
-        @level = File_manager.read_level_file path_file
+        @level = File_manager.read_json path_file
         return if level.nil?
         @name = @level['name']
         @level['maps'].each do |map|
@@ -20,8 +20,10 @@ class Level
             @maps << nmap
         end
     end
-    def save path
-        
+    def save path_file
+        maps = @maps.map(&:hash)
+        json = {"name": @name, "maps": maps}
+        File_manager.write_json path_file, json
     end
     def render map_number
         @maps[map_number].render

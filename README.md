@@ -2,8 +2,8 @@
 # ProgCraft
 ## Description
 
-It's an application to learn logic programmation at the news developpers.  
-Player has to code basic instruction to move Robert on the map and interact with objects.  
+It's an application to learn logic programming to new developpers.  
+The player/developper uses  basic instruction to move Robert on the map and interact with objects.  
 
 Basic instructions of Robert:  
 walk_forward, walk_backward, turn_right, turn_left, turn_back, take, interact, drop  

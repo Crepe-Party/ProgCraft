@@ -2,9 +2,11 @@ require_relative 'drawable'
 require_relative '../../tools/vector'
 class Text < Drawable
     attr_accessor :string, :font, :color, :scale, :center_text
-    def initialize game, string = "", rectangle = nil, font: Gosu::Font.new(20), color: Gosu::Color::BLACK, scale: 1, center_text: true, &constraint
-        @string, @font, @color, @scale, @center_text = string, font, color, scale, center_text
-        super(game, rectangle, &constraint)
+    DEFAULT_FONT_SIZE = 20
+    def initialize root, string = "", font: nil, font_size: DEFAULT_FONT_SIZE, color: Gosu::Color::BLACK, scale: 1, center_text: true, &constraint
+        @string, @color, @scale, @center_text = string, color, scale, center_text
+        @font = font || Gosu::Font.new(font_size)
+        super(root, &constraint)
     end
     def draw
         x_pos = @rectangle.x
@@ -14,6 +16,6 @@ class Text < Drawable
             x_pos += ((@rectangle.width - text_width) / 2)
             y_pos += ((@rectangle.height - @font.height) / 2)
         end
-        @font.draw_text(@string, x_pos, y_pos, 1, @scale, @scale, @color)
+        @font.draw_text(@string, x_pos, y_pos, 0, @scale, @scale, @color)
     end
 end

@@ -1,12 +1,15 @@
 require_relative 'keyboard_events'
 require_relative 'mouse_events'
 class EventsManager
+    attr_accessor :available
     def initialize window
         @window = window
         @events = []
+        # define if the events can be listened to
+        @available = true;
     end
     def update
-        @events.each(&:check)
+        @events.each(&:check) if @available
     end
     def add_event element, type, options, handler
         event = nil

@@ -11,8 +11,6 @@ class LevelEditorWindow < Gosu::Window
         @current_window_height
 
         @keys_down = [] #allowing for sub-frame key press
-
-        puts "#{@current_window_width} #{@current_window_height}"
     end
     def update
         delta_time = self.update_interval / 1000

@@ -11,4 +11,7 @@ module File_manager
             end
         end
     end
+    def self.read path_file
+        return File.exist?(path_file) ? File.read(path_file) : nil
+    end
 end

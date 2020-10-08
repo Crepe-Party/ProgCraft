@@ -1,8 +1,8 @@
 require_relative 'drawable'
 class Image < Drawable
     attr_reader :src
-    def initialize game, source= nil, rectangle = nil, &contraint
-        super game, rectangle, &contraint
+    def initialize root, source= nil, &contraint
+        super root, &contraint
         self.source = source if source
     end
     def draw

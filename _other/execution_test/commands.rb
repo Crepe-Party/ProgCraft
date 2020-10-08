@@ -33,3 +33,9 @@ def turn_left
 
     game.robert.rotate_to(new_direction, clockwise: false){execution.instruction_finished}
 end
+def gps_x
+    game.robert.rectangle.position.x
+end
+def gps_y
+    game.robert.rectangle.position.y
+end

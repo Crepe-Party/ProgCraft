@@ -65,19 +65,30 @@ class Rectangle2
     def center
         self.position + (self.size / 2.0)
     end
-    def relative_to rel_x_or_rect=0,rel_y=0,rel_width=0,rel_height=0, rel_dimensions: false
-        rel_x_or_rect, rel_y, rel_width, rel_height = rel_x_or_rect.x, rel_x_or_rect.y, rel_x_or_rect.width, rel_x_or_rect.height if rel_x_or_rect.instance_of? Rectangle2
-        return Rectangle2.new(@x + rel_x_or_rect, @y + rel_y, rel_width, rel_height) unless rel_dimensions
-        Rectangle2.new(@x + rel_x_or_rect, @y + rel_y, @width + rel_width, @height + rel_height)
+    def relative_to *args
+        self.clone.relative_to! *args
+    end
+    def relative_to! rectangle=nil, x:nil, y:nil, width:nil, height:nil
+        x,y,width,height = rectangle.to_a if rectangle
+        self.x += x if x
+        self.y += y if y
+        self.width += width if width
+        self.height += height if height
+        self
     end
     def intersects? rectangle
         return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
     end
-    def assign rectangle
-        @x = rectangle.x || @x
-        @y = rectangle.y || @y
-        @width = rectangle.width || @width
-        @height = rectangle.height || @height
+    def assign! rectangle=nil, x:nil, y:nil, width:nil, height:nil
+        x,y,width,height = rectangle.to_a if rectangle
+        @x = x if x
+        @y = y if y
+        @width = width if width
+        @height = height if height
+        self
+    end
+    def assign rectangle=nil, x:nil, y:nil, width:nil, height:nil
+        self.clone.assign!(rectangle, x:x, y:y, width:width, height:height)
     end
     def intersection rectangle
         return nil unless self.intersects? rectangle #no intersection

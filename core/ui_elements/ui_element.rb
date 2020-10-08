@@ -1,11 +1,12 @@
 require_relative '../tools/vector'
 class UIElement
     attr_accessor :rectangle, :overflow
-    attr_reader :sub_elements, :game
-    def initialize game, rectangle = nil, &constraint
-        @constraint = constraint if constraint
-        @game = game
+    attr_reader :sub_elements, :root, :parent_element
+    def initialize root, rectangle = nil, parent_element: nil, &constraint
+        @root, @parent_element = root, parent_element
         @rectangle = rectangle || Rectangle2.new
+        warn "no constraint provided for #{self.to_s}" unless constraint
+        self.constrain(&constraint) if constraint
         @overflow = :visible
         @sub_elements = {}
 
@@ -37,8 +38,8 @@ class UIElement
         to_render
     end
     def apply_constraints
-        return unless @game.ready_for_constraints
-        @rectangle.assign(@constraint.call) if @constraint
+        return unless @root.ready_for_constraints
+        @rectangle.assign!(@constraint.call) if @constraint
         @sub_elements.each{|elem_name, sub_elem| sub_elem.apply_constraints}
     end
 
@@ -48,14 +49,14 @@ class UIElement
     end
 
     def add_event type, options = {}
-        @game.add_event(self, type, options){yield}
+        @root.add_event(self, type, options){yield}
         self
     end
 
     #default rect bg
     def background_color= color
         require_relative 'drawables/rectangle'
-        @sub_elements[:background_color] = Rectangle.new(@game, color){@rectangle}
+        @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
     end
     def background_elem
         @sub_elements[:background_color]

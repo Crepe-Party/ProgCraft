@@ -2,5 +2,4 @@
     2.times {move_forward}
     turn_right
 end
-turn_right
-turn_right
+4.times{turn_left}

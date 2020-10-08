@@ -4,7 +4,7 @@ require_relative 'core/game/game_manager'
 class GameWindow < Gosu::Window
     attr_reader :keys_down
     def initialize
-        super 1280, 720, {resizable: true}
+        super 1800, 900, {resizable: true}
         self.caption = "ProgCraft - The Game 🤩"
         @game = GameManager.new self
         @current_window_width

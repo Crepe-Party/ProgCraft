@@ -13,6 +13,15 @@ class ObjectsMenu < Scrollable
         @game.plan_action(0.5) do
             @sub_elements[:list].data = [
                 {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
+                {name: "Bush", type: "bush"},
                 {name: "Wall", type: "wall"}
             ]
         end

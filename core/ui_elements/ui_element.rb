@@ -63,4 +63,8 @@ class UIElement
     def background_color
         @sub_elements[:background_color].color
     end
+
+    def sub_elements_deep
+        [self] + @sub_elements.map
+    end
 end

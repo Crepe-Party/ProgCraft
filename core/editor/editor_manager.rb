@@ -8,11 +8,12 @@ class EditorManager
     attr_reader :window, :editor_ui, :events_manager, :window_manager, :busy, :ready_for_constraints
     attr :level, :player
     def initialize window   
-        @window = window
-        
-        @busy=false
         @planned_actions = {}
         @keys_down = []
+        @busy=false
+        @window_manager = WindowManager.new
+        @events_manager = EventsManager.new window
+        @window = window
 
         @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
@@ -20,7 +21,7 @@ class EditorManager
         @ready_for_constraints = false
         @editor_ui = EditorUI.new self
         @ready_for_constraints = true
-
+        
         @level = Level.new
         @player = Player.new(600, 300)
     end

@@ -13,7 +13,11 @@ class LevelEditorWindow < Gosu::Window
         @keys_down = [] #allowing for sub-frame key press
     end
     def update
-        delta_time = self.update_interval / 1000
+        #time
+        time = Time.now.to_f
+        delta_time = time - (@last_frame_stamp || time)
+        @last_frame_stamp = time
+
         @editor.update delta_time
 
         #res change

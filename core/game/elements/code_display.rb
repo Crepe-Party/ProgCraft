@@ -14,17 +14,9 @@ class CodeDisplay < Scrollable
     def load path_file
         @code = File_manager.read path_file
         code_lines = @code.split("\n")
-        code_lines.each_with_index do |code_line, index|
-            self.format_line "#{index}    #{code_line}\n"
+        code_lines.each_with_index do |code_line, index|    
+            @sub_elements[index.to_s] = Text.new(@root, "#{index}    #{code_line}\n", center_text: false, color: Gosu::Color::WHITE){@scrl_rect.relative_to(y: index*LINE_HEIGHT)}
         end
         apply_constraints
-    end
-    def format_line code_line
-        words = code_line.split
-        words.each do |word|
-
-            puts "#{word}\n"
-        end
-        # @sub_elements[index.to_s] = Text.new(@root, , center_text: false, color: Gosu::Color::WHITE){@scrl_rect.relative_to(y: index*LINE_HEIGHT)}
     end
 end

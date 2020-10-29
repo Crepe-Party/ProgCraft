@@ -2,8 +2,9 @@ require_relative '../ui_element'
 require_relative '../drawables/rectangle'
 require_relative '../drawables/text'
 class Button < UIElement
-    def initialize root, text="", bg_color: Gosu::Color::WHITE, bg_color_hover: Gosu::Color.rgba(200, 200, 200, 255), text_color: Gosu::Color::BLACK, &constraint
+    def initialize root, text="", bg_color: Gosu::Color::WHITE, bg_color_hover: Gosu::Color.rgba(200, 200, 200, 255), text_color: Gosu::Color::BLACK, background_image: nil, &constraint
         @text, @background_color, @background_color_hover, @text_color = text, bg_color, bg_color_hover, text_color
+        @sub_elements[:background_image] = Gosu::Image.new(__dir__+"/../../assets/#{background_image}") unless background_image.nil?
         super(root, &constraint)
     end
     def build

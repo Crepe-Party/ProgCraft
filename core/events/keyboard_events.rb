@@ -13,18 +13,27 @@ module EventHandlers
             super window, element, handler
         end
         def check
-            is_button_down = @window.button_down?(@button)
+            is_button_down = button_down?(@button)
             trigger if is_button_down && !@is_button_down              
             @is_button_down = is_button_down
         end
     end
+    class ButtonPress < ButtonHandler
+        def initialize window, element, handler, button
+            @button = button
+            super window, element, handler
+        end
+        def check
+            trigger if button_down?(@button)    
+        end
+    end 
     class ButtonUp < ButtonHandler
         def initialize window, element, handler, button
             @button = button
             super window, element, handler
         end
         def check
-            is_button_up = !@window.button_down?(@button)
+            is_button_up = button_down?(@button)
             trigger if is_button_up && !@is_button_up              
             @is_button_up = is_button_up
         end

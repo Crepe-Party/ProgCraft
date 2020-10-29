@@ -38,4 +38,12 @@ module EventHandlers
             @button_event.check if mouse_inside?()
         end
     end
+    class MouseDrag < MouseHandler
+        def initialize window, element, handler, button
+            @ms_down_evt = MouseDown.new window, element, handler, button
+            @ms_up_evt <<<<<<<<<<<<<<<<<<<<<<<il faut faire ça svp
+            super window, element, handler
+        end
+        def check
+    end
 end

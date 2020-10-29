@@ -46,6 +46,7 @@ class GameManager
         @player.set_pos @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y unless @level_available.nil?
     end
     def load_program path_file
+        @game_ui.sub_elements[:code_menu].path_file = path_file
         @game_ui.sub_elements[:code_display].load path_file
     end
     def save_program path_file

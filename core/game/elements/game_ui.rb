@@ -3,6 +3,7 @@ require_relative 'top_bar'
 require_relative 'contextual_menu'
 require_relative 'map_game'
 require_relative 'code_display'
+require_relative 'code_menu'
 class GameUI < UIElement
     #dimensions
     TOP_BAR_HEIGHT = 50
@@ -15,8 +16,9 @@ class GameUI < UIElement
         @sub_elements[:top_bar] = GameTopBar.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y, @rectangle.right-RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
         #game
         @sub_elements[:map_game] = MapGameDisplay.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT)}
-        
-        @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y, RIGHT_MENU_WIDTH, @rectangle.height)}
+        #code
+        @sub_elements[:code_menu] = CodeMenu.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
+        @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height)}
         #fps
         @sub_elements[:fps_text] = Text.new(@root, "...fps", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end

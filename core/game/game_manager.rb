@@ -42,6 +42,7 @@ class GameManager
         @game_ui.apply_constraints
     end
     def load_map path_file
+        @game_ui.sub_elements[:map_game].path_file = path_file
         @level_available = @level.load path_file
         @player.set_pos @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y unless @level_available.nil?
     end

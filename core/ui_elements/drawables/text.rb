@@ -5,7 +5,7 @@ class Text < Drawable
     DEFAULT_FONT_SIZE = 20
     def initialize root, string = "", font: nil, font_size: DEFAULT_FONT_SIZE, color: Gosu::Color::BLACK, scale: 1, center_text: true, &constraint
         @string, @color, @scale, @center_text = string, color, scale, center_text
-        @font = font || Gosu::Font.new(font_size)
+        @font = font || Gosu::Font.new(font_size, name: "Consolas")
         super(root, &constraint)
     end
     def draw

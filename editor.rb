@@ -35,6 +35,9 @@ class LevelEditorWindow < Gosu::Window
         @keys_down -= [id]
         @editor.events_manager.update
     end
+    def mouse_pos
+        Vector2.new(self.mouse_x, self.mouse_y)
+    end
     def draw
         @editor.render
     end

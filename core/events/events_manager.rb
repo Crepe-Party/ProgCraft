@@ -20,7 +20,7 @@ class EventsManager
         when :mouse_up
             event = EventHandlers::MouseUp.new @window, element, handler, options[:button]
         when :mouse_drag
-            event = EventHandler::MouseDrag.new @window, element, handler, options[:button]
+            event = EventHandlers::MouseDrag.new @window, element, handler, options[:button]
         when :button_down
             event = EventHandlers::ButtonDown.new @window, element, handler, options[:button]
         when :button_up

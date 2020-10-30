@@ -31,6 +31,12 @@ class Vector2
     def - vector
         self + vector * -1
     end
+    def assign! vector=nil, x:nil, y:nil
+        x,y= rectangle.to_a if vector
+        @x = x if x
+        @y = y if y
+        self
+    end
     def inside? rectangle
         rectangle.includes? self
     end

@@ -4,7 +4,7 @@ class EventHandler
     end
     def check
     end
-    def trigger
-        @handler.call
+    def trigger(params={})
+        @handler.call(params)
     end
 end

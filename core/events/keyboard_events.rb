@@ -33,8 +33,8 @@ module EventHandlers
             super window, element, handler
         end
         def check
-            is_button_up = button_down?(@button)
-            trigger if is_button_up && !@is_button_up              
+            is_button_up = !button_down?(@button)
+            trigger({}) if is_button_up && !@is_button_up              
             @is_button_up = is_button_up
         end
     end

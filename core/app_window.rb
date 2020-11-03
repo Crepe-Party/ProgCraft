@@ -2,10 +2,8 @@ require 'gosu'
 #editor
 class AppWindow < Gosu::Window
     attr_reader :keys_down
-    def initialize
-        super 1280, 720, {resizable: true}
-        self.caption = "ProgCraft - The Level Editor 🤩"
-        @manager = EditorManager.new self
+    def initialize *args
+        super *args
         @keys_down = [] #allowing for sub-frame key press
     end
     def update
@@ -37,8 +35,4 @@ class AppWindow < Gosu::Window
     def draw
         @manager.render
     end
-    def needs_cursor?
-        true
-    end
 end
-LevelEditorWindow.new.show

@@ -48,8 +48,8 @@ class UIElement
         self
     end
 
-    def add_event type, options = {}
-        @root.add_event(self, type, options){yield}
+    def add_event type, options = {}, &handler
+        @root.add_event(self, type, options, &handler)
         self
     end
 

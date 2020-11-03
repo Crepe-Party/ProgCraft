@@ -22,10 +22,10 @@ class EditorUI < UIElement
         #game
         @sub_elements[:map_editor] = MapEditorDisplay.new(@root){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width - LEFT_MENU_WIDTH - RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT)}
         #fps
-        @sub_elements[:fps_text] = Text.new(@root, "...fps", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
+        @sub_elements[:fps_text] = Text.new(@root, "... ups", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end
     def update dt
         super dt
-        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps"
+        @sub_elements[:fps_text].string = "#{(1/dt).floor} ups" if dt > 0
     end
 end

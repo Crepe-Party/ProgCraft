@@ -13,7 +13,11 @@ class LevelEditorWindow < Gosu::Window
         @keys_down = [] #allowing for sub-frame key press
     end
     def update
-        delta_time = self.update_interval / 1000
+        #time
+        time = Time.now.to_f
+        delta_time = time - (@last_frame_stamp || time)
+        @last_frame_stamp = time
+
         @editor.update delta_time
 
         #res change
@@ -30,6 +34,9 @@ class LevelEditorWindow < Gosu::Window
     def button_up id
         @keys_down -= [id]
         @editor.events_manager.update
+    end
+    def mouse_pos
+        Vector2.new(self.mouse_x, self.mouse_y)
     end
     def draw
         @editor.render

@@ -44,7 +44,8 @@ class Scrollable < UIElement
         pp @rectangle,@scrl_rect
         min_scroll = @rectangle.height - @scrl_rect.height
         puts "minscrl #{min_scroll}"
-        @scroll_offset = scroll_offset.clamp((min_scroll <= 0)? min_scroll : 0, 0) if vertical?
+        @scroll_offset=scroll_offset
+        # @scroll_offset = scroll_offset.clamp((min_scroll <= 0)? min_scroll : 0, 0) if vertical?
         # @scroll_offset = scroll_offset.clamp(0, @scrl_rect.width) unless vertical?
         # puts @scrl_rect.height
         apply_constraints

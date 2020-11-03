@@ -11,11 +11,9 @@ class EditorManager
         @planned_actions = {}
         @keys_down = []
         @busy=false
-        @window_manager = WindowManager.new
-        @events_manager = EventsManager.new window
-        @window = window
 
-        @window_manager = WindowManager.new
+        @window = window
+        # @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
 
         @ready_for_constraints = false

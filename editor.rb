@@ -7,8 +7,6 @@ class LevelEditorWindow < Gosu::Window
         super 1280, 720, {resizable: true}
         self.caption = "ProgCraft - The Level Editor 🤩"
         @editor = EditorManager.new self
-        @current_window_width
-        @current_window_height
 
         @keys_down = [] #allowing for sub-frame key press
     end
@@ -43,6 +41,9 @@ class LevelEditorWindow < Gosu::Window
     end
     def needs_cursor?
         true
+    end
+    def drop filename        
+        @editor.events_manager.drop filename
     end
 end
 LevelEditorWindow.new.show

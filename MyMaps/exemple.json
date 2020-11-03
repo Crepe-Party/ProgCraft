@@ -5,8 +5,8 @@
             "name": "Example_plain",
             "robert": {
                 "position": {
-                    "x": 500,
-                    "y": 200
+                    "x": 5,
+                    "y": 2
                 },
                 "inventory": [
                     {
@@ -29,8 +29,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 400,
-                        "y": 100
+                        "x": 4,
+                        "y": 1
                     },
                     "data": {
                         "texture": "basic_bush.png"
@@ -41,8 +41,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 900,
-                        "y": 100
+                        "x": 9,
+                        "y": 1
                     },
                     "data": {
                         "texture": "basic_bush.png"
@@ -53,8 +53,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 600,
-                        "y": 500
+                        "x": 6,
+                        "y": 5
                     },
                     "data": {
                         "texture": "basic_bush.png"

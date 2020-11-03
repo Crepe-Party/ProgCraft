@@ -56,4 +56,8 @@ class EventsManager
             return event
         end
     end
+    def remove_event element
+        @events.delete_if{|elem| elem.element == element}
+        @custom_events.delete_if{|elem| elem.element == element}
+    end
 end

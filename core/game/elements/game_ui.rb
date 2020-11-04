@@ -22,6 +22,6 @@ class GameUI < UIElement
     end
     def update dt
         super dt
-        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps"
+        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps" if dt > 0
     end
 end

@@ -45,10 +45,12 @@ class GridGameContainer < Drawable
     def update dt
         super dt
         scrl_dist = dt * CONTINUOUS_SCROLL_FACTOR
-        scroll(:up, scrl_dist) if @root.window.button_down? Gosu::KB_UP
-        scroll(:down, scrl_dist) if @root.window.button_down? Gosu::KB_DOWN
-        scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
-        scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
+        if scrollable?
+            scroll(:up, scrl_dist) if @root.window.button_down? Gosu::KB_UP
+            scroll(:down, scrl_dist) if @root.window.button_down? Gosu::KB_DOWN
+            scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
+            scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
+        end
     end
     def draw
         camera_real_position = (@camera_position * -1).add! @rectangle.position

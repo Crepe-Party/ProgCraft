@@ -22,10 +22,14 @@ class EventsManager
             event = EventHandlers::MouseDown.new @window, element, handler, options[:button]
         when :mouse_up
             event = EventHandlers::MouseUp.new @window, element, handler, options[:button]
+        when :mouse_drag
+            event = EventHandlers::MouseDrag.new @window, element, handler, options[:button]
         when :button_down
             event = EventHandlers::ButtonDown.new @window, element, handler, options[:button]
         when :button_up
             event = EventHandlers::ButtonUp.new @window, element, handler, options[:button]
+        when :button_press
+            event = EventHandlers::ButtonPress.new @window, element, handler, options[:button]
         end
         @events.push event
     end

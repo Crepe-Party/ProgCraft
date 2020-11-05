@@ -11,6 +11,15 @@ class GameManager < AppManager
         @level = Level.new
         @player = Player.new(600, 300)
     end
+    def play
+    
+    end
+    def pause
+    
+    end
+    def next
+    
+    end
     def load_map path_file
         @game_ui.sub_elements[:map_game].path_file = path_file
         @level_available = @level.load path_file

@@ -29,8 +29,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 4,
-                        "y": 1
+                        "x": 0,
+                        "y": 0
                     },
                     "data": {
                         "texture": "basic_bush.png"
@@ -41,7 +41,7 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 9,
+                        "x": 4,
                         "y": 1
                     },
                     "data": {
@@ -53,8 +53,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 6,
-                        "y": 5
+                        "x": 3,
+                        "y": 3
                     },
                     "data": {
                         "texture": "basic_bush.png"

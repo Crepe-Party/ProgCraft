@@ -5,9 +5,9 @@ class GameObject
     def initialize id=nil, name=nil , img_path='basic_texture.png', position=Vector2.new(0,0)
         file_path = File.expand_path(File.join("..", "assets", img_path), File.dirname(__FILE__))
         @id, @name, @texture, @position, @img_path = id, name, Gosu::Image.new(file_path), position, img_path
+        p @texture
     end 
     def draw x=@position.x, y=@position.y
-        Gosu.draw_rect(x,y,50,50,Gosu::Color::RED)
         @texture.draw(x, y, 1)
     end
     def hash

@@ -25,8 +25,10 @@ class GameTopBar < UIElement
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
                 @root.busy = true
                 @root.window_manager.open_file(MAPS_DIR_MAP) do |path_file| 
-                    @root.load_map path_file
-                    @root.busy = false
+                    @root.plan_action(0) do 
+                        @root.load_map path_file
+                        @root.busy = false
+                    end
                 end
             }
         @sub_elements[:load_program_button] = Button.new(@root, "Load Program")

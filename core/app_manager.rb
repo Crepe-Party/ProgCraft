@@ -6,7 +6,6 @@ class AppManager
     def initialize window, main_ui_class:
         @planned_actions = {}
         @busy=false
-        @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
         @window = window
 
@@ -72,5 +71,8 @@ class AppManager
             end
         end
         to_remove.each{|stamp| @planned_actions.delete(stamp)}
+    end
+    def drop filename
+        @events_manager.drop filename
     end
 end

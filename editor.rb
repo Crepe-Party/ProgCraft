@@ -10,8 +10,5 @@ class LevelEditorWindow < AppWindow
     def needs_cursor?
         true
     end
-    def drop filename        
-        @editor.events_manager.drop filename
-    end
 end
 LevelEditorWindow.new.show

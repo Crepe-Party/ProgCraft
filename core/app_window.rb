@@ -34,5 +34,8 @@ class AppWindow < Gosu::Window
     end
     def draw
         @manager.render
+    end    
+    def drop filename             
+        @manager.events_manager.drop filename
     end
 end

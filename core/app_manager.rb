@@ -7,6 +7,7 @@ class AppManager
         @planned_actions = {}
         @busy=false
         @events_manager = EventsManager.new window
+        @window_manager = WindowManager.new
         @window = window
 
         @ready_for_constraints = false

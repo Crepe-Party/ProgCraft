@@ -7,7 +7,7 @@ class GameObject
         @id, @name, @texture, @position, @img_path = id, name, Gosu::Image.new(file_path), position, img_path
     end 
     def draw x=@position.x, y=@position.y
-        # Gosu.draw_rect(x,y,50,50,Gosu::Color::RED)
+        Gosu.draw_rect(x,y,50,50,Gosu::Color::RED)
         @texture.draw(x, y, 0)
     end
     def hash

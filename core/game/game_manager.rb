@@ -34,7 +34,7 @@ class GameManager < AppManager
             @main_ui.sub_elements[:code_display].load path_file
         end
     end
-    def save_program path_file
-        
-    end
+    def edit_program
+        @main_ui.sub_elements[:code_menu].edit
+    end 
 end

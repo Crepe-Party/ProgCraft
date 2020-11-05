@@ -11,13 +11,13 @@ class CodeMenu < UIElement
         @sub_elements[:load_program_button] = Button.new(@root, "Edit")
         .constrain{Rectangle2.new(@rectangle.right - BUTTON_WIDTH - 5, @rectangle.y + 5, BUTTON_WIDTH, @rectangle.height - 10)}
         .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-            @root.busy = true
-            @root.window_manager.open_file(MAPS_DIR_CODES, default_extension: 'rb', filetypes: "{{Ruby program} {.rb}}") do |path_file| 
-                @root.load_program path_file
-                @root.busy = false
-            end
+            @root.edit_program
         }
         super
+    end
+    def edit
+        # TODO not working
+        system("#{File.expand_path(@path_file, File.dirname(__FILE__))}")
     end
     def path_file=path_file
         @sub_elements[:filename].string = path_file.split('/').last

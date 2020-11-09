@@ -2,10 +2,11 @@ require 'pp'
 require_relative 'events/events_manager'
 require_relative 'tools/window_manager'
 class AppManager
-    attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints
+    attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver
     def initialize window, main_ui_class:
         @planned_actions = {}
         @busy=false
+        @text_input_receiver = nil
         @window_manager = WindowManager.new
         @events_manager = EventsManager.new window
         @window = window
@@ -47,11 +48,26 @@ class AppManager
             @main_ui.sub_elements.delete(:busy_loader)
         end
     end
+    def plug_text_input element
+        unplug_text_input(@text_input_receiver) if @text_input_receiver
+        @text_input_receiver = element
+        @window.text_input = Gosu::TextInput.new
+        element.text_input_plugged(@window.text_input) if defined? element.text_input_plugged
 
+        @window.text_input
+    end
+    def unplug_text_input element=nil
+        if element && element != @text_input_receiver
+            element.text_input_unplugged if defined? element.text_input_unplugged
+            return
+        end
+        @text_input_receiver.text_input_unplugged if defined? element.text_input_unplugged
+        @text_input_receiver = nil
+        @window.text_input = nil
+    end
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end
-
     def plan_action duration, &handler
         duration = 0 if duration == :next_frame
         #insert

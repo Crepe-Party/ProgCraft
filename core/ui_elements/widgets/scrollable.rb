@@ -27,7 +27,7 @@ class Scrollable < UIElement
         @scrl_rect.x += @scroll_offset unless vertical?
         @scrl_rect.y += @scroll_offset if vertical?
         last_elem = last_element
-        p "lastrectbtm #{last_elem.rectangle.bottom}" if last_elem
+        # p "lastrectbtm #{last_elem.rectangle.bottom}" if last_elem
         @scrl_rect.height = last_elem.rectangle.bottom - @scrl_rect.y if last_elem && vertical?
         @scrl_rect.width = last_elem.rectangle.right - @scrl_rect.x if last_elem && horizontal?
         super
@@ -41,9 +41,9 @@ class Scrollable < UIElement
         end
     end
     def scroll_offset= scroll_offset
-        pp @rectangle,@scrl_rect
+        # pp @rectangle,@scrl_rect
         min_scroll = @rectangle.height - @scrl_rect.height
-        puts "minscrl #{min_scroll}"
+        # puts "minscrl #{min_scroll}"
         @scroll_offset=scroll_offset
         # @scroll_offset = scroll_offset.clamp((min_scroll <= 0)? min_scroll : 0, 0) if vertical?
         # @scroll_offset = scroll_offset.clamp(0, @scrl_rect.width) unless vertical?
@@ -61,10 +61,10 @@ class Scrollable < UIElement
     end
     def last_element excluding = [:before_button, :after_button, :background_color]
         sub_elems_to_use = @sub_elements.reject{|name, val| excluding.include?(name)}
-        puts "elems to use #{sub_elems_to_use.values.length}"
+        # puts "elems to use #{sub_elems_to_use.values.length}"
         last = sub_elems_to_use.values.first
         for name, elem in sub_elems_to_use
-            puts "compare #{elem.rectangle.bottom} with #{last.rectangle.bottom}"
+            # puts "compare #{elem.rectangle.bottom} with #{last.rectangle.bottom}"
             last = elem if vertical? && elem.rectangle.bottom > last.rectangle.bottom
             last = elem if horizontal? && elem.rectangle.right > last.rectangle.right
         end

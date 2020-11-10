@@ -1,7 +1,7 @@
 require 'thread'
 class WindowManager
     def initialize
-        @threadeuh = Thread.new { require 'tk' }
+        # @threadeuh = Thread.new { require 'tk' }
     end
     def open_file initialdir, title: "Select Files", multiple: false, default_extension: 'json', filetypes: "{{ProgCraft map} {.json}}"
         Thread.new do

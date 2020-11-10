@@ -49,7 +49,7 @@ class AppManager
         end
     end
     def plug_text_input element
-        unplug_text_input(@text_input_receiver) if @text_input_receiver
+        unplug_text_input if @text_input_receiver
         @text_input_receiver = element
         @window.text_input = Gosu::TextInput.new
         element.text_input_plugged(@window.text_input) if defined? element.text_input_plugged
@@ -61,7 +61,7 @@ class AppManager
             element.text_input_unplugged if defined? element.text_input_unplugged
             return
         end
-        @text_input_receiver.text_input_unplugged if defined? element.text_input_unplugged
+        @text_input_receiver.text_input_unplugged if defined? @text_input_receiver.text_input_unplugged
         @text_input_receiver = nil
         @window.text_input = nil
     end

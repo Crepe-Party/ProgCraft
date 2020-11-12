@@ -16,9 +16,8 @@ class CodeMenu < UIElement
         super
     end
     def edit
-        # TODO not working
         res = system("code #{File.expand_path(@path_file, File.dirname(__FILE__))}")
-        res = system("C:\Program Files (x86)\Notepad++ #{File.expand_path(@path_file, File.dirname(__FILE__))}") if res.nil?
+        res = system("notepad++ #{File.expand_path(@path_file, File.dirname(__FILE__))}") if res.nil?
         res = system("notepad #{File.expand_path(@path_file, File.dirname(__FILE__))}") if res.nil?
     end
     def path_file=path_file

@@ -5,7 +5,7 @@ class CodeDisplay < Scrollable
     attr :code
     LINE_HEIGHT = 20
     def build
-        self.background_color = Gosu::Color.rgba(0,0,0,0)
+        self.background_color = Gosu::Color.rgba(0,0,0,255)
         @code_lines_text_keys = []
         super
     end
@@ -18,7 +18,7 @@ class CodeDisplay < Scrollable
         @code = File_manager.read path_file
         code_lines = @code.split("\n")
         code_lines.each_with_index do |code_line, index|
-            element = Text.new(@root, "#{index.to_s.rjust(4)}  #{code_line}\n", center_text: false, color: Gosu::Color::WHITE, font: Gosu::Font.new(20 ,name: "Consolas")){@scrl_rect.relative_to(y: index*LINE_HEIGHT)}
+            element = Text.new(@root, "#{index.to_s.rjust(4)}  #{code_line}\n", center_text: false, color: Gosu::Color::WHITE, font: Gosu::Font.new(20 ,name: "Consolas")){@scrl_rect.relative_to(y: index*LINE_HEIGHT+5)}
             key = index.to_s
             @sub_elements[key] = element
             @code_lines_text_keys << key

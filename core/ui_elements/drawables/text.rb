@@ -5,7 +5,7 @@ class Text < Drawable
     DEFAULT_FONT_SIZE = 20
     def initialize root, string = "", font: nil, font_size: DEFAULT_FONT_SIZE, color: Gosu::Color::BLACK, scale: 1, center_text: true, overflow: :shown, &constraint
         @string, @color, @scale, @center_text = string, color, scale, center_text
-        @font = font || Gosu::Font.new(font_size)
+        @font = font || Gosu::Font.new(font_size, name: "Consolas")
         @overflow_hidden = (overflow == :hidden)
         super(root, &constraint)
     end

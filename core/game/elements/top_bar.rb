@@ -22,24 +22,18 @@ class GameTopBar < UIElement
             }
         @sub_elements[:load_map_button] = Button.new(@root, "Load Map")
             .constrain{Rectangle2.new(@rectangle.right - 300 - 15, @rectangle.y + 5, 150, 40)}
-            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
                 @root.busy = true
-                @root.window_manager.open_file(MAPS_DIR_MAP) do |path_file| 
-                    @root.plan_action(0) do 
-                        @root.load_map path_file
-                        @root.busy = false
-                    end
-                end
-            }
+                @root.load_map @root.window_manager.open_file initial_dir: MAPS_DIR_MAP, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
+                @root.busy = false
+            end
         @sub_elements[:load_program_button] = Button.new(@root, "Load Program")
             .constrain{Rectangle2.new(@rectangle.right - 150- 5, @rectangle.y + 5, 150, 40)}
-            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
                 @root.busy = true
-                @root.window_manager.open_file(MAPS_DIR_CODES, default_extension: 'rb', filetypes: "{{Ruby program} {.rb}}") do |path_file| 
-                    @root.load_program path_file
-                    @root.busy = false
-                end
-            }
+                @root.load_program @root.window_manager.open_file initial_dir: MAPS_DIR_CODES, patterns: ["Ruby programs (*.rb)"], preferred_file_filter: 0
+                @root.busy = false
+            end
         super
     end
 end

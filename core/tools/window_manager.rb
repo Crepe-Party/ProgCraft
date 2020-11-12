@@ -12,7 +12,7 @@ class WindowManager
         openDialog = FXFileDialog.new(@theMainWindow, title)
         openDialog.directory = initial_dir
         openDialog.patternList = patterns
-        openDialog.currentPattern = @preferred_file_filter || preferred_file_filter
+        openDialog.currentPattern = preferred_file_filter
         file = ""
         if openDialog.execute != 0
             @preferred_file_filter = openDialog.currentPattern

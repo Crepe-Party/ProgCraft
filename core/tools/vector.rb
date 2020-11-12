@@ -31,6 +31,12 @@ class Vector2
     def - vector
         self + vector * -1
     end
+    def assign! vector=nil, x:nil, y:nil
+        x,y= rectangle.to_a if vector
+        @x = x if x
+        @y = y if y
+        self
+    end
     def inside? rectangle
         rectangle.includes? self
     end
@@ -65,8 +71,8 @@ class Rectangle2
     def center
         self.position + (self.size / 2.0)
     end
-    def relative_to *args
-        self.clone.relative_to! *args
+    def relative_to **args
+        self.clone.relative_to! **args
     end
     def relative_to! rectangle=nil, x:nil, y:nil, width:nil, height:nil
         x,y,width,height = rectangle.to_a if rectangle

@@ -5,7 +5,7 @@ class UIElement
     def initialize root, rectangle = nil, parent_element: nil, &constraint
         @root, @parent_element = root, parent_element
         @rectangle = rectangle || Rectangle2.new
-        warn "no constraint provided for #{self.to_s}" unless constraint
+        #TODO: warn "no constraint provided for #{self.to_s}" unless constraint
         self.constrain(&constraint) if constraint
         @overflow = :visible
         @sub_elements = {}
@@ -48,8 +48,8 @@ class UIElement
         self
     end
 
-    def add_event type, options = {}
-        @root.add_event(self, type, options){yield}
+    def add_event type, options = {}, &handler
+        @root.add_event(self, type, options, &handler)
         self
     end
 

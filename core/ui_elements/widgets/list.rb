@@ -40,7 +40,7 @@ class List < UIElement
 
         @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
         @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
-        puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
+        # puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
         #propagate size change to parents. may be overkill
         @root.apply_constraints if @root.ready_for_constraints #TODO: maybe overkill?
         new_data

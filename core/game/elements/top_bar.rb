@@ -5,33 +5,35 @@ class GameTopBar < UIElement
     MAPS_DIR_CODES = File.join(File.dirname(__FILE__), '../../../mycodes/')
     def build
         self.background_color = Gosu::Color::GRAY
-        # @sub_elements[:load_map_button] = Button.new(@root, "Load Map")
-        #     .constrain{Rectangle2.new(@rectangle.right - 150- 5, @rectangle.y + 5, 150, 40)}
-        #     .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-        #         @root.busy = true
-        #         @root.window_manager.open_file(MAPS_DIR_MAP) do |path_file| 
-        #             @root.load_map path_file
-        #             @root.busy = false
-        #         end
-        #     }
-        @sub_elements[:load_program_button] = Button.new(@root, "Load Program")
-            .constrain{Rectangle2.new(@rectangle.right - 300 - 15, @rectangle.y + 5, 150, 40)}
+        @sub_elements[:play_button] = Button.new(@root, "", background_image: 'icons/forward.png', background_image_cover: true)
+            .constrain{Rectangle2.new(@rectangle.x + 5, @rectangle.y + 5, 40, 40)}
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-                @root.busy = true
-                @root.window_manager.open_file(MAPS_DIR_CODES, default_extension: 'rb', filetypes: "{{Ruby program} {.rb}}") do |path_file| 
-                    @root.load_program path_file
-                    @root.busy = false
-                end
+                @root.play
             }
-        # @sub_elements[:save_program_button] = Button.new(@root, "Save Program")
-        #     .constrain{Rectangle2.new(@rectangle.right - 450 - 25, @rectangle.y + 5, 150, 40)}
-        #     .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
-        #         @root.busy = true
-        #         @root.window_manager.save_file(MAPS_DIR_CODES, default_extension: 'rb', filetypes: "{{Ruby program} {.rb}}") do |path_file| 
-        #             @root.save_program path_file
-        #             @root.busy = false
-        #         end
-        #     }
+        @sub_elements[:pause_button] = Button.new(@root, "", background_image: 'icons/pause.png', background_image_cover: true)
+            .constrain{Rectangle2.new(@rectangle.x + 50, @rectangle.y + 5, 40, 40)}
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
+                @root.pause
+            }
+        @sub_elements[:next_button] = Button.new(@root, "", background_image: 'icons/next.png', background_image_cover: true)
+            .constrain{Rectangle2.new(@rectangle.x + 95, @rectangle.y + 5, 40, 40)}
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}){
+                @root.next
+            }
+        @sub_elements[:load_map_button] = Button.new(@root, "Load Map")
+            .constrain{Rectangle2.new(@rectangle.right - 300 - 15, @rectangle.y + 5, 150, 40)}
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
+                @root.busy = true
+                @root.load_map @root.window_manager.open_file initial_dir: MAPS_DIR_MAP, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
+                @root.busy = false
+            end
+        @sub_elements[:load_program_button] = Button.new(@root, "Load Program")
+            .constrain{Rectangle2.new(@rectangle.right - 150- 5, @rectangle.y + 5, 150, 40)}
+            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
+                @root.busy = true
+                @root.load_program @root.window_manager.open_file initial_dir: MAPS_DIR_CODES, patterns: ["Ruby programs (*.rb)"], preferred_file_filter: 0
+                @root.busy = false
+            end
         super
     end
 end

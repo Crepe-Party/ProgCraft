@@ -6,21 +6,18 @@ class EditorTopBar < UIElement
         self.background_color = Gosu::Color::GRAY
         @sub_elements[:open_button] = Button.new(@root, "Open")
             .constrain{Rectangle2.new(@rectangle.x + 10, @rectangle.y + 5, 200, 40)}
-            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
+            .add_event(:mouse_down, {button: Gosu::MS_LEFT}) do 
                 @root.busy = true
-                @root.window_manager.open_file(MAPS_DIR) do |path_file| 
-                    @root.load_map path_file
-                    @root.busy = false
-                end
+                @root.load_map @root.window_manager.open_file initial_dir: MAPS_DIR, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
+                @root.busy = false
             end       
+            
         @sub_elements[:save_button] = Button.new(@root, "Save")
             .constrain{Rectangle2.new(@rectangle.right - 200 - 10, @rectangle.y + 5, 200, 40)}
-            .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
+            .add_event(:mouse_down, {button: Gosu::MS_LEFT}) do
                 @root.busy = true
-                @root.window_manager.save_file(MAPS_DIR) do |path_file|
-                    @root.save_map path_file
-                    @root.busy = false
-                end
+                @root.save_map @root.window_manager.save_file initial_dir: MAPS_DIR, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
+                @root.busy = false
             end
         super
     end

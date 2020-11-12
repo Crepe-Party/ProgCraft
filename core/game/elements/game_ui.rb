@@ -1,11 +1,13 @@
 require_relative '../../ui_elements/ui_element'
 require_relative 'top_bar'
-require_relative 'contextual_menu'
 require_relative 'map_game'
 require_relative 'code_display'
+require_relative 'code_menu'
+require_relative 'map_name'
 class GameUI < UIElement
     #dimensions
     TOP_BAR_HEIGHT = 50
+    MAPNAME_BAR_HEIGHT = 25
     LEFT_MENU_WIDTH = 250
     RIGHT_MENU_WIDTH = 600
     BOTTOM_BAR_HEIGHT = 150
@@ -14,14 +16,16 @@ class GameUI < UIElement
         #menus
         @sub_elements[:top_bar] = GameTopBar.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y, @rectangle.right-RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
         #game
-        @sub_elements[:map_game] = MapGameDisplay.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT)}
-        
-        @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y, RIGHT_MENU_WIDTH, @rectangle.height)}
+        @sub_elements[:map_name] = MapName.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, MAPNAME_BAR_HEIGHT)}
+        @sub_elements[:map_game] = MapGameDisplay.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT + MAPNAME_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - MAPNAME_BAR_HEIGHT)}
+        #code
+        @sub_elements[:code_menu] = CodeMenu.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
+        @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height)}
         #fps
         @sub_elements[:fps_text] = Text.new(@root, "...fps", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end
     def update dt
         super dt
-        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps"
+        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps" if dt > 0
     end
 end

@@ -10,7 +10,7 @@ PLATFORMS
   x64-mingw32
 
 DEPENDENCIES
-  fxruby
+  fxruby (~> 1.6.42)
   gosu (~> 0.15.2)
 
 BUNDLED WITH

@@ -71,8 +71,8 @@ class Rectangle2
     def center
         self.position + (self.size / 2.0)
     end
-    def relative_to *args
-        self.clone.relative_to! *args
+    def relative_to **args
+        self.clone.relative_to! **args
     end
     def relative_to! rectangle=nil, x:nil, y:nil, width:nil, height:nil
         x,y,width,height = rectangle.to_a if rectangle

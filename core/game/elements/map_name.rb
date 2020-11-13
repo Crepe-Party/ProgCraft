@@ -6,6 +6,6 @@ class MapName < UIElement
         @sub_elements[:mapname] = Text.new(@root, "map_sans_titre.json", center_text: false, color: Gosu::Color::BLACK, font: Gosu::Font.new(20 ,name: "Consolas")){@rectangle.relative_to(x: 5, y: 5)}
     end
     def path_file= path_file
-        @sub_elements[:mapname].string = path_file.split('/').last
+        @sub_elements[:mapname].string = File.basename(path_file)
     end
 end

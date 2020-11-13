@@ -21,7 +21,7 @@ class CodeMenu < UIElement
         res = system("notepad #{File.expand_path(@path_file, File.dirname(__FILE__))}") if res.nil?
     end
     def path_file=path_file
-        @sub_elements[:filename].string = path_file.split('/').last
+        @sub_elements[:filename].string = File.basename(path_file)
         @path_file = path_file
     end
 end

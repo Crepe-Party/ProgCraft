@@ -3,6 +3,10 @@
     "maps": [
         {
             "name": "Example_plain",
+            "size": {
+                "x": 8,
+                "y": 5
+            },
             "robert": {
                 "position": {
                     "x": 5,

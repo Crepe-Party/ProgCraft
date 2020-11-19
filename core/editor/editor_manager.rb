@@ -8,15 +8,21 @@ class EditorManager < AppManager
     def initialize window 
         super window, main_ui_class: EditorUI
         @busy_string = "Loading..."
-        @level = Level.new
-        @player = Player.new(600, 300)
+        new_level
     end
     def load_map path_file
         @level_available = @level.load path_file
         if @level_available
-            @main_ui.sub_elements[:map_editor].selected_map = @level.maps[0] 
-            @player.set_pos @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y
+            change_map(0)
         end
+    end
+    def new_level
+        @level = Level.new
+        change_map(0)
+    end
+    def change_map index
+        @selected_map_index = index
+        @main_ui.sub_elements[:map_editor].selected_map = @level.maps[index]
     end
     def save_map path_file
         @level.save path_file

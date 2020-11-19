@@ -12,7 +12,7 @@ class GridGameContainer < Drawable
         @camera_zoom = 1
         @camera_zoom_origin = Vector2.new
         @camera_position = Vector2.new(0, 0)
-        @grid_size = Vector2.new(100, 100)
+        @grid_size = Vector2.new(64, 64)
         @grid_weight = 2
         @selected_map = nil
         super root, &constraint
@@ -66,7 +66,7 @@ class GridGameContainer < Drawable
                 Gosu.translate(camera_real_position.x, camera_real_position.y) do
                     #tiles
                     #TODO: tiles
-                    unless @selected_map.nil?
+                    if @selected_map
                         #grid
                         0.upto(@selected_map.size.x) do |index|
                             Gosu.draw_rect(index * @grid_size.x - (@grid_weight / 2), 0, @grid_weight, selected_map.size.y * @grid_size.y, @grid_color)
@@ -106,7 +106,7 @@ class GridGameContainer < Drawable
         self.camera_position.x += distance if direction == :right
     end
 
-    def zoom factor, origin = rectangle.center
+    def zoom(factor, origin = @rectangle.center)
         @camera_zoom *= factor
         @camera_zoom_origin = origin
     end
@@ -120,10 +120,11 @@ class GridGameContainer < Drawable
     end
 
     def projected_grid_position(screen_pos)
-        proj_pos = projected_position screen_pos
-        p "proj", proj_pos
-        grid_pos = grid_position proj_pos
-        p "gpos", grid_pos
-        grid_pos
+        grid_position projected_position screen_pos
+    end
+
+    def game_object_at_grid_position(position)
+        return nil unless @selected_map
+        @selected_map.game_objects.find { |obj| obj.position.floor == position }
     end
 end

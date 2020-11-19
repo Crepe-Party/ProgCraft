@@ -1,4 +1,5 @@
 class Vector2
+    include Comparable
     attr_accessor :x, :y
     def initialize x= 0, y= 0
         @x, @y = x, y
@@ -48,8 +49,16 @@ class Vector2
         @y = y if y
         self
     end
+    def length
+        Math.sqrt(@x**2 + @y**2)
+    end
     def inside? rectangle
         rectangle.includes? self
+    end
+    def <=>(vector)
+        return nil unless vector.instance_of?(Vector2)
+        return 0 if @x == vector.x and @y == vector.y
+        self.length <=> vector.length
     end
     def to_a
         [@x, @y]

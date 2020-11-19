@@ -20,7 +20,7 @@ class Map
         end
         map['elements'].each do |item|
             class_GameObject = Object.const_get(item['type'])
-            game_object = class_GameObject.new item['id'], item['name'], item['data']['texture'], Vector2.new(item['position']['x'], item['position']['y'])
+            game_object = class_GameObject.new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'), position: Vector2.new(item['position']['x'], item['position']['y']))
             @game_objects << game_object
         end
     end

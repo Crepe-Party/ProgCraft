@@ -3,8 +3,8 @@ class Vector2
     def initialize x= 0, y= 0
         @x, @y = x, y
     end
-    def * x_scl_or_vector, y_scl = nil
-        self.clone.scl! x_scl_or_vector, y_scl
+    def * scl_or_vector
+        self.clone.scl! scl_or_vector
     end
     def scl! x_scl_or_vector, y_scl = nil
         x_scl_or_vector, y_scl = x_scl_or_vector.x, x_scl_or_vector.y if x_scl_or_vector.instance_of? Vector2
@@ -14,8 +14,12 @@ class Vector2
         @y *= y_scl
         self
     end
-    def / scl
-        self * (1/scl)
+    def scl x_scl_or_vector, y_scl = nil
+        self.clone.scl! x_scl_or_vector, y_scl
+    end
+    def / scl_or_vect
+        return self * (1/scl_or_vect) unless scl_or_vect.instance_of? Vector2
+        self.scl(1.0/scl_or_vect.x, 1.0/scl_or_vect.y)
     end
     def + vector
         self.clone.add! vector
@@ -30,6 +34,13 @@ class Vector2
     end
     def - vector
         self + vector * -1
+    end
+    def floor
+        self.clone.floor!
+    end
+    def floor!
+        @x, @y = @x.floor, @y.floor
+        self
     end
     def assign! vector=nil, x:nil, y:nil
         x,y= rectangle.to_a if vector

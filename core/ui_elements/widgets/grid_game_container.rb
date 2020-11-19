@@ -21,16 +21,16 @@ class GridGameContainer < Drawable
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_DOWN) do |event|
             if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:right, INSTANT_SCROLL_FACTOR)
-            elsif (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL)
+            elsif(zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(1.0/INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:down, INSTANT_SCROLL_FACTOR)
             end
         end
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_UP) do |event|
-            if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
+            if(@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:left, INSTANT_SCROLL_FACTOR)
-            elsif (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL)
+            elsif(zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:up, INSTANT_SCROLL_FACTOR)
@@ -41,11 +41,21 @@ class GridGameContainer < Drawable
             @camera_position.add!((event[:last_position] - event[:position]))
         end
         self.add_event(:button_down, button: 'r'){reset_camera}
+
+
+        #test
+        self.add_event(:click) do |event|
+            puts event
+            @test_click_pos = event[:position]
+            @test_map_pos = projected_position(event[:position])
+            @test_grid_pos = projected_grid_position(event[:position])
+            p @test_grid_pos
+        end
     end
     def update dt
         super dt
-        scrl_dist = dt * CONTINUOUS_SCROLL_FACTOR
         if scrollable?
+            scrl_dist = dt * CONTINUOUS_SCROLL_FACTOR
             scroll(:up, scrl_dist) if @root.window.button_down? Gosu::KB_UP
             scroll(:down, scrl_dist) if @root.window.button_down? Gosu::KB_DOWN
             scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
@@ -74,9 +84,15 @@ class GridGameContainer < Drawable
                             game_object.draw game_object.position.x * @grid_size.x, game_object.position.y * @grid_size.y
                         end
                     end
+
+                    #test
+                    Gosu.draw_rect(@test_map_pos.x - 5, @test_map_pos.y - 5, 20, 20, Gosu::Color::RED) if @test_map_pos
+                    Gosu.draw_rect(@test_grid_pos.x * @grid_size.x, @test_grid_pos.y * @grid_size.y, @grid_size.x, @grid_size.y, Gosu::Color::rgba(0,0,255,100)) if @test_grid_pos
                 end
             end
         end
+        # click pos
+        Gosu.draw_rect(@test_click_pos.x, @test_click_pos.y, 10, 10, Gosu::Color::BLUE) if @test_click_pos
     end
     def reset_camera
         @camera_position.assign!(x:0, y:0)
@@ -85,7 +101,10 @@ class GridGameContainer < Drawable
     def scrollable?
         true
     end
-    def scroll direction, distance
+    def zoomable?
+        true
+    end
+    def scroll(direction, distance)
         return unless scrollable?
         self.camera_position.y -= distance if direction == :up
         self.camera_position.y += distance if direction == :down
@@ -95,5 +114,18 @@ class GridGameContainer < Drawable
     def zoom factor, origin = rectangle.center
         @camera_zoom*=factor
         @camera_zoom_origin = origin
+    end
+    def projected_position(screen_pos)
+        (screen_pos - @rectangle.position).add!(@camera_position)
+    end
+    def grid_position position
+        (position / @grid_size).floor!
+    end
+    def projected_grid_position(screen_pos)
+        proj_pos = projected_position screen_pos
+        p "proj", proj_pos
+        grid_pos = grid_position proj_pos
+        p "gpos", grid_pos
+        grid_pos
     end
 end

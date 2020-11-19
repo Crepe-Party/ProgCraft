@@ -59,6 +59,20 @@
                     "data": {
                         "texture": "basic_bush.png"
                     }
+                },
+                {
+                    "type": "GameObjects::Wall",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "GameObjects::PineCone",
+                    "position": {
+                        "x": 4,
+                        "y": 4
+                    }
                 }
             ]
         }

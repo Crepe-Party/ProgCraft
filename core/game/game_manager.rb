@@ -13,7 +13,7 @@ class GameManager < AppManager
         @main_ui.sub_elements[:map_game].player = @player
     end
     def play
-    
+        
     end
     def pause
     

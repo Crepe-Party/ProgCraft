@@ -1,10 +1,11 @@
 require_relative '../../ui_elements/widgets/scrollable'
 require_relative '../../ui_elements/drawables/text'
 require_relative '../../tools/file_manager'
+require_relative '../../config'
 class CodeDisplay < Scrollable
     attr :code, :mtime
     LINE_HEIGHT = 20
-    DEFAULT_PATH_FILE = File.expand_path("../../../mycodes/sans_titre.rb", File.dirname(__FILE__))
+    DEFAULT_PATH_FILE = File.join(Config::MY_CODES_DIR, "sans_titre.rb")
     def build
         self.background_color = Gosu::Color.rgba(0,0,0,255)
         @code_lines_text_keys = []

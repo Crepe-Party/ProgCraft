@@ -3,6 +3,7 @@ require_relative '../../ui_elements/widgets/list'
 require_relative '../../ui_elements/widgets/button'
 require_relative '../../ui_elements/drawables/image'
 require_relative '../../ui_elements/drawables/text'
+require_relative '../../config'
 class ObjectsMenu < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(100,100,100,255)      
@@ -40,7 +41,7 @@ class ObjectsMenu < Scrollable
         LOGO_SEPARATION = 10
         FONT_SIZE = 30
         HEIGHT = PADDING_TOP + 2*LOGO_SEPARATION + ICON_SIZE + FONT_SIZE
-        DEFAULT_ICON = File.join(File.dirname(__FILE__), '../../assets/editor_objects/nothing_128x.png')
+        DEFAULT_ICON = File.join(Config::ASSETS_DIR, 'editor_objects/nothing_128x.png')
         def build
             @sub_elements[:icon] = Image.new(@root, DEFAULT_ICON){Rectangle2.new(@rectangle.x + (@rectangle.width - ICON_SIZE) / 2, @rectangle.y + PADDING_TOP, @rectangle.width, ICON_SIZE)}
             text_top_offset = PADDING_TOP + ICON_SIZE + LOGO_SEPARATION 
@@ -51,7 +52,7 @@ class ObjectsMenu < Scrollable
         end
         def update_data data
             # pp "update_data", data
-            icon_path = File.join(File.dirname(__FILE__), "../../assets/editor_objects/#{data[:type]}_128x.png")
+            icon_path = File.join(Config::ASSETS_DIR, "editor_objects/#{data[:type]}_128x.png")
             icon_path = DEFAULT_ICON unless File.exists? icon_path
             @sub_elements[:icon].source = icon_path
             @sub_elements[:name].string = data[:name]

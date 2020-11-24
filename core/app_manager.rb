@@ -1,14 +1,16 @@
 require 'pp'
 require_relative 'events/events_manager'
 require_relative 'tools/window_manager'
+require_relative "config"
 class AppManager
-    attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver
+    attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver, :config
     def initialize window, main_ui_class:
         @planned_actions = {}
         @busy=false
         @text_input_receiver = nil
         @events_manager = EventsManager.new window
         @window_manager = WindowManager.new
+        @config = Config.new
         @window = window
 
         @ready_for_constraints = false

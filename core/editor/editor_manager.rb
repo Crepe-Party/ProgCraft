@@ -4,7 +4,7 @@ require_relative 'elements/editor_ui'
 require_relative '../level'
 require_relative '../game_objects/player'
 class EditorManager < AppManager
-    attr :level, :player
+    attr :level, :player, :selected_object_type
     def initialize window 
         super window, main_ui_class: EditorUI
         @busy_string = "Loading..."
@@ -26,5 +26,10 @@ class EditorManager < AppManager
     end
     def save_map path_file
         @level.save path_file
+    end
+    def select_object object_type
+        @selected_object_type = object_type
+        objects_list = @main_ui[:objects_menu][:list]
+        objects_list.data = objects_list.data.map{|datum| datum[:selected] = (datum[:object] == object_type); datum}
     end
 end

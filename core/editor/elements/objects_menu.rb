@@ -8,11 +8,12 @@ class ObjectsMenu < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(100,100,100,255)      
         @sub_elements[:list] = List.new(@root, ListObjectElement, direction: :vertical){Rectangle2.new(@scrl_rect.x, @scrl_rect.y, @scrl_rect.width, 0)}
-        @sub_elements[:list].data = [
+        objects_to_show = [
             GameObjects::Bush,
             GameObjects::Wall,
             GameObjects::PineCone
         ]
+        @sub_elements[:list].data = objects_to_show.map{|obj| {object: obj, selected: false}}
         super
     end
     def vertical?
@@ -30,20 +31,24 @@ class ObjectsMenu < Scrollable
         HEIGHT = PADDING_TOP + 2*LOGO_SEPARATION + ICON_SIZE + FONT_SIZE
         ASSETS_PATH = '../../assets/'
         DEFAULT_ICON = File.join(File.dirname(__FILE__), ASSETS_PATH + 'nothing_64x.png')
+        UNSELECTED_BG_COLOR = Gosu::Color::NONE
+        SELECTED_BG_COLOR = Gosu::Color::rgba(64,64,255,128)
         def build
+            self.background_color = UNSELECTED_BG_COLOR
             @sub_elements[:icon] = Image.new(@root, DEFAULT_ICON){@rectangle.relative_to(y: PADDING_TOP).assign!(height: ICON_SIZE)}
             text_top_offset = PADDING_TOP + ICON_SIZE + LOGO_SEPARATION 
             @sub_elements[:name] = Text.new(@root, "...", font_size: FONT_SIZE){@rectangle.relative_to(y: text_top_offset, height: -text_top_offset)}
+            self.add_event(:click){@root.select_object(@data[:object])}
         end
         def list_constraint parent_rect
             parent_rect.assign(y:0, height: HEIGHT)
         end
-        def update_data data
-            pp "update_data", data
-            icon_path = File.join(File.dirname(__FILE__), ASSETS_PATH + data.default_texture)
+        def update_data object:, selected:
+            icon_path = File.join(File.dirname(__FILE__), ASSETS_PATH, object.default_texture)
             icon_path = DEFAULT_ICON unless File.exists? icon_path
             @sub_elements[:icon].source = icon_path
-            @sub_elements[:name].string = data.to_s
+            @sub_elements[:name].string = object.to_s
+            self.background_color = selected ? SELECTED_BG_COLOR : UNSELECTED_BG_COLOR
         end
     end
 end

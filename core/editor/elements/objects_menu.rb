@@ -47,7 +47,7 @@ class ObjectsMenu < Scrollable
             icon_path = File.join(Config::ASSETS_DIR, object.default_texture)
             icon_path = DEFAULT_ICON unless File.exists? icon_path
             @sub_elements[:icon].source = icon_path
-            @sub_elements[:name].string = object.to_s
+            @sub_elements[:name].string = object.pretty_s
             self.background_color = selected ? SELECTED_BG_COLOR : UNSELECTED_BG_COLOR
         end
     end

@@ -17,7 +17,7 @@ class GameObject
     def hash
         {"id": @id, "type": self.class.to_s, "name": @name, "position": {"x": @position.x, "y": @position.y}, "data": {"texture": @img_path}}
     end
-    def self.to_s
-        super.to_s.split('::').last
+    def self.pretty_s
+        self.to_s.split('::').last
     end
 end

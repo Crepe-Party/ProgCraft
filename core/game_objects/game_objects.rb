@@ -24,7 +24,7 @@ module GameObjects
         def self.default_texture
             "pine_cone_64x.png"
         end
-        def self.to_s
+        def self.pretty_s
             "Pine cone"
         end
     end

@@ -37,7 +37,7 @@ class Map
         @game_objects.each do |game_object|
             elements << game_object.hash
         end
-        {"name": @name, "robert": robert, "elements": elements}
+        {"name": @name, "robert": robert, "elements": elements, "size": size.to_hash}
     end
     # def render
     #     @game_objects.each(&:draw)

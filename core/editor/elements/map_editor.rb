@@ -27,7 +27,7 @@ class MapEditorDisplay < GridGameContainer
         end
     end
     def select_object object
-        puts "selecting a #{object.class.to_s}"
+        puts "selecting a #{object.class.pretty_s}"
     end
     def zoomable?
         false

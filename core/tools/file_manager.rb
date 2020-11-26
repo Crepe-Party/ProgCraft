@@ -5,10 +5,8 @@ module File_manager
         return File.exist?(path_file) ? JSON.parse(File.read(path_file)) : nil
     end
     def self.write_json path_file, json
-        if File.exist?(path_file)
-            File.open(path_file,"w") do |file|
-                file.write(json.to_json)
-            end
+        File.open(path_file,"w") do |file|
+            file.write(json.to_json)
         end
     end
     def self.read path_file

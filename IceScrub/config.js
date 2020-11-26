@@ -1,2 +1,3 @@
-project_id = 'MAW21XXG1'
+projectId = 'MAW21XXG1'
 team = ["diogo", "Florian", "nicolasmaitre"]
+timeUnit = "min"

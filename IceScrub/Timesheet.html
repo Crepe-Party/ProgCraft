@@ -35,7 +35,7 @@
             <th>Story</th>
             <th>Task</th>
             <th title='Dernière mise à jour de la tâche'>Date</th>
-            <th>Temps</th>
+            <th>Temps [<span id="spnTUnit1"></span>]</th>
             <th>Sprint</th>
             </thead>
             <tbody id="tblBodyPerso"></tbody>
@@ -56,7 +56,7 @@
             <th>Story</th>
             <th>Task</th>
             <th title='Dernière mise à jour de la tâche'>Date</th>
-            <th>Temps</th>
+            <th>Temps [<span id="spnTUnit2"></span>]</th>
             <th>Responsable</th>
             </thead>
             <tbody id="tblBodyProj"></tbody>
@@ -66,6 +66,7 @@
 </body>
 </html>
 <script>
+    // ========= Event handlers ========
     // Show / Hide sections with radio buttons
     rbtPerso.addEventListener('click', function () {
         divPerso.classList.remove('d-none')
@@ -77,6 +78,7 @@
         divProj.classList.remove('d-none')
     })
 
+    // Person selection change
     inpPerson.addEventListener('change', function () {
         filteredTasks = []
         projectStories.forEach(function (story) {
@@ -85,15 +87,16 @@
                 { // someone took the task
                     if (task.responsible.firstName == inpPerson.value)
                     {
-                        task.data = projectSprints[task.sprint.id] ? projectSprints[task.sprint.id].release +" / " + projectSprints[task.sprint.id].number : '?' // specific data in view by people is the sprint number
+                        task.data = projectSprints[task.sprint.id] ? projectSprints[task.sprint.id].release + " / " + projectSprints[task.sprint.id].number : '?' // specific data in view by people is the sprint number
                         filteredTasks.push(task)
                     }
                 }
             })
         })
-        showData(tblBodyPerso,filteredTasks)
+        showData(tblBodyPerso, filteredTasks)
     })
 
+    // Sprint selection change
     inpSprint.addEventListener('change', function () {
         filteredTasks = []
         projectStories.forEach(function (story) {
@@ -105,36 +108,44 @@
                 }
             })
         })
-        showData(tblBodyProj,filteredTasks)
+        showData(tblBodyProj, filteredTasks)
     })
 
-    // Initialize data
+    // ============ Initialization =================
     var months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jun', 'Jui', 'Aou', 'Sep', 'Oct', 'Nov', 'Déc']
     var projectStories // globals :-( holding all stories of the project
     var projectSprints
-    if (typeof (iceScrumToken) !== 'undefined') {
+
+    // Configuration check
+    if (typeof (iceScrumToken) !== 'undefined' && typeof (projectId) !== 'undefined' && typeof (timeUnit) !== 'undefined')
+    {
         loadData()
-    } else {
+    } else
+    {
         divBadConfig.classList.remove('d-none')
         spnLoading.classList.add('d-none')
     }
 
-    fetch('https://cloud.icescrum.com/ws/project/' + project_id + '/?icescrum-token=' + iceScrumToken).then(function (response) {
+    // Unit in headers
+    spnTUnit1.innerText = timeUnit
+    spnTUnit2.innerText = timeUnit
+
+    // Project name
+    fetch('https://cloud.icescrum.com/ws/project/' + projectId + '/?icescrum-token=' + iceScrumToken).then(function (response) {
         return response.json()
     }).then(function (data) {
         spnProjName.innerText = data.name
     })
 
-    if (typeof (inpPerson) !== 'undefined')
-    {
-        team.forEach(element => {
-            opt = document.createElement('option')
-            opt.text = element
-            inpPerson.appendChild(opt)
-        });
-    }
+    // Team in dropdown
+    team.forEach(element => {
+        opt = document.createElement('option')
+        opt.text = element
+        inpPerson.appendChild(opt)
+    });
 
-    function showData(table,tasks)
+    // Business stuff....
+    function showData(table, tasks)
     {
         table.innerHTML = ''
         tasks.forEach(function (task) {
@@ -179,19 +190,19 @@
         stories[11] = {name: '(Récurrentes)', tasks: []}
         let sprints = [] // the sprints of the project
         // First get all sprints
-        fetch('https://cloud.icescrum.com/ws/project/' + project_id + '/sprint?icescrum-token=' + iceScrumToken).then(function (response) {
+        fetch('https://cloud.icescrum.com/ws/project/' + projectId + '/sprint?icescrum-token=' + iceScrumToken).then(function (response) {
             return response.json()
         }).then(function (data) {
             data.forEach(function (sprint) {
                 sprints[sprint.id] = {number: sprint.orderNumber, release: sprint.parentRelease.name}
                 opt = document.createElement('option')
                 opt.value = sprint.id
-                opt.text = sprint.parentRelease.name+" - "+sprint.orderNumber
+                opt.text = sprint.parentRelease.name + " - " + sprint.orderNumber
                 inpSprint.appendChild(opt)
             })
             projectSprints = sprints
         }).then(function () { // get stories
-            fetch('https://cloud.icescrum.com/ws/project/' + project_id + '/story?icescrum-token=' + iceScrumToken).then(function (response) {
+            fetch('https://cloud.icescrum.com/ws/project/' + projectId + '/story?icescrum-token=' + iceScrumToken).then(function (response) {
                 return response.json()
             }).then(function (data) {
                 data.forEach(function (story) {
@@ -210,7 +221,7 @@
                     }
                 })
             }).then(function () { // get all tasks
-                fetch('https://cloud.icescrum.com/ws/project/' + project_id + '/task?icescrum-token=' + iceScrumToken).then(function (response) {
+                fetch('https://cloud.icescrum.com/ws/project/' + projectId + '/task?icescrum-token=' + iceScrumToken).then(function (response) {
                     return response.json()
                 }).then(function (data) {
                     data.forEach(function (task) {

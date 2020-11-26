@@ -3,6 +3,10 @@
     "maps": [
         {
             "name": "Example_plain",
+            "size": {
+                "x": 8,
+                "y": 5
+            },
             "robert": {
                 "position": {
                     "x": 5,
@@ -16,9 +20,6 @@
                         "position": {
                             "x": 0,
                             "y": 0
-                        },
-                        "data": {
-                            "texture": "basic_texture.png"
                         }
                     }
                 ]
@@ -31,9 +32,6 @@
                     "position": {
                         "x": 0,
                         "y": 0
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
                     }
                 },
                 {
@@ -43,9 +41,6 @@
                     "position": {
                         "x": 4,
                         "y": 1
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
                     }
                 },
                 {
@@ -57,13 +52,13 @@
                         "y": 3
                     },
                     "data": {
-                        "texture": "basic_bush.png"
+                        "texture": "bush_christmas_64x.png"
                     }
                 },
                 {
                     "type": "GameObjects::Wall",
                     "position": {
-                        "x": 0,
+                        "x": 1,
                         "y": 0
                     }
                 },

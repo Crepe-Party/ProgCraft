@@ -3,10 +3,14 @@
     "maps": [
         {
             "name": "Example_plain",
+            "size": {
+                "x": 8,
+                "y": 5
+            },
             "robert": {
                 "position": {
-                    "x": 500,
-                    "y": 200
+                    "x": 5,
+                    "y": 2
                 },
                 "inventory": [
                     {
@@ -16,9 +20,6 @@
                         "position": {
                             "x": 0,
                             "y": 0
-                        },
-                        "data": {
-                            "texture": "basic_texture.png"
                         }
                     }
                 ]
@@ -29,11 +30,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 400,
-                        "y": 100
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
+                        "x": 0,
+                        "y": 0
                     }
                 },
                 {
@@ -41,11 +39,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 900,
-                        "y": 100
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
+                        "x": 4,
+                        "y": 1
                     }
                 },
                 {
@@ -53,11 +48,25 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 600,
-                        "y": 500
+                        "x": 3,
+                        "y": 3
                     },
                     "data": {
-                        "texture": "basic_bush.png"
+                        "texture": "bush_christmas_64x.png"
+                    }
+                },
+                {
+                    "type": "GameObjects::Wall",
+                    "position": {
+                        "x": 1,
+                        "y": 0
+                    }
+                },
+                {
+                    "type": "GameObjects::PineCone",
+                    "position": {
+                        "x": 4,
+                        "y": 4
                     }
                 }
             ]

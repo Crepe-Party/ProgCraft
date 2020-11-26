@@ -19,16 +19,11 @@ class List < UIElement
         previous_rect = @rectangle.assign(y: @start_offset - @spacing, height: 0) if @direction == :vertical
         previous_rect = @rectangle.assign(x: @start_offset - @spacing, width: 0) if @direction == :horizontal
         @list_elements.each{|elem| previous_rect = elem.apply_list_contraints previous_rect}
-        #update rect size
-        unless @aaaa
-            @rectangle.width = 500
-            @aaaa = true
-            return
-        end
     end
     def data= new_data
         @data = new_data
         # pp "new data", new_data
+        @list_elements.each{|elem| @root.events_manager.remove_events elem}
         @list_elements = new_data.each_with_index.map do |datum, index|
             # puts "datum", index, datum #TODO: wolàà
             elem = @element_class.new(@root, parent_list: self, index: index)
@@ -40,9 +35,9 @@ class List < UIElement
 
         @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
         @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
-        puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
+        # puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
         #propagate size change to parents. may be overkill
-        @root.apply_constraints if @root.ready_for_constraints #TODO: maybe overkill?
+        # @root.apply_constraints if @root.ready_for_constraints #TODO: maybe overkill?
         new_data
     end
 end

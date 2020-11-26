@@ -7,7 +7,9 @@ module GameObjects
         
     end
     class Bush < Interactable
-        
+        def self.default_texture
+            "bush_64x.png"
+        end
     end
     class Door < Interactable
 
@@ -18,7 +20,17 @@ module GameObjects
     class Tree < Interactable
 
     end
-    class Wall < Interactable
-
+    class PineCone < Interactable
+        def self.default_texture
+            "pine_cone_64x.png"
+        end
+        def self.pretty_s
+            "Pine cone"
+        end
+    end
+    class Wall < GameObject
+        def self.default_texture
+            "wall_64x.png"
+        end
     end
 end

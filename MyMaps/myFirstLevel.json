@@ -2,11 +2,15 @@
     "name": "stage learning",
     "maps": [
         {
+            "size": {
+                "x": 8,
+                "y": 5
+            },
             "name": "Example_plain",
             "robert": {
                 "position": {
-                    "x": 500,
-                    "y": 200
+                    "x": 2,
+                    "y": 4
                 },
                 "inventory": [
                     {
@@ -14,11 +18,8 @@
                         "type": "GameObjects::Apple",
                         "name": null,
                         "position": {
-                            "x": 0,
-                            "y": 0
-                        },
-                        "data": {
-                            "texture": "basic_texture.png"
+                            "x": 1,
+                            "y": 1
                         }
                     }
                 ]
@@ -29,11 +30,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 400,
-                        "y": 100
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
+                        "x": 1,
+                        "y": 1
                     }
                 },
                 {
@@ -41,11 +39,11 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 900,
-                        "y": 100
+                        "x": 3,
+                        "y": 3
                     },
                     "data": {
-                        "texture": "basic_bush.png"
+                        "texture": "bush_christmas_64x.png"
                     }
                 },
                 {
@@ -53,11 +51,8 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 600,
-                        "y": 500
-                    },
-                    "data": {
-                        "texture": "basic_bush.png"
+                        "x": 2,
+                        "y": 4
                     }
                 }
             ]

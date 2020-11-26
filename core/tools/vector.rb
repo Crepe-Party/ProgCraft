@@ -60,6 +60,9 @@ class Vector2
         return 0 if @x == vector.x and @y == vector.y
         self.length <=> vector.length
     end
+    def == (vector)
+        @x == vector.x && @y == vector.y
+    end
     def to_a
         [@x, @y]
     end

@@ -15,5 +15,13 @@ class Player < UIElement
     def draw posX, posY
         @texture.draw(posX, posY, 0)
     end
-    
+    # exec method
+    def move_forward
+        case @direction
+        when 'north' @player.position.y -= 1
+        when 'est' @player.position.x += 1
+        when 'south' @player.position.y += 1
+        when 'west' @player.position.x -= 1
+    end
+    end
 end

@@ -11,9 +11,14 @@ class GameManager < AppManager
         @level = Level.new
         @player = Player.new(0, 0)
         @main_ui.sub_elements[:map_game].player = @player
+        @execution_manager = ExecutionManager.new @player self
     end
     def play
-        
+        p "play_btn_pressed"
+        @execution_manager.stop_program
+        @robert.reset
+        @execution_manager.load_program("tour_de_piste")
+        @execution_manager.start_program
     end
     def pause
     

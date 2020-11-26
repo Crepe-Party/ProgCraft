@@ -1,10 +1,39 @@
-class CodeExecution
+class ExecutionManager
     attr_accessor :code, :grid_game, :player
-    def initialize player
+    CLEARANCE_CHECK_INTERVAL = 1/10.0
+    def initialize player, root
         @player = player
+        @root = root
+        @code = ""
+        @execution = self
+        @last_instruction_finished = true
+        @is_paused = true
+        @running_program_thread = nil
+        @program_text = nil
     end
-    def play
-
+    def instruction_finished
+        @last_instruction_finished = true
+    end
+    def start
+        p "start_program"
+        @last_instruction_finished = true
+        @is_paused = false
+        @running_program_thread = Thread.new do
+            p "program thread started"
+            eval @program_text
+        end
+    end
+    def stop
+        p "stop_program"
+        @running_program_thread.exit if @running_program_thread
+    end
+    def toggle_pause
+        @is_paused ^= true
+    end
+    def wait_for_clearance
+        sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused
+        @last_instruction_finished = false
+    end
     # navigation functions
     def gps_x
         return @player.position.x

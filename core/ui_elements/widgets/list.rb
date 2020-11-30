@@ -16,8 +16,8 @@ class List < UIElement
     def apply_constraints
         return unless @root.ready_for_constraints
         super
-        previous_rect = @rectangle.assign(y: @start_offset - @spacing, height: 0) if @direction == :vertical
-        previous_rect = @rectangle.assign(x: @start_offset - @spacing, width: 0) if @direction == :horizontal
+        previous_rect = @rectangle.relative_to(y: @start_offset - @spacing).assign!(height: 0) if @direction == :vertical
+        previous_rect = @rectangle.relative_to(x: @start_offset - @spacing).assign!(width: 0) if @direction == :horizontal
         @list_elements.each{|elem| previous_rect = elem.apply_list_contraints previous_rect}
     end
     def data= new_data
@@ -33,8 +33,10 @@ class List < UIElement
         #propagate content change
         self.apply_constraints
 
-        @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
-        @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+        #TODO: wasn't really a good idea
+        # @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
+        # @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+        
         # puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
         #propagate size change to parents. may be overkill
         # @root.apply_constraints if @root.ready_for_constraints #TODO: maybe overkill?

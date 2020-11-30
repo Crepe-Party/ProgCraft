@@ -85,7 +85,7 @@ class GridGameContainer < Drawable
         end
         self.sub_elements.each do |key, elem| 
             next if key == :background_color
-            elem.render.flatten.each(&:draw)
+            elem.render(clipping_rect:@rectangle).flatten.each(&:draw)
         end
     end
 

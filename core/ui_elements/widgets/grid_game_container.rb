@@ -83,6 +83,10 @@ class GridGameContainer < Drawable
                 end
             end
         end
+        self.sub_elements.each do |key, elem| 
+            next if key == :background_color
+            elem.render.flatten.each(&:draw)
+        end
     end
 
     def reset_camera

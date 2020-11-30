@@ -24,5 +24,5 @@ Robert can interact with the player by asking for informations or talking.
 ### Developper tools
 > During the development the team as 
 * install `rubyinstaller-devkit-2.6.5-1-x64`
-* install gems `gosu`, `fxruby`, `ocra`
+* install gems `gosu`, `fxruby`, `ocra` (Due to an issue with ocra, no gemfile is available)
 * install the solargraph gem if you want VScode to help you during development

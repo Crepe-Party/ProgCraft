@@ -55,8 +55,12 @@ class UIElement
 
     #default rect bg
     def background_color= color
-        require_relative 'drawables/rectangle'
-        @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
+        if self.background_elem
+            self.background_elem.color = color
+        else
+            require_relative 'drawables/rectangle'
+            @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
+        end
     end
     def background_elem
         @sub_elements[:background_color]

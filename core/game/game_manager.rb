@@ -3,6 +3,7 @@ require_relative '../app_manager'
 require_relative 'elements/game_ui'
 require_relative '../level'
 require_relative '../player'
+require_relative 'execution_manager'
 class GameManager < AppManager
     attr :level, :player
     def initialize window
@@ -11,7 +12,7 @@ class GameManager < AppManager
         @level = Level.new
         @player = Player.new(0, 0)
         @main_ui.sub_elements[:map_game].player = @player
-        @execution_manager = ExecutionManager.new @player self
+        @execution_manager = ExecutionManager.new(@player, self)
     end
     def play
         p "play_btn_pressed"

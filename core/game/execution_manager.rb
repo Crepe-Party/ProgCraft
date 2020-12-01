@@ -1,10 +1,9 @@
 class ExecutionManager
-    attr_accessor :code, :grid_game, :player
+    attr_accessor :program_text, :grid_game, :player
     CLEARANCE_CHECK_INTERVAL = 1/10.0
     def initialize player, root
         @player = player
         @root = root
-        @code = ""
         @execution = self
         @last_instruction_finished = true
         @is_paused = true
@@ -51,27 +50,13 @@ class ExecutionManager
         return true
     end
     def walk_forward
-        case @player.direction
-            when 'north' @player.position.y -= 1
-            when 'est' @player.position.x += 1
-            when 'south' @player.position.y += 1
-            when 'west' @player.position.x -= 1
-        end
+        @player.move_forward
     end
     def turn_right
-        case @player.direction
-        when 'north' @player.direction = 'est'
-        when 'est' @player.direction = 'south'
-        when 'south' @player.direction = 'west'
-        when 'west' @player.direction = 'north'
-    end
+        @player.turn_right
     end
     def turn_left
-        case @player.direction
-        when 'north' @player.direction = 'west'
-        when 'est' @player.direction = 'north'
-        when 'south' @player.direction = 'est'
-        when 'west' @player.direction = 'south'
+        @player.turn_left
     end
     # interaction functions
     def ask text

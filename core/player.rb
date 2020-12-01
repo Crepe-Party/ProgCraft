@@ -18,10 +18,26 @@ class Player < UIElement
     # exec method
     def move_forward
         case @direction
-        when 'north' @player.position.y -= 1
-        when 'est' @player.position.x += 1
-        when 'south' @player.position.y += 1
-        when 'west' @player.position.x -= 1
+        when 'north' then @player.position.y -= 1
+        when 'est' then @player.position.x += 1
+        when 'south' then @player.position.y += 1
+        when 'west' then @player.position.x -= 1
+        end
     end
+    def turn_left
+        case @player.direction
+        when 'north' then @player.direction = 'west'
+        when 'est' then @player.direction = 'north'
+        when 'south' then @player.direction = 'est'
+        when 'west' then @player.direction = 'south'
+        end
+    end
+    def turn_right
+        case @player.direction
+        when 'north' then @player.direction = 'est'
+        when 'est' then @player.direction = 'south'
+        when 'south' then @player.direction = 'west'
+        when 'west' then @player.direction = 'north'
+        end
     end
 end

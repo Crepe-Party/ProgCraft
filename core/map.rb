@@ -3,15 +3,18 @@ Dir[__dir__+'/game_objects/*'].each { |file|
     require_relative file
 }
 class Map
-    attr_accessor :name, :robert_spawn, :robert_inventory, :game_objects
+    attr_accessor :name, :size, :robert_spawn, :robert_inventory, :game_objects
     def initialize
         @name = ''
-        @robert_spawn = Vector2.new(0,0)
+        @size = Vector2.new(10, 10)
+        @robert_spawn = Vector2.new
         @robert_inventory = Array.new
         @game_objects = Array.new
     end
     def load map
         @name = map['name']
+        @size.x = map['size']['x']
+        @size.y = map['size']['y']
         @robert_spawn.x = map['robert']['position']['x']
         @robert_spawn.y = map['robert']['position']['y']
         map['robert']['inventory'].each do |item|
@@ -34,7 +37,7 @@ class Map
         @game_objects.each do |game_object|
             elements << game_object.hash
         end
-        {"name": @name, "robert": robert, "elements": elements}
+        {"name": @name, "robert": robert, "elements": elements, "size": size.to_hash}
     end
     # def render
     #     @game_objects.each(&:draw)

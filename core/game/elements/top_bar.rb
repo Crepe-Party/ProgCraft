@@ -1,8 +1,7 @@
 require_relative '../../ui_elements/ui_element'
 require_relative '../../ui_elements/widgets/button'
+require_relative '../../config'
 class GameTopBar < UIElement
-    MAPS_DIR_MAP = File.join(File.dirname(__FILE__), '../../../MyMaps/')
-    MAPS_DIR_CODES = File.join(File.dirname(__FILE__), '../../../mycodes/')
     def build
         self.background_color = Gosu::Color::GRAY
         @sub_elements[:play_button] = Button.new(@root, "", background_image: 'icons/forward.png', background_image_cover: true)
@@ -24,14 +23,14 @@ class GameTopBar < UIElement
             .constrain{Rectangle2.new(@rectangle.right - 300 - 15, @rectangle.y + 5, 150, 40)}
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
                 @root.busy = true
-                @root.load_map @root.window_manager.open_file initial_dir: MAPS_DIR_MAP, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
+                @root.load_map @root.window_manager.open_file initial_dir: Config::MY_MAPS_DIR, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
                 @root.busy = false
             end
         @sub_elements[:load_program_button] = Button.new(@root, "Load Program")
             .constrain{Rectangle2.new(@rectangle.right - 150- 5, @rectangle.y + 5, 150, 40)}
             .add_event(:mouse_down, options = {button: Gosu::MS_LEFT}) do
                 @root.busy = true
-                @root.load_program @root.window_manager.open_file initial_dir: MAPS_DIR_CODES, patterns: ["Ruby programs (*.rb)"], preferred_file_filter: 0
+                @root.load_program @root.window_manager.open_file initial_dir: Config::MY_CODES_DIR, patterns: ["Ruby programs (*.rb)"], preferred_file_filter: 0
                 @root.busy = false
             end
         super

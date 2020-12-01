@@ -12,6 +12,7 @@ class GameManager < AppManager
         @level = Level.new
         @player = Player.new(0, 0)
         @main_ui.sub_elements[:map_game].player = @player
+        @main_ui.sub_elements[:map_game].selected_map = @level.maps[0]
         @execution_manager = ExecutionManager.new(@player, self)
     end
     def play

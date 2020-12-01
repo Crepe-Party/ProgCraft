@@ -4,17 +4,16 @@ class GridGameContainer < Drawable
     CONTINUOUS_SCROLL_FACTOR = 200
     INSTANT_SCROLL_FACTOR = 40
     INSTANT_ZOOM_FACTOR = 1.1
-    attr_accessor :camera_position, :selected_map
-
+    attr_accessor :camera_position, :selected_map, :player
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
         @bg_color = Gosu::Color::GREEN
         @camera_zoom = 1
         @camera_zoom_origin = Vector2.new
-        @camera_position = Vector2.new(0, 0)
-        @grid_size = Vector2.new(64, 64)
+        @camera_position = Vector2.new(0,0)
+        @map_size = Vector2.new(10,10)
+        @grid_size = Vector2.new(65, 65)
         @grid_weight = 2
-        @selected_map = nil
         super root, &constraint
         reset_camera
     end
@@ -79,6 +78,10 @@ class GridGameContainer < Drawable
                         @selected_map.game_objects.each do |game_object|
                             game_object.draw game_object.position.x * @grid_size.x, game_object.position.y * @grid_size.y
                         end
+                    end
+                    #player
+                    unless @player.nil?
+                        @player.draw @player.position.x * @grid_size.x, @player.position.y * @grid_size.y
                     end
                 end
             end

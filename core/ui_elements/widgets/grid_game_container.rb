@@ -75,7 +75,7 @@ class GridGameContainer < Drawable
                             Gosu.draw_rect(0, index * @grid_size.y - (@grid_weight / 2), @selected_map.size.x * @grid_size.x, @grid_weight, @grid_color)
                         end
                         #game elements
-
+                        
                         @selected_map.game_objects.each do |game_object|
                             game_object.draw game_object.position.x * @grid_size.x, game_object.position.y * @grid_size.y
                         end
@@ -85,7 +85,7 @@ class GridGameContainer < Drawable
         end
         self.sub_elements.each do |key, elem| 
             next if key == :background_color
-            elem.render(clipping_rect:@rectangle).flatten.each(&:draw)
+            elem.render(clipping_rect:@rectangle).flatten.each(&:draw_with_clipping)
         end
     end
 

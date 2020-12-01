@@ -7,6 +7,7 @@ class List < UIElement
         super(root, parent_element: parent_element, &constraint)
         @element_class, @direction, @spacing, @start_offset = element_class, direction, spacing, start_offset
         @list_elements = []
+        @data = []
     end
     def build
     end
@@ -22,14 +23,17 @@ class List < UIElement
     end
     def data= new_data
         @data = new_data
-        # pp "new data", new_data
-        @list_elements.each{|elem| @root.events_manager.remove_events elem}
+        #remove events for unused elements
+        (@list_elements[new_data.length...@list_elements.length] || []).each{|elem| @root.events_manager.remove_events elem}
+        #build list
         @list_elements = new_data.each_with_index.map do |datum, index|
-            # puts "datum", index, datum #TODO: wolàà
-            elem = @element_class.new(@root, parent_list: self, index: index)
-            elem.data = datum
+            #reuse element if availible
+            elem = @list_elements[index] || @element_class.new(@root, parent_list: self, index: index)
+            #reassign data if needed
+            elem.data = datum unless elem.data == datum
             elem
         end
+
         #propagate content change
         self.apply_constraints
 

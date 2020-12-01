@@ -5,7 +5,6 @@ class UIElement
     def initialize root, rectangle = nil, parent_element: nil, &constraint
         @root, @parent_element = root, parent_element
         @rectangle = rectangle || Rectangle2.new
-        #TODO: warn "no constraint provided for #{self.to_s}" unless constraint
         self.constrain(&constraint) if constraint
         @overflow = :visible
         @sub_elements = {}
@@ -55,8 +54,12 @@ class UIElement
 
     #default rect bg
     def background_color= color
-        require_relative 'drawables/rectangle'
-        @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
+        if self.background_elem
+            self.background_elem.color = color
+        else
+            require_relative 'drawables/rectangle'
+            @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
+        end
     end
     def background_elem
         @sub_elements[:background_color]

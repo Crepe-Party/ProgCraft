@@ -73,9 +73,6 @@ class UIElement
         @root.events_manager.remove_events elem
         @sub_elements.delete(key)
     end
-    def sub_elements_deep
-        [self] + @sub_elements.map
-    end
 
     def [] key
         self.sub_elements[key]

@@ -35,6 +35,6 @@ class EditorManager < AppManager
     def select_object object_type
         @selected_object_type = object_type
         objects_list = @main_ui[:objects_menu][:list]
-        objects_list.data = objects_list.data.map{|datum| datum[:selected] = (datum[:object] == object_type); datum}
+        objects_list.data = objects_list.data.map{|datum| {**datum, selected: (datum[:object] == object_type)}}
     end
 end

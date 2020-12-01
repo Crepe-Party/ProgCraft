@@ -2,7 +2,7 @@ require 'pp'
 require_relative '../app_manager'
 require_relative 'elements/editor_ui'
 require_relative '../level'
-require_relative '../game_objects/player'
+require_relative '../player'
 class EditorManager < AppManager
     attr :level, :player, :selected_object_type
     def initialize window 

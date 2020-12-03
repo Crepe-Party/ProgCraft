@@ -54,6 +54,7 @@ class GridGameContainer < Drawable
             scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
             scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
         end
+        @player.update
     end
 
     def draw

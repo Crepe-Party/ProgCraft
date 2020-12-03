@@ -16,17 +16,13 @@ class GameManager < AppManager
         @execution_manager = ExecutionManager.new(@player, self)
     end
     def play
-        p "play_btn_pressed"
-        @execution_manager.stop_program
-        @robert.reset
-        @execution_manager.load_program("tour_de_piste")
-        @execution_manager.start_program
+        @execution_manager.play
     end
     def pause
-    
+        @execution_manager.pause
     end
     def next
-    
+        puts "next instruction"
     end
     def load_map path_file
         @level_available = @level.load path_file
@@ -40,6 +36,7 @@ class GameManager < AppManager
         unless path_file.empty?
             @main_ui.sub_elements[:code_menu].path_file = path_file
             @main_ui.sub_elements[:code_display].load path_file
+            @execution_manager.program_text = @main_ui.sub_elements[:code_display].code
         end
     end
     def edit_program

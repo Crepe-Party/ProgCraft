@@ -1,14 +1,13 @@
 class ExecutionManager
-    CLEARANCE_CHECK_INTERVAL = 1/10.0
+    CLEARANCE_CHECK_INTERVAL = 1/5.0
     def initialize player, root
         @player = player
         @root = root
         @execution = self
         @last_instruction_finished = true
         @is_paused = true
-        @running_program_thread = nil
-        # @program_text = "puts 'WARNING : program empty'"
-        @program_text = "walk_forward()"
+        @running_program_thread = Thread.new{}
+        @program_text = "puts 'WARNING : program empty'"
     end
     def program_text= program_text
         stop
@@ -16,19 +15,23 @@ class ExecutionManager
         @program_text = program_text
     end
     def start
-        p "start_program"
         @last_instruction_finished = true
         @is_paused = false
         @running_program_thread = Thread.new do
             eval @program_text
+            stop
         end
     end
     def stop
-        @running_program_thread.exit if @running_program_thread
-        @running_program_thread = nil
+        @running_program_thread.exit
+        @player.reset
     end
     def play
-        start unless @running_program_thread
+        p @running_program_thread.status
+        if @running_program_thread.status != "run" && @running_program_thread.status != "sleep"
+            stop
+            start
+        end
         @is_paused = false
     end
     def pause

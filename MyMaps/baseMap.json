@@ -51,7 +51,7 @@
                     "type": "GameObjects::Bush",
                     "name": "Buisson",
                     "position": {
-                        "x": 10,
+                        "x": 9,
                         "y": 2
                     }
                 }

@@ -28,6 +28,11 @@ class Player < UIElement
         @position.x = x
         @position.y = y
     end
+    def set_origin x, y
+        @start_pos.x = x
+        @start_pos.y = y
+        set_pos(x, y)
+    end
     def draw posX, posY
         @tileset[DIRECTIONS_TILES[@tile]].draw(posX, posY, 0)
     end

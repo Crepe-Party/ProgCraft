@@ -29,7 +29,7 @@ class GameManager < AppManager
         unless @level_available.nil?
             @main_ui.sub_elements[:map_name].path_file = path_file
             @main_ui.sub_elements[:map_game].selected_map = @level.maps[0]
-            @player.set_pos @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y
+            @player.set_origin @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y
         end
     end
     def load_program path_file

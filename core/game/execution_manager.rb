@@ -1,71 +1,51 @@
+require_relative '../config'
 class ExecutionManager
-    attr_accessor :program_text, :grid_game, :player
-    CLEARANCE_CHECK_INTERVAL = 1/10.0
-    def initialize player, root
-        @player = player
+    CLEARANCE_CHECK_INTERVAL = 1/20.0
+    def initialize robert, root
+        @robert = robert
         @root = root
         @execution = self
         @last_instruction_finished = true
         @is_paused = true
-        @running_program_thread = nil
-        @program_text = nil
+        @running_program_thread = Thread.new{}
+        @program_text = "puts 'WARNING : program empty'"
+    end
+    def program_text= program_text
+        stop
+        @robert.reset
+        @program_text = program_text
+    end
+    def start
+        @last_instruction_finished = true
+        @is_paused = false
+        @running_program_thread = Thread.new do
+            eval @program_text
+            stop
+        end
+    end
+    def stop
+        @running_program_thread.exit
+    end
+    def play
+        if @running_program_thread.status != "run" && @running_program_thread.status != "sleep"
+            stop
+            @robert.reset
+            start
+        end
+        @is_paused = false
+    end
+    def pause
+        @is_paused = true
     end
     def instruction_finished
         @last_instruction_finished = true
     end
-    def start
-        p "start_program"
-        @last_instruction_finished = true
-        @is_paused = false
-        @running_program_thread = Thread.new do
-            p "program thread started"
-            eval @program_text
-        end
-    end
-    def stop
-        p "stop_program"
-        @running_program_thread.exit if @running_program_thread
-    end
-    def toggle_pause
-        @is_paused ^= true
-    end
     def wait_for_clearance
-        sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused
+        sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused #loop until last instruction finished with interval
         @last_instruction_finished = false
     end
-    # navigation functions
-    def gps_x
-        return @player.position.x
-    end 
-    def gps_y
-        return @player.position.x
-    end
-    def is_clear_path
-        return true
-    end
-    def is_clear_right
-        return true
-    end
-    def is_clear_left
-        return true
-    end
-    def walk_forward
-        @player.move_forward
-    end
-    def turn_right
-        @player.turn_right
-    end
-    def turn_left
-        @player.turn_left
-    end
-    # interaction functions
-    def ask text
-        puts text
-    end
-    def say text
-        puts text
-    end
-    def detection
-        return false
+    # game functions
+    Dir.glob(File.join(Config::MY_FUNCTIONS_DIR, "*.rb")).each do|file|
+        require_relative file
     end
 end

@@ -4,7 +4,7 @@ class GridGameContainer < Drawable
     CONTINUOUS_SCROLL_FACTOR = 200
     INSTANT_SCROLL_FACTOR = 40
     INSTANT_ZOOM_FACTOR = 1.1
-    attr_accessor :camera_position, :selected_map, :player
+    attr_accessor :camera_position, :selected_map, :robert
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
         @bg_color = Gosu::Color::GREEN
@@ -54,6 +54,7 @@ class GridGameContainer < Drawable
             scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
             scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
         end
+        @robert.update if @robert
     end
 
     def draw
@@ -79,9 +80,9 @@ class GridGameContainer < Drawable
                             game_object.draw game_object.position.x * @grid_size.x, game_object.position.y * @grid_size.y
                         end
                     end
-                    #player
-                    unless @player.nil?
-                        @player.draw @player.position.x * @grid_size.x, @player.position.y * @grid_size.y
+                    #robert
+                    unless @robert.nil?
+                        @robert.draw @robert.position.x * @grid_size.x, @robert.position.y * @grid_size.y
                     end
                 end
             end

@@ -94,6 +94,7 @@ class Player < UIElement
             @direction = :down
             @tile = :tile_down
         end
+        sleep 0.2
     end
     def turn_right
         case @direction
@@ -110,5 +111,6 @@ class Player < UIElement
             @direction = :up
             @tile = :tile_up
         end
+        sleep 0.2
     end
 end

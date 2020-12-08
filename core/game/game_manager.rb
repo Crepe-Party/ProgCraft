@@ -10,7 +10,7 @@ class GameManager < AppManager
         super window, main_ui_class: GameUI
         @busy_string = "Loading..."
         @level = Level.new
-        @robert = Robert.new(0, 0)
+        @robert = Robert.new(self, 0, 0)
         @main_ui.sub_elements[:map_game].robert = @robert
         @main_ui.sub_elements[:map_game].selected_map = @level.maps[0]
         @execution_manager = ExecutionManager.new(@robert, self)

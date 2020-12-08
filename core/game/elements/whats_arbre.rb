@@ -29,7 +29,7 @@ class WhatsArbre < UIElement
             .constrain{rc = @sub_elements[:text_input].rectangle; rc.assign(x: rc.right + 5, width: SEND_BTN_WIDTH)}
             .on_click do
                 val = @sub_elements[:text_input].value
-                puts val
+                puts "text val: #{val}"
                 self.push(Message.new(val, "Player"));
                 # @sub_elements[:text_input].value = value
             end

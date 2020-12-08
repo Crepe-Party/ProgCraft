@@ -1,7 +1,7 @@
 require_relative 'ui_elements/drawables/sprite'
 require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
-class Robert < UIElement
+class Robert
     attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
@@ -13,7 +13,8 @@ class Robert < UIElement
         tile_down: 0,
         tile_left: 4
     }
-    def initialize x=0, y=0
+    def initialize root, x=0, y=0
+        @root = root
         @start_pos = @position = Vector2.new(x,y)
         @tileset = Gosu::Image.load_tiles(__dir__+'/assets/robert.png', TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
         reset
@@ -33,6 +34,8 @@ class Robert < UIElement
         @start_pos.y = y
         set_pos(x, y)
     end
+    def update
+    end
     def draw posX, posY
         @tileset[DIRECTIONS_TILES[@tile]].draw(posX, posY, 0)
     end
@@ -40,33 +43,10 @@ class Robert < UIElement
         p "robert move to #{x}, #{y}"
         initial_pos = @position
         target_pos = Vector2.new x, y
-        animate(0.5, on_progression: ->(linear_progress)do
-            ease_progress = smooth_progression linear_progress
+        @root.animate(0.5, on_progression: ->(linear_progress)do
+            ease_progress = Transition.smooth_progression linear_progress
             @position = initial_pos + (target_pos - initial_pos)*ease_progress
         end, on_finish: complete_handler)
-    end
-    def animate duration, time = Time.now.to_f, on_progression: nil, on_finish: nil
-        @current_animation = {
-            start_stamp: time,
-            duration: duration,
-            handler: on_progression,
-            completion_handler: on_finish
-        }
-    end
-    def update
-        time = Time.now.to_f
-        if @current_animation
-            progression = ((time - @current_animation[:start_stamp]) / @current_animation[:duration]).clamp(0,1)
-            @current_animation[:handler].call progression
-            if progression == 1
-                @current_animation[:completion_handler].call if @current_animation[:completion_handler]
-                @current_animation = nil
-            end
-        end
-    end
-    def smooth_progression progression, timing_function= :ease
-        return progression * progression * (3 - 2 * progression) if timing_function == :ease
-        progression
     end
     # exec method
     def move_forward &complete_handler

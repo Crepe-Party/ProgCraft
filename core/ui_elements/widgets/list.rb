@@ -1,5 +1,5 @@
 class List < UIElement
-    attr_reader :builder, :data, :direction, :spacing, :start_offset
+    attr_reader :element_class, :data, :direction, :spacing, :start_offset
     #elements class should implement "Listable"
     def initialize root, element_class, direction: :vertical, spacing: 0, start_offset: 0, parent_element: nil, &constraint
         #direction: :vertical, :horizontal, :wrap
@@ -37,9 +37,13 @@ class List < UIElement
         #propagate content change
         self.apply_constraints
 
-        #TODO: wasn't really a good idea
-        # @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
-        # @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+        if(@list_elements.empty?)
+            @rectangle.width = 0 if @direction == :horizontal
+            @rectangle.height = 0 if @direction == :vertical
+        else
+            @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
+            @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+        end
         
         # puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
         #propagate size change to parents. may be overkill

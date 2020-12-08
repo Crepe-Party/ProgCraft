@@ -1,11 +1,31 @@
 require_relative '../../ui_elements/widgets/scrollable'
 require_relative '../../ui_elements/widgets/list'
+require_relative '../../ui_elements/widgets/button'
 require_relative '../../ui_elements/drawables/text'
+require_relative '../../ui_elements/drawables/rectangle'
+require_relative '../../ui_elements/widgets/text_input'
 class WhatsArbre < UIElement
     INPUT_SECT_HEIGHT = 50
+    SEND_BTN_WIDTH = 50
     def build
         self.background_color = Gosu::Color::rgba(200,200,200,128)
         @sub_elements[:scroll] = MessagesScroll.new(@root){@rectangle.relative_to(height: -INPUT_SECT_HEIGHT)}
+        @sub_elements[:clear_btn] = Button.new(@root, "Clear")
+            .constrain{@rectangle.relative_to(x: 5, y: 5).assign!(width: 150, height: 50)}
+            .add_event(:click){self.clear}
+
+        @sub_elements[:input_section] = Rectangle.new(@root, Gosu::Color::rgba(128,128,128,128))
+            .constrain{@rectangle.relative_to(y: @rectangle.height - INPUT_SECT_HEIGHT).assign!(height: INPUT_SECT_HEIGHT)}
+        @sub_elements[:text_input] = TextInput.new(@root, placeholder: "Your message...")
+            .constrain{@sub_elements[:input_section].rectangle.relative_to(x: 5, y: 5, height: -10, width: -SEND_BTN_WIDTH - 15)}
+        @sub_elements[:send_button] = Button.new(@root, ">")
+            .constrain{rc = @sub_elements[:text_input].rectangle; rc.assign(x: rc.right + 5, width: SEND_BTN_WIDTH)}
+            .on_click do
+                val = @sub_elements[:text_input].value
+                puts val
+                self.push(Message.new(val, "Player"));
+                # @sub_elements[:text_input].value = value
+            end
 
         self.push Message.new("Bonsoir", "Robert")
         self.push Message.new("Salut Robert!", "Player")

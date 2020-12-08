@@ -1,0 +1,8 @@
+turn_left()
+walk_forward()
+turn_left()
+walk_forward()
+turn_left()
+walk_forward()
+turn_left()
+walk_forward()

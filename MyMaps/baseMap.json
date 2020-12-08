@@ -1,0 +1,61 @@
+{
+    "name": "stage learning",
+    "maps": [
+        {
+            "size": {
+                "x": 10,
+                "y": 5
+            },
+            "name": "Example_plain",
+            "robert": {
+                "position": {
+                    "x": 5,
+                    "y": 2
+                },
+                "inventory": [
+                    {
+                        "id": null,
+                        "type": "GameObjects::Apple",
+                        "name": null,
+                        "position": {
+                            "x": 1,
+                            "y": 1
+                        }
+                    }
+                ]
+            },
+            "elements": [
+                {
+                    "id": "bush1",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 0,
+                        "y": 0
+                    }
+                },
+                {
+                    "id": "bush2",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 7,
+                        "y": 2
+                    },
+                    "data": {
+                        "texture": "bush_christmas_64x.png"
+                    }
+                },
+                {
+                    "id": "bush3",
+                    "type": "GameObjects::Bush",
+                    "name": "Buisson",
+                    "position": {
+                        "x": 9,
+                        "y": 2
+                    }
+                }
+            ]
+        }
+    ]
+}

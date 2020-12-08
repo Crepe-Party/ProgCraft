@@ -22,9 +22,13 @@ class MapGameDisplay < GridGameContainer
         return is_open if @whats_arbre_open == is_open
         @whats_arbre_open = is_open
         #animate
-        from_fr = @whats_arbre_top_fraction
-        to_fr = is_open ? 0 : 1
-        @whats_arbre_top_fraction = to_fr
-        @sub_elements[:whats_arbre].apply_constraints
+        @current_open_animation.cancel if @current_open_animation
+        from_fract = @whats_arbre_top_fraction
+        to_fract = is_open ? 0 : 1
+        @current_open_animation = @root.animate(0.5) do |progression|
+            smooth = Transition.smooth_progression(progression)
+            @whats_arbre_top_fraction = (to_fract - from_fract) * smooth + from_fract
+            @sub_elements[:whats_arbre].apply_constraints
+        end
     end
 end

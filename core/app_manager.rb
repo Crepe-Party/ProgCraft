@@ -1,10 +1,12 @@
 require 'pp'
 require_relative 'events/events_manager'
 require_relative 'tools/window_manager'
+require_relative 'tools/transition'
 class AppManager
     attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver
     def initialize window, main_ui_class:
         @planned_actions = {}
+        @animations = []
         @busy=false
         @text_input_receiver = nil
         @events_manager = EventsManager.new window
@@ -18,7 +20,9 @@ class AppManager
         @busy_string = "Busy..."
     end
     def update dt
+        time = Time.now.to_f
         update_planned_actions
+        @animations.each{|a|a.update(time)}
         @main_ui.update dt
         @events_manager.update
     end
@@ -69,7 +73,7 @@ class AppManager
         @events_manager.add_event(element, type, options, handler)
     end
     def plan_action duration, &handler
-        duration = 0 if duration == :next_frame
+        duration = 0 if duration == :next_update
         #insert
         @planned_actions[(Time.now.to_f*1000 + duration*1000).ceil] = handler
         #sort
@@ -88,6 +92,19 @@ class AppManager
             end
         end
         to_remove.each{|stamp| @planned_actions.delete(stamp)}
+    end
+    def animate duration, start_time = Time.now.to_f, on_progression: ->(pr){yield pr}, on_finish: nil
+        new_animation = Transition.new(self, {
+            start_stamp: start_time,
+            duration: duration,
+            handler: on_progression,
+            completion_handler: on_finish
+        })
+        @animations.push new_animation
+        new_animation
+    end
+    def cancel_animation animation
+        self.plan_action(:next_update){@animations.delete(animation)}
     end
     def drop filename
         @events_manager.drop filename

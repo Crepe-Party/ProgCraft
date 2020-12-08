@@ -1,7 +1,7 @@
 require_relative 'ui_elements/drawables/sprite'
 require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
-class Player < UIElement
+class Robert < UIElement
     attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
@@ -80,6 +80,7 @@ class Player < UIElement
         move_to(to_pos.x, to_pos.y, &complete_handler)
     end
     def turn_left
+        sleep 0.25
         case @direction
         when :up then 
             @direction = :left
@@ -94,9 +95,10 @@ class Player < UIElement
             @direction = :down
             @tile = :tile_down
         end
-        sleep 0.2
+        sleep 0.25
     end
     def turn_right
+        sleep 0.25
         case @direction
         when :up then 
             @direction = :right
@@ -111,6 +113,6 @@ class Player < UIElement
             @direction = :up
             @tile = :tile_up
         end
-        sleep 0.2
+        sleep 0.25
     end
 end

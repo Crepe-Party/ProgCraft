@@ -1,8 +1,8 @@
 require_relative '../config'
 class ExecutionManager
     CLEARANCE_CHECK_INTERVAL = 1/20.0
-    def initialize player, root
-        @player = player
+    def initialize robert, root
+        @robert = robert
         @root = root
         @execution = self
         @last_instruction_finished = true
@@ -12,7 +12,7 @@ class ExecutionManager
     end
     def program_text= program_text
         stop
-        @player.reset
+        @robert.reset
         @program_text = program_text
     end
     def start
@@ -29,7 +29,7 @@ class ExecutionManager
     def play
         if @running_program_thread.status != "run" && @running_program_thread.status != "sleep"
             stop
-            @player.reset
+            @robert.reset
             start
         end
         @is_paused = false

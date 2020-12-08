@@ -2,9 +2,9 @@ require 'pp'
 require_relative '../app_manager'
 require_relative 'elements/editor_ui'
 require_relative '../level'
-require_relative '../player'
+require_relative '../robert'
 class EditorManager < AppManager
-    attr :level, :player, :selected_object_type
+    attr :level, :robert, :selected_object_type
     def initialize window 
         super window, main_ui_class: EditorUI
         @busy_string = "Loading..."

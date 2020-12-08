@@ -6,7 +6,7 @@ class Map
     attr_accessor :name, :size, :robert_spawn, :robert_inventory, :game_objects
     def initialize
         @name = ''
-        @size = Vector2.new(7, 4)
+        @size = Vector2.new(10, 10)
         @robert_spawn = Vector2.new
         @robert_inventory = Array.new
         @game_objects = Array.new

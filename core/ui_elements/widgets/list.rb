@@ -29,8 +29,7 @@ class List < UIElement
         @list_elements = new_data.each_with_index.map do |datum, index|
             #reuse element if availible
             elem = @list_elements[index] || @element_class.new(@root, parent_list: self, index: index)
-            #reassign data if needed
-            elem.data = datum unless elem.data == datum
+            elem.data = datum
             elem
         end
 
@@ -80,6 +79,7 @@ module Listable #use include to use module
         return @rectangle
     end
     def data= data
+        return if @data == data
         @data = data
         update_data data
     end

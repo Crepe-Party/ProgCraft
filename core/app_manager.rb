@@ -1,26 +1,45 @@
+require 'gosu'
 require 'pp'
 require_relative 'events/events_manager'
 require_relative 'tools/window_manager'
-class AppManager
-    attr_reader :window, :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver
-    def initialize window, main_ui_class:
+class AppManager < Gosu::Window
+    attr_reader :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver, :keys_down
+
+    def initialize width, height, options = {}, main_ui_class:
+        super width, height, options = {}
+        @keys_down = [] #allowing for sub-frame key press
         @planned_actions = {}
         @busy=false
         @text_input_receiver = nil
-        @events_manager = EventsManager.new window
+        @events_manager = EventsManager.new self
         @window_manager = WindowManager.new
-        @window = window
-
+        
         @ready_for_constraints = false
         @main_ui = main_ui_class.new self
         @ready_for_constraints = true
 
         @busy_string = "Busy..."
     end
-    def update dt
+    def needs_cursor?
+        true
+    end
+    def update
+        #time
+        time = Time.now.to_f
+        delta_time = time - (@last_frame_stamp || time)
+        @last_frame_stamp = time
+
         update_planned_actions
-        @main_ui.update dt
+        @main_ui.update delta_time
         @events_manager.update
+
+        #res change
+        if @current_window_width != self.width || @current_window_height != self.height
+            puts "resolution changed! #{self.width} #{self.height}"
+            @current_window_width, @current_window_height = self.width, self.height
+            apply_constraints
+        end
+
     end
     def render
         # final draw
@@ -30,8 +49,8 @@ class AppManager
     def apply_constraints
         return unless @ready_for_constraints
         #start applying constraints to children
-        @main_ui.rectangle.width = window.width
-        @main_ui.rectangle.height = window.height
+        @main_ui.rectangle.width = self.width
+        @main_ui.rectangle.height = self.height
         @main_ui.apply_constraints
     end    
     def busy= value
@@ -42,7 +61,7 @@ class AppManager
                     self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
                     @sub_elements[:background_text] = Text.new(@root, @busy_string, center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
                 end
-            end.new(self){Rectangle2.new(0,0,self.window.width, self.window.height)}
+            end.new(self){Rectangle2.new(0,0,self.width, self.height)}
             @main_ui.apply_constraints
         else
             @main_ui.sub_elements.delete(:busy_loader)
@@ -51,10 +70,10 @@ class AppManager
     def plug_text_input element
         unplug_text_input if @text_input_receiver
         @text_input_receiver = element
-        @window.text_input = Gosu::TextInput.new
-        element.text_input_plugged(@window.text_input) if defined? element.text_input_plugged
+        self.text_input = Gosu::TextInput.new
+        element.text_input_plugged(self.text_input) if defined? element.text_input_plugged
 
-        @window.text_input
+        self.text_input
     end
     def unplug_text_input element=nil
         if element && element != @text_input_receiver
@@ -63,7 +82,7 @@ class AppManager
         end
         @text_input_receiver.text_input_unplugged if defined? @text_input_receiver.text_input_unplugged
         @text_input_receiver = nil
-        @window.text_input = nil
+        self.text_input = nil
     end
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
@@ -90,6 +109,23 @@ class AppManager
         to_remove.each{|stamp| @planned_actions.delete(stamp)}
     end
     def drop filename
+        @events_manager.drop filename
+    end
+    def button_down id
+        @keys_down.push id
+        @events_manager.update
+    end
+    def button_up id
+        @keys_down -= [id]
+        @events_manager.update
+    end
+    def mouse_pos
+        Vector2.new(self.mouse_x, self.mouse_y)
+    end
+    def draw
+        render
+    end    
+    def drop filename             
         @events_manager.drop filename
     end
 end

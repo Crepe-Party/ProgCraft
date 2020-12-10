@@ -21,18 +21,18 @@ class GridGameContainer < Drawable
     def build
         super
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_DOWN) do |event|
-            if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
+            if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:right, INSTANT_SCROLL_FACTOR)
-            elsif (zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
+            elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(1.0 / INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:down, INSTANT_SCROLL_FACTOR)
             end
         end
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_UP) do |event|
-            if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
+            if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:left, INSTANT_SCROLL_FACTOR)
-            elsif (zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
+            elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:up, INSTANT_SCROLL_FACTOR)
@@ -49,10 +49,10 @@ class GridGameContainer < Drawable
         super dt
         if scrollable?
             scrl_dist = dt * CONTINUOUS_SCROLL_FACTOR
-            scroll(:up, scrl_dist) if @root.window.button_down? Gosu::KB_UP
-            scroll(:down, scrl_dist) if @root.window.button_down? Gosu::KB_DOWN
-            scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
-            scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
+            scroll(:up, scrl_dist) if @root.button_down? Gosu::KB_UP
+            scroll(:down, scrl_dist) if @root.button_down? Gosu::KB_DOWN
+            scroll(:left, scrl_dist) if @root.button_down? Gosu::KB_LEFT
+            scroll(:right, scrl_dist) if @root.button_down? Gosu::KB_RIGHT
         end
         @robert.update if @robert
     end

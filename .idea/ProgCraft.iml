@@ -15,5 +15,6 @@
     <orderEntry type="library" scope="PROVIDED" name="fxruby (v1.6.42, ruby-2.7.2-p137) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="gosu (v0.15.2, ruby-2.7.2-p137) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mini_portile2 (v2.5.0, ruby-2.7.2-p137) [gem]" level="application" />
+    <orderEntry type="library" scope="PROVIDED" name="ruby2d (v0.9.4, ruby-2.7.2-p137) [gem]" level="application" />
   </component>
 </module>

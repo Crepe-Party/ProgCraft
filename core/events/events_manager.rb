@@ -36,7 +36,7 @@ class EventsManager
         when :button_down
             event = EventHandlers::ButtonDown.new @window, element, handler, options[:button]
         when :click
-            event = EventHandlers::MouseDown.new @window, element, handler, Gosu::MS_LEFT
+            event = EventHandlers::MouseDown.new @window, element, handler, options[:button] || Gosu::MS_LEFT
         when :button_up
             event = EventHandlers::ButtonUp.new @window, element, handler, options[:button]
         when :button_press

@@ -15,7 +15,7 @@ class TextInput < UIElement
         self.background_color = border_color;
 
         @sub_elements[:inside_rect] = Rectangle.new(@root, bg_color){@rectangle.relative_to(x: @border_width, y:@border_width, width: -2*@border_width, height: -2*@border_width)}
-        @sub_elements[:text] = Text.new(@root, @placeholder || "", color: placeholder_color, center_text: false, overflow: :hidden){@sub_elements[:inside_rect].rectangle}
+        @sub_elements[:text] = Text.new(@root, @placeholder || "", color: placeholder_color, center_text: :vertical, overflow: :hidden){@sub_elements[:inside_rect].rectangle}
         @sub_elements[:cursor] = Rectangle.new(@root, cursor_color)
         @sub_elements[:selection] = Rectangle.new(@root, selection_color)
     end

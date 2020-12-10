@@ -4,10 +4,11 @@ require_relative 'elements/game_ui'
 require_relative '../level'
 require_relative '../robert'
 require_relative 'execution_manager'
-class GameManager < AppManager
+class Game < AppManager
     attr :level, :robert
-    def initialize window
-        super window, main_ui_class: GameUI
+    def initialize
+        super 1800, 900, {resizable: true}, main_ui_class: GameUI
+        self.caption = "ProgCraft - The Game 🤩"
         @busy_string = "Loading..."
         @level = Level.new
         @robert = Robert.new(self, 0, 0)

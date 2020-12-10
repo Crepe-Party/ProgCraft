@@ -15,9 +15,9 @@ class WhatsArbre < UIElement
             .constrain{@rectangle.relative_to(x: 5, y: 5).assign!(width: 150, height: 50)}
             .add_event(:click){self.clear}
 
-        @sub_elements[:rand_btn] = Button.new(@root, "Random")
-            .constrain{rc = @sub_elements[:clear_btn].rectangle; rc.assign(x: rc.right + 5)}
-            .add_event(:click){self.push(WhatsArbre::Message.new("Salut", ["Robert", "You"].sample))}
+        # @sub_elements[:rand_btn] = Button.new(@root, "Random")
+        #     .constrain{rc = @sub_elements[:clear_btn].rectangle; rc.assign(x: rc.right + 5)}
+        #     .add_event(:click){self.push(WhatsArbre::Message.new("Salut", ["Robert", "You"].sample))}
 
         @sub_elements[:input_section] = Rectangle.new(@root, Gosu::Color::rgba(128,128,128,128))
             .constrain{@rectangle.relative_to(y: @rectangle.height - INPUT_SECT_HEIGHT).assign!(height: INPUT_SECT_HEIGHT)}
@@ -43,6 +43,8 @@ class WhatsArbre < UIElement
     def push_message text, source = "Robert"
         msg = Message.new(text, source)
         self.push msg
+        #open
+        @parent_element.whats_arbre_open = true
         msg
     end
     #sub classes

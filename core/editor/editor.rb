@@ -3,10 +3,11 @@ require_relative '../app_manager'
 require_relative 'elements/editor_ui'
 require_relative '../level'
 require_relative '../robert'
-class EditorManager < AppManager
+class Editor < AppManager
     attr :level, :robert, :selected_object_type
-    def initialize window 
-        super window, main_ui_class: EditorUI
+    def initialize 
+        super 1280, 720, {resizable: true}, main_ui_class: EditorUI
+        self.caption = "ProgCraft - The Level Editor 🤩"
         @busy_string = "Loading..."
         new_level
     end

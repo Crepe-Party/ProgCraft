@@ -1,14 +1,4 @@
 require_relative 'core/app_window'
-require_relative 'core/editor/editor_manager'
+require_relative 'core/editor/editor'
 #editor
-class LevelEditorWindow < AppWindow
-    def initialize
-        super 1280, 720, {resizable: true}
-        self.caption = "ProgCraft - The Level Editor 🤩"
-        @manager = EditorManager.new self
-    end
-    def needs_cursor?
-        true
-    end
-end
-LevelEditorWindow.new.show
+Editor.new.show

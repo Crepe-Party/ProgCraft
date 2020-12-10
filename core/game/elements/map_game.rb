@@ -9,7 +9,7 @@ class MapGameDisplay < GridGameContainer
         @whats_arbre_open = false
         @whats_arbre_top_fraction = 1
         self.background_color = Gosu::Color::rgba(0,200,0,255)
-        @sub_elements[:whats_arbre] = WhatsArbre.new(@root).constrain do 
+        @sub_elements[:whats_arbre] = WhatsArbre.new(@root, parent_element: self).constrain do 
             top_pos = @whats_arbre_top_fraction * (@rectangle.height - WA_MARGIN)
             @rectangle.relative_to(x: @rectangle.width - WA_WIDTH - WA_MARGIN, y: WA_MARGIN + top_pos, height: - 3*WA_MARGIN - WA_BTN_SIZE).assign!(width: WA_WIDTH)
         end

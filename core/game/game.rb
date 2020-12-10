@@ -43,4 +43,9 @@ class Game < AppManager
     def edit_program
         @main_ui.sub_elements[:code_menu].edit
     end 
+
+    #accessors
+    def whats_arbre
+        @main_ui[:map_game][:whats_arbre]
+    end
 end

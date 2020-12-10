@@ -3,4 +3,4 @@ number2 = ask("Give me another number : ")
 
 answer = number1 + number2
 
-say("The sum of "+number1+" and "+number2+" is "+answer)
+say("The sum of #{number1} and #{number2} is #{answer}")

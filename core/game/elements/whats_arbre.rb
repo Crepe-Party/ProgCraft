@@ -33,16 +33,17 @@ class WhatsArbre < UIElement
                 self.push(Message.new(val, "Player"));
                 # @sub_elements[:text_input].value = value
             end
-
-        self.push Message.new("Bonsoir", "Robert")
-        self.push Message.new("Salut Robert!", "Player")
-        self.push Message.new("Yes!", "Robert")
     end
     def push message
         @sub_elements[:scroll][:list].data += [message]
     end
     def clear
         @sub_elements[:scroll][:list].data = []
+    end
+    def push_message text, source = "Robert"
+        msg = Message.new(text, source)
+        self.push msg
+        msg
     end
     #sub classes
     class MessagesScroll < Scrollable

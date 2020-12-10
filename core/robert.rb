@@ -1,6 +1,7 @@
 require_relative 'ui_elements/drawables/sprite'
 require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
+require_relative 'config'
 class Robert
     attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile
     TILE_HEIGHT = 256
@@ -16,7 +17,7 @@ class Robert
     def initialize root, x=0, y=0
         @root = root
         @start_pos = @position = Vector2.new(x,y)
-        @tileset = Gosu::Image.load_tiles(__dir__+'/assets/robert.png', TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
+        @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
         reset
     end
     def reset

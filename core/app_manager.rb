@@ -7,7 +7,7 @@ class AppManager < Gosu::Window
     attr_reader :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver, :keys_down
 
     def initialize width, height, options = {}, main_ui_class:
-        super width, height, options = {}
+        super width, height, options
         @keys_down = [] #allowing for sub-frame key press
         @planned_actions = {}
         @animations = []

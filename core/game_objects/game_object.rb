@@ -20,6 +20,9 @@ class GameObject
         hash["data"] = {"texture": @img_path} if @img_path
         hash
     end
+    def solid?
+        false
+    end
     def self.pretty_s
         self.to_s.split('::').last
     end

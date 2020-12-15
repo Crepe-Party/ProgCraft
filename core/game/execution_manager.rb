@@ -37,6 +37,15 @@ class ExecutionManager
     def pause
         @is_paused = true
     end
+    def next_step
+        puts @is_paused
+        if @is_paused
+            puts "next step"
+            @is_paused = false
+            sleep CLEARANCE_CHECK_INTERVAL
+            @is_paused = true
+        end
+    end
     def instruction_finished
         @last_instruction_finished = true
     end

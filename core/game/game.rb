@@ -23,7 +23,7 @@ class Game < AppManager
         @execution_manager.pause
     end
     def next
-        puts "next instruction"
+        @execution_manager.next_step
     end
     def load_map path_file
         @level_available = @level.load path_file

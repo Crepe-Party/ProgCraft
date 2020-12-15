@@ -41,7 +41,6 @@ class Robert
         @tileset[DIRECTIONS_TILES[@tile]].draw(posX, posY, 0)
     end
     def move_to x, y, &complete_handler
-        p "robert move to #{x}, #{y}"
         initial_pos = @position
         target_pos = Vector2.new x, y
         @root.animate(0.5, on_progression: ->(linear_progress)do

@@ -20,7 +20,6 @@ class ExecutionManager
         @is_paused = false
         @running_program_thread = Thread.new do
             eval @program_text
-            stop
         end
     end
     def stop
@@ -51,6 +50,7 @@ class ExecutionManager
     end
     def wait_for_clearance
         sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused #loop until last instruction finished with interval
+        @root.update_line_display caller_locations(2).to_s.split(":")[1]
         @last_instruction_finished = false
     end
     # game functions

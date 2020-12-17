@@ -38,12 +38,10 @@ class ExecutionManager
         @is_paused = true
     end
     def next_step
-        puts @is_paused
-        if @is_paused
-            puts "next step"
-            @is_paused = false
+        if (@running_program_thread.status != "run" && @running_program_thread.status != "sleep") || @is_paused
+            play
             sleep CLEARANCE_CHECK_INTERVAL+0.05
-            @is_paused = true
+            pause
         end
     end
     def instruction_finished

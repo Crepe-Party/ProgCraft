@@ -8,6 +8,7 @@ class WhatsArbre < UIElement
     INPUT_SECT_HEIGHT = 50
     SEND_BTN_WIDTH = 50
     def build
+        @answer_callbacks = []
         self.background_color = Gosu::Color::rgba(200,200,200,128)
         @sub_elements[:scroll] = MessagesScroll.new(@root){@rectangle.relative_to(height: -INPUT_SECT_HEIGHT)}
 
@@ -15,23 +16,23 @@ class WhatsArbre < UIElement
             .constrain{@rectangle.relative_to(x: 5, y: 5).assign!(width: 150, height: 50)}
             .add_event(:click){self.clear}
 
-        # @sub_elements[:rand_btn] = Button.new(@root, "Random")
-        #     .constrain{rc = @sub_elements[:clear_btn].rectangle; rc.assign(x: rc.right + 5)}
-        #     .add_event(:click){self.push(WhatsArbre::Message.new("Salut", ["Robert", "You"].sample))}
-
         @sub_elements[:input_section] = Rectangle.new(@root, Gosu::Color::rgba(128,128,128,128))
             .constrain{@rectangle.relative_to(y: @rectangle.height - INPUT_SECT_HEIGHT).assign!(height: INPUT_SECT_HEIGHT)}
 
         @sub_elements[:text_input] = TextInput.new(@root, placeholder: "Your message...")
             .constrain{@sub_elements[:input_section].rectangle.relative_to(x: 5, y: 5, height: -10, width: -SEND_BTN_WIDTH - 15)}
+            .add_event(:submit) do |value:, input:|
+                next if value.empty?
+                self.push_message(value, "Player");
+                input.clear
+                @answer_callbacks.each{|al|al.call(value)}
+                @answer_callbacks.clear
+            end
 
         @sub_elements[:send_button] = Button.new(@root, ">")
             .constrain{rc = @sub_elements[:text_input].rectangle; rc.assign(x: rc.right + 5, width: SEND_BTN_WIDTH)}
             .on_click do
-                val = @sub_elements[:text_input].value
-                puts "text val: #{val}"
-                self.push(Message.new(val, "Player"));
-                # @sub_elements[:text_input].value = value
+                @sub_elements[:text_input].submit
             end
     end
     def push message
@@ -39,6 +40,7 @@ class WhatsArbre < UIElement
     end
     def clear
         @sub_elements[:scroll][:list].data = []
+        @sub_elements[:scroll].scroll_offset = 0
     end
     def push_message text, source = "Robert"
         msg = Message.new(text, source)
@@ -46,6 +48,10 @@ class WhatsArbre < UIElement
         #open
         @parent_element.whats_arbre_open = true
         msg
+    end
+    #register answer listener
+    def on_answer &block
+        @answer_callbacks.push(block)
     end
     #sub classes
     class MessagesScroll < Scrollable

@@ -22,12 +22,10 @@ end
 def turn_right
     wait_for_clearance
     puts "turn right"
-    @robert.turn_right
-    instruction_finished
+    @robert.turn_right{self.instruction_finished}
 end
 def turn_left
-    puts "turn left"
     wait_for_clearance
-    @robert.turn_left
-    instruction_finished
+    puts "turn left"
+    @robert.turn_left{self.instruction_finished}
 end

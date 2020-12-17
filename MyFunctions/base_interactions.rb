@@ -11,9 +11,7 @@ def ask text
     choice
 end
 def say text
-    casted_text = text.to_s
-    puts "Say:|| #{casted_text}"
-    @root.whats_arbre.push_message(casted_text)
+    @robert.say text
 end
 def detection
     return false

@@ -7,31 +7,27 @@ class Robert
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
-    TILE_BY_COLUMN = 4
+    TILE_BY_COLUMN = 4  
+    STUN_TIME = 1 # seconds
     DIRECTIONS_TILES = {
-        tile_up: 12,
-        tile_right: 9,
-        tile_down: 0,
-        tile_left: 4
+        down:0,
+        left:4,
+        right:8,
+        up:12,
     }
-    STUN_TILES = {
-        tile_up: 12,
-        tile_right: 9,
-        tile_down: 0,
-        tile_left: 4
-    }
+
     def initialize root, x=0, y=0
         @root = root
         @start_pos = @position = Vector2.new(x,y)
-        @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
-        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
+        @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
+        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)        
         reset
     end
     def reset
         @current_animation = nil
+        @state = :idle
         @direction = :right
         set_pos(@start_pos.x, @start_pos.y)
-        @tile = :tile_right
     end
     def set_pos x, y
         @position.x = x
@@ -45,21 +41,47 @@ class Robert
     def update
     end
     def draw posX, posY
-        @tileset[DIRECTIONS_TILES[@tile]].draw(posX, posY, 0)
+        case @state
+        when :idle
+            @tileset[DIRECTIONS_TILES[@direction]]
+        when :moving
+            @tileset[DIRECTIONS_TILES[@direction] + (Gosu.milliseconds / 175) % 4]
+        when :stun
+            @stun[DIRECTIONS_TILES[@direction] + (Gosu.milliseconds / 175) % 4]
+        end        
+        .draw(posX, posY, 0)
     end
     def move_to x, y, &complete_handler
+        @state = :moving
         p "robert move to #{x}, #{y}"
         initial_pos = @position
         target_pos = Vector2.new x, y
-        # element = @root.level.maps.first.element_at target_pos # TODO collide 
-        # pp @root.level
-        element = @root.level.maps.first.element_at(target_pos)
         
-        @root.animate(0.5, on_progression: ->(linear_progress)do
-            solid = element != nil ? element.solid? : false
-            ease_progress = Transition.smooth_progression linear_progress            
-            @position = initial_pos + (target_pos - initial_pos)*ease_progress unless solid
-        end, on_finish: complete_handler)        
+        @state = check_state_before_new_mouvement target_pos
+        
+        if @state == :stun
+            @root.plan_action(STUN_TIME) do
+                @state = :idle
+                say "Ouch!!!"
+                complete_handler.call
+            end           
+            return
+        end  
+
+        @root.animate(0.5, on_progression: ->(linear_progress)do        
+            ease_progress = Transition.smooth_progression linear_progress       
+            @position = initial_pos + (target_pos - initial_pos)*ease_progress     
+        end, on_finish: -> {
+            @state = :idle
+            complete_handler.call
+        })   
+    end
+    def check_state_before_new_mouvement target_pos
+        pp @root.level.maps
+        element = @root.level.maps.first.element_at(target_pos)
+        solid = element != nil ? element.solid? : false
+
+        solid ? :stun : :moving
     end
     # exec method
     def move_forward &complete_handler
@@ -72,40 +94,39 @@ class Robert
         end
         move_to(to_pos.x, to_pos.y, &complete_handler)
     end
-    def turn_left
+    def turn_left &complete_handler
         sleep 0.25
         case @direction
         when :up then 
             @direction = :left
-            @tile = :tile_left
         when :right then 
             @direction = :up
-            @tile = :tile_up
         when :down then 
             @direction = :right
-            @tile = :tile_right
         when :left then 
             @direction = :down
-            @tile = :tile_down
         end
         sleep 0.25
+        complete_handler.call
     end
-    def turn_right
+    def turn_right &complete_handler
         sleep 0.25
         case @direction
         when :up then 
             @direction = :right
-            @tile = :tile_right
         when :right then 
             @direction = :down
-            @tile = :tile_down
         when :down then 
             @direction = :left
-            @tile = :tile_left
         when :left then 
             @direction = :up
-            @tile = :tile_up
         end
         sleep 0.25
+        complete_handler.call
+    end
+    def say text
+        casted_text = text.to_s
+        puts "Say:|| #{casted_text}"
+        @root.whats_arbre.push_message(casted_text)
     end
 end

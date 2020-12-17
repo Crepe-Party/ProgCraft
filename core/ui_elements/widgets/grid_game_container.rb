@@ -4,17 +4,16 @@ class GridGameContainer < Drawable
     CONTINUOUS_SCROLL_FACTOR = 200
     INSTANT_SCROLL_FACTOR = 40
     INSTANT_ZOOM_FACTOR = 1.1
-    attr_accessor :camera_position, :selected_map
-
+    attr_accessor :camera_position, :selected_map, :robert
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
         @bg_color = Gosu::Color::GREEN
         @camera_zoom = 1
         @camera_zoom_origin = Vector2.new
-        @camera_position = Vector2.new(0, 0)
-        @grid_size = Vector2.new(64, 64)
+        @camera_position = Vector2.new(0,0)
+        @map_size = Vector2.new(10,10)
+        @grid_size = Vector2.new(65, 65)
         @grid_weight = 2
-        @selected_map = nil
         super root, &constraint
         reset_camera
     end
@@ -22,18 +21,18 @@ class GridGameContainer < Drawable
     def build
         super
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_DOWN) do |event|
-            if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
+            if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:right, INSTANT_SCROLL_FACTOR)
-            elsif (zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
+            elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(1.0 / INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:down, INSTANT_SCROLL_FACTOR)
             end
         end
         self.add_event(:mouse_down, button: Gosu::MS_WHEEL_UP) do |event|
-            if (@root.window.button_down? Gosu::KB_LEFT_SHIFT) || (@root.window.button_down? Gosu::KB_RIGHT_SHIFT)
+            if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:left, INSTANT_SCROLL_FACTOR)
-            elsif (zoomable? && (@root.window.button_down? Gosu::KB_LEFT_CONTROL) || (@root.window.button_down? Gosu::KB_RIGHT_CONTROL))
+            elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
                 zoom(INSTANT_ZOOM_FACTOR, event[:position])
             else
                 scroll(:up, INSTANT_SCROLL_FACTOR)
@@ -50,11 +49,12 @@ class GridGameContainer < Drawable
         super dt
         if scrollable?
             scrl_dist = dt * CONTINUOUS_SCROLL_FACTOR
-            scroll(:up, scrl_dist) if @root.window.button_down? Gosu::KB_UP
-            scroll(:down, scrl_dist) if @root.window.button_down? Gosu::KB_DOWN
-            scroll(:left, scrl_dist) if @root.window.button_down? Gosu::KB_LEFT
-            scroll(:right, scrl_dist) if @root.window.button_down? Gosu::KB_RIGHT
+            scroll(:up, scrl_dist) if @root.button_down? Gosu::KB_UP
+            scroll(:down, scrl_dist) if @root.button_down? Gosu::KB_DOWN
+            scroll(:left, scrl_dist) if @root.button_down? Gosu::KB_LEFT
+            scroll(:right, scrl_dist) if @root.button_down? Gosu::KB_RIGHT
         end
+        @robert.update if @robert
     end
 
     def draw
@@ -75,17 +75,21 @@ class GridGameContainer < Drawable
                             Gosu.draw_rect(0, index * @grid_size.y - (@grid_weight / 2), @selected_map.size.x * @grid_size.x, @grid_weight, @grid_color)
                         end
                         #game elements
-
+                        
                         @selected_map.game_objects.each do |game_object|
                             game_object.draw game_object.position.x * @grid_size.x, game_object.position.y * @grid_size.y
                         end
+                    end
+                    #robert
+                    unless @robert.nil?
+                        @robert.draw @robert.position.x * @grid_size.x, @robert.position.y * @grid_size.y
                     end
                 end
             end
         end
         self.sub_elements.each do |key, elem| 
             next if key == :background_color
-            elem.render(clipping_rect:@rectangle).flatten.each(&:draw)
+            elem.render(clipping_rect:@rectangle).flatten.each(&:draw_with_clipping)
         end
     end
 

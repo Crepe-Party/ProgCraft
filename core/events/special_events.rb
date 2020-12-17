@@ -7,5 +7,7 @@ module EventHandlers
             is_inside = mouse_inside?
             trigger({filename: filename}) if is_inside
         end
-    end    
+    end
+    class Submit < EventHandler
+    end
 end

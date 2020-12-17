@@ -35,7 +35,7 @@ class Button < UIElement
         end
     end
     def on_click &handler
-        add_event(:mouse_down, options = {button: Gosu::MS_LEFT}, &handler)
+        add_event(:click, &handler)
     end
 end
 

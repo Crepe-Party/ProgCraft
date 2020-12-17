@@ -21,11 +21,8 @@ class GameUI < UIElement
         #code
         @sub_elements[:code_menu] = CodeMenu.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
         @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height)}
-        #fps
-        @sub_elements[:fps_text] = Text.new(@root, "...fps", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end
     def update dt
         super dt
-        @sub_elements[:fps_text].string = "#{(1/dt).floor} fps" if dt > 0
     end
 end

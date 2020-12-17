@@ -2,11 +2,12 @@ require 'pp'
 require_relative '../app_manager'
 require_relative 'elements/editor_ui'
 require_relative '../level'
-require_relative '../game_objects/player'
-class EditorManager < AppManager
-    attr :level, :player, :selected_object_type
-    def initialize window 
-        super window, main_ui_class: EditorUI
+require_relative '../robert'
+class Editor < AppManager
+    attr :level, :robert, :selected_object_type
+    def initialize 
+        super 1280, 720, {resizable: true}, main_ui_class: EditorUI
+        self.caption = "ProgCraft - The Level Editor 🤩"
         @busy_string = "Loading..."
         new_level
     end
@@ -35,6 +36,6 @@ class EditorManager < AppManager
     def select_object object_type
         @selected_object_type = object_type
         objects_list = @main_ui[:objects_menu][:list]
-        objects_list.data = objects_list.data.map{|datum| datum[:selected] = (datum[:object] == object_type); datum}
+        objects_list.data = objects_list.data.map{|datum| {**datum, selected: (datum[:object] == object_type)}}
     end
 end

@@ -10,6 +10,9 @@ module GameObjects
         def self.default_texture
             "bush_64x.png"
         end
+        def solid?
+            true
+        end
     end
     class Door < Interactable
 

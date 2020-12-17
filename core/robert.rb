@@ -9,7 +9,7 @@ class Robert
     TILE_BY_LINE = 4
     TILE_BY_COLUMN = 4  
     STUN_TIME = 1 # seconds
-    
+
     DIRECTIONS_TILES = {
         down:0,
         left:4,
@@ -58,7 +58,7 @@ class Robert
         initial_pos = @position
         target_pos = Vector2.new x, y
         
-        @state = check_state_before_new_mouvement target_pos
+        @state = is_clear_position(target_pos) ? :moving : :stun
         
         if @state == :stun
             say "Ouch!!!"
@@ -77,14 +77,20 @@ class Robert
             complete_handler.call
         })   
     end
-    def check_state_before_new_mouvement target_pos
+    def is_clear_position target_pos
         element = @root.level.maps.first.element_at(target_pos)
-        solid = element != nil ? element.solid? : false
-
-        solid ? :stun : :moving
+        element.nil? ? true : !element.solid?
+    end
+    def is_clear_path
+        to_pos = front_pos  
+        is_clear_position to_pos
     end
     # exec method
     def move_forward &complete_handler
+        to_pos = front_pos        
+        move_to(to_pos.x, to_pos.y, &complete_handler)
+    end
+    def front_pos
         to_pos = @position.clone
         case @direction
         when :up then to_pos.y -= 1
@@ -92,7 +98,7 @@ class Robert
         when :down then to_pos.y += 1
         when :left then to_pos.x -= 1
         end
-        move_to(to_pos.x, to_pos.y, &complete_handler)
+        to_pos
     end
     def turn_left &complete_handler
         case @direction

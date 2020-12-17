@@ -50,7 +50,6 @@ class ExecutionManager
     end
     def wait_for_clearance
         sleep CLEARANCE_CHECK_INTERVAL until @last_instruction_finished and !@is_paused #loop until last instruction finished with interval
-        puts caller_locations(2).to_s.split(":")[1]
         @root.update_line_display caller_locations(2).to_s.split(":")[1]
         @last_instruction_finished = false
     end

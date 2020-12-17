@@ -9,6 +9,7 @@ class Robert
     TILE_BY_LINE = 4
     TILE_BY_COLUMN = 4  
     STUN_TIME = 1 # seconds
+    
     DIRECTIONS_TILES = {
         down:0,
         left:4,
@@ -60,9 +61,9 @@ class Robert
         @state = check_state_before_new_mouvement target_pos
         
         if @state == :stun
+            say "Ouch!!!"
             @root.plan_action(STUN_TIME) do
                 @state = :idle
-                say "Ouch!!!"
                 complete_handler.call
             end           
             return
@@ -77,7 +78,6 @@ class Robert
         })   
     end
     def check_state_before_new_mouvement target_pos
-        pp @root.level.maps
         element = @root.level.maps.first.element_at(target_pos)
         solid = element != nil ? element.solid? : false
 
@@ -95,30 +95,28 @@ class Robert
         move_to(to_pos.x, to_pos.y, &complete_handler)
     end
     def turn_left &complete_handler
-        sleep 0.25
         case @direction
-        when :up then 
+        when :up 
             @direction = :left
-        when :right then 
+        when :right 
             @direction = :up
-        when :down then 
+        when :down 
             @direction = :right
-        when :left then 
+        when :left 
             @direction = :down
         end
         sleep 0.25
         complete_handler.call
     end
     def turn_right &complete_handler
-        sleep 0.25
         case @direction
-        when :up then 
+        when :up 
             @direction = :right
-        when :right then 
+        when :right 
             @direction = :down
-        when :down then 
+        when :down 
             @direction = :left
-        when :left then 
+        when :left 
             @direction = :up
         end
         sleep 0.25

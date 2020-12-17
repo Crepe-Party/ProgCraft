@@ -3,14 +3,14 @@ require_relative '../../ui_elements/drawables/text'
 require_relative '../../tools/file_manager'
 require_relative '../../config'
 class CodeDisplay < Scrollable
-    attr :code, :mtime
+    attr :code, :mtime 
     LINE_HEIGHT = 20
     DEFAULT_PATH_FILE = File.join(Config::MY_CODES_DIR, "sans_titre.rb")
     def build
         self.background_color = Gosu::Color.rgba(0,0,0,255)
         @code_lines_text_keys = []
         @path_file = DEFAULT_PATH_FILE
-        puts @path_file
+        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,30)).constrain{@rectangle.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || 0)*LINE_HEIGHT)}
         sync
         super
     end
@@ -24,7 +24,7 @@ class CodeDisplay < Scrollable
         @code = File_manager.read @path_file
         code_lines = @code.split("\n")
         code_lines.each_with_index do |code_line, index|
-            element = Text.new(@root, "#{index.to_s.rjust(4)}  #{code_line}\n", center_text: false, color: Gosu::Color::WHITE, font: Gosu::Font.new(20 ,name: "Consolas")){@scrl_rect.relative_to(y: index*LINE_HEIGHT+5)}
+            element = Text.new(@root, "#{(index+1).to_s.rjust(4)}  #{code_line}\n", center_text: false, color: Gosu::Color::WHITE, font: Gosu::Font.new(20 ,name: "Consolas")){@scrl_rect.relative_to(y: index*LINE_HEIGHT+5)}
             key = index.to_s
             @sub_elements[key] = element
             @code_lines_text_keys << key
@@ -42,5 +42,9 @@ class CodeDisplay < Scrollable
                 sleep 1
             end
         }
+    end
+    def highlight line_number
+        @line_number = line_number.to_i-1
+        apply_constraints
     end
 end

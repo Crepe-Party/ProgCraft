@@ -60,7 +60,6 @@ class Robert
         move_to(to_pos.x, to_pos.y, &complete_handler)
     end
     def turn_left
-        sleep 0.25
         case @direction
         when :up then 
             @direction = :left
@@ -75,10 +74,8 @@ class Robert
             @direction = :down
             @tile = :tile_down
         end
-        sleep 0.25
     end
     def turn_right
-        sleep 0.25
         case @direction
         when :up then 
             @direction = :right
@@ -93,6 +90,5 @@ class Robert
             @direction = :up
             @tile = :tile_up
         end
-        sleep 0.25
     end
 end

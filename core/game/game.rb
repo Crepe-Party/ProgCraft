@@ -44,7 +44,7 @@ class Game < AppManager
         @main_ui.sub_elements[:code_menu].edit
     end 
     def update_line_display line_number
-        puts line_number
+        @main_ui.sub_elements[:code_display].highlight line_number
     end
     #accessors
     def whats_arbre

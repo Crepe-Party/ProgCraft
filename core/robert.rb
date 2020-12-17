@@ -14,10 +14,17 @@ class Robert
         tile_down: 0,
         tile_left: 4
     }
+    STUN_TILES = {
+        tile_up: 12,
+        tile_right: 9,
+        tile_down: 0,
+        tile_left: 4
+    }
     def initialize root, x=0, y=0
         @root = root
         @start_pos = @position = Vector2.new(x,y)
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
+        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), TILE_HEIGHT/TILE_BY_COLUMN, TILE_WIDTH/TILE_BY_LINE)
         reset
     end
     def reset
@@ -44,10 +51,15 @@ class Robert
         p "robert move to #{x}, #{y}"
         initial_pos = @position
         target_pos = Vector2.new x, y
+        # element = @root.level.maps.first.element_at target_pos # TODO collide 
+        # pp @root.level
+        element = @root.level.maps.first.element_at(target_pos)
+        
         @root.animate(0.5, on_progression: ->(linear_progress)do
-            ease_progress = Transition.smooth_progression linear_progress
-            @position = initial_pos + (target_pos - initial_pos)*ease_progress
-        end, on_finish: complete_handler)
+            solid = element != nil ? element.solid? : false
+            ease_progress = Transition.smooth_progression linear_progress            
+            @position = initial_pos + (target_pos - initial_pos)*ease_progress unless solid
+        end, on_finish: complete_handler)        
     end
     # exec method
     def move_forward &complete_handler

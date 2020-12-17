@@ -29,7 +29,7 @@ class Map
     end
     # return content at position, return wall when out of range
     def element_at target_pos
-        return GameObjects::Wall.new if target_pos.x < 0 || target_pos.y < 0 || target_pos.x >= size.x || target_pos.y >= size.x
+        return GameObjects::Wall.new if target_pos.x < 0 || target_pos.y < 0 || target_pos.x >= size.x || target_pos.y >= size.y
         return game_objects.find{ |object| object.position == target_pos }
     end
     def hash

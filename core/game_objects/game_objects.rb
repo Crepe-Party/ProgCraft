@@ -10,6 +10,9 @@ module GameObjects
         def self.default_texture
             "bush_64x.png"
         end
+        def solid?
+            true
+        end
     end
     class Door < Interactable
 
@@ -18,7 +21,9 @@ module GameObjects
 
     end
     class Tree < Interactable
-
+        def solid?
+            true
+        end
     end
     class PineCone < Interactable
         def self.default_texture
@@ -29,6 +34,9 @@ module GameObjects
         end
     end
     class Wall < GameObject
+        def solid?
+            true
+        end
         def self.default_texture
             "wall_64x.png"
         end

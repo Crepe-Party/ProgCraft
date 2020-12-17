@@ -2,9 +2,13 @@
 require_relative 'event_handler'
 module EventHandlers
     class ButtonHandler < EventHandler
-        def button_down? id
-            id = Gosu.char_to_button_id(id) if id.instance_of? String #key from char
-            @window.keys_down.include? id
+        def button_down? ids
+            ids = [ids] unless ids.instance_of? Array
+            ids.each do |id|
+                id = Gosu.char_to_button_id(id) if id.instance_of? String #key from char
+                return true if @window.keys_down.include? id
+            end
+            false
         end
     end
     class ButtonDown < ButtonHandler

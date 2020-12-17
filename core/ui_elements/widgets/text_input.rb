@@ -21,12 +21,7 @@ class TextInput < UIElement
     end
     def build
         super
-        self.add_event(:click) do |evt|
-            puts "focus on text input"
-            new_caret_pos = text_pos_at_offset(self.value, evt[:position].x - self.text_elem.rectangle.x)
-            self.caret_pos = new_caret_pos
-            @root.plug_text_input(self)# unless @text_input_instance
-        end
+        self.add_event(:click){|evt| self.focus evt[:position]}
     end
     def text_input_plugged text_input
         @text_input_instance = text_input
@@ -37,6 +32,9 @@ class TextInput < UIElement
     def text_input_unplugged
         @text_input_instance = nil
         apply_constraints
+    end
+    def unplug
+        @root.unplug_text_input self
     end
     def apply_constraints *args
         @sub_elements[:cursor].rectangle.assign!(width: 0, height: 0)
@@ -55,8 +53,8 @@ class TextInput < UIElement
                 selection_offset = offset_at_text_pos(text, @text_input_instance.selection_start)
                 selection = [cursor_offset, selection_offset].sort!
                 @sub_elements[:selection].rectangle = self.text_elem.rectangle
-                .relative_to(x: selection[0])
-                .assign!(width: selection[1] - selection[0])
+                    .relative_to(x: selection[0])
+                    .assign!(width: selection[1] - selection[0])
             end
         end
         super *args
@@ -93,13 +91,26 @@ class TextInput < UIElement
         end
     end
     def value= text
-        if @text_value_instance
-            puts "c'est bon"
+        if @text_input_instance
             @text_input_instance.text = text 
         else
             @value = text
             on_text_change text
         end
+    end
+    def focus position = nil
+        puts "focus on text input"
+        if position
+            new_caret_pos = text_pos_at_offset(self.value, position.x - self.text_elem.rectangle.x)
+            self.caret_pos = new_caret_pos
+        end
+        @root.plug_text_input(self)# unless @text_input_instance
+    end
+    def clear
+        self.value = ""
+    end
+    def submit
+        @root.events_manager.submit(self)
     end
     def caret_pos= new_pos
         @text_input_caret_pos = new_pos

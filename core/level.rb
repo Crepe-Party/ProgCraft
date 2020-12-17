@@ -10,9 +10,9 @@ class Level
         @name = ''
     end
     def load path_file
-        @maps.clear
         @level = File_manager.read_json path_file
-        return if level.nil?
+        return if @level.nil?
+        @maps.clear
         @name = @level['name']
         @level['maps'].each do |map|
             nmap = Map.new

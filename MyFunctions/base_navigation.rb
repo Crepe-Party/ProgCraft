@@ -1,9 +1,13 @@
 # navigation functions
 def gps_x
+    wait_for_clearance
+    instruction_finished    
     @robert.position.x
 end 
 def gps_y
-    @robert.position.x
+    wait_for_clearance
+    instruction_finished    
+    @robert.position.y
 end
 def is_clear_path
     wait_for_clearance
@@ -13,12 +17,12 @@ end
 def is_clear_right
     wait_for_clearance
     instruction_finished
-    return true #TODO
+    @robert.is_clear_right
 end
 def is_clear_left
     wait_for_clearance
     instruction_finished    
-    return true #TODO
+    @robert.is_clear_left
 end
 def walk_forward
     wait_for_clearance

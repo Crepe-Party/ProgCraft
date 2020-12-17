@@ -82,17 +82,25 @@ class Robert
         element.nil? ? true : !element.solid?
     end
     def is_clear_path
-        to_pos = front_pos  
+        to_pos = front_pos(@direction)  
+        is_clear_position to_pos
+    end
+    def is_clear_left
+        to_pos = front_pos(left_direction)  
+        is_clear_position to_pos
+    end
+    def is_clear_right
+        to_pos = front_pos(right_direction)  
         is_clear_position to_pos
     end
     # exec method
     def move_forward &complete_handler
-        to_pos = front_pos        
+        to_pos = front_pos(@direction)        
         move_to(to_pos.x, to_pos.y, &complete_handler)
     end
-    def front_pos
+    def front_pos direction
         to_pos = @position.clone
-        case @direction
+        case direction
         when :up then to_pos.y -= 1
         when :right then to_pos.x += 1
         when :down then to_pos.y += 1
@@ -101,32 +109,40 @@ class Robert
         to_pos
     end
     def turn_left &complete_handler
-        case @direction
-        when :up 
-            @direction = :left
-        when :right 
-            @direction = :up
-        when :down 
-            @direction = :right
-        when :left 
-            @direction = :down
-        end
+        @direction = left_direction
         sleep 0.25
         complete_handler.call
     end
     def turn_right &complete_handler
-        case @direction
-        when :up 
-            @direction = :right
-        when :right 
-            @direction = :down
-        when :down 
-            @direction = :left
-        when :left 
-            @direction = :up
-        end
+        @direction = right_direction
         sleep 0.25
         complete_handler.call
+    end
+    def right_direction
+        case @direction
+        when :up 
+            target_direction = :right
+        when :right 
+            target_direction = :down
+        when :down 
+            target_direction = :left
+        when :left 
+            target_direction = :up
+        end
+        target_direction
+    end
+    def left_direction       
+        case @direction        
+        when :up 
+            target_direction = :left
+        when :right 
+            target_direction = :up
+        when :down 
+            target_direction = :right
+        when :left 
+            target_direction = :down
+        end
+        target_direction
     end
     def say text
         casted_text = text.to_s

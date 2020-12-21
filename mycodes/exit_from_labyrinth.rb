@@ -2,8 +2,7 @@
 step_counter = 0
 
 def turn_around()
-    turn_right()
-    turn_right()
+    turn_back()
 end
 
 while gps_x() != 2 || gps_y() != 6

@@ -44,3 +44,12 @@ def turn_back
     puts "turn back"
     @robert.turn(:behind){ self.instruction_finished }
 end
+
+def compass
+    return case @robert.look_at
+    when :up then "north"
+    when :down then "south"
+    when :left then "west"
+    when :right then "east"
+    end
+end

@@ -4,7 +4,7 @@ class List < UIElement
     def initialize root, element_class, direction: :vertical, spacing: 0, start_offset: 0, parent_element: nil, &constraint
         #direction: :vertical, :horizontal, :wrap
         raise 'element_class does not contain Listable module' unless element_class.included_modules.include? Listable
-        super(root, parent_element: parent_element, &constraint)
+        super root, parent_element: parent_element, &constraint
         @element_class, @direction, @spacing, @start_offset = element_class, direction, spacing, start_offset
         @list_elements = []
         @data = []
@@ -19,12 +19,12 @@ class List < UIElement
         super
         previous_rect = @rectangle.relative_to(y: @start_offset - @spacing).assign!(height: 0) if @direction == :vertical
         previous_rect = @rectangle.relative_to(x: @start_offset - @spacing).assign!(width: 0) if @direction == :horizontal
-        @list_elements.each{|elem| previous_rect = elem.apply_list_contraints previous_rect}
+        @list_elements.each{ |elem| previous_rect = elem.apply_list_contraints previous_rect }
     end
     def data= new_data
         @data = new_data
         #remove events for unused elements
-        (@list_elements[new_data.length...@list_elements.length] || []).each{|elem| @root.events_manager.remove_events elem}
+        (@list_elements[new_data.length...@list_elements.length] || []).each{ |elem| @root.events_manager.remove_events elem }
         #build list
         @list_elements = new_data.each_with_index.map do |datum, index|
             #reuse element if availible
@@ -40,8 +40,8 @@ class List < UIElement
             @rectangle.width = 0 if @direction == :horizontal
             @rectangle.height = 0 if @direction == :vertical
         else
-            @rectangle.width = (2*@spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
-            @rectangle.height = (2*@spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+            @rectangle.width = (2 * @spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
+            @rectangle.height = (2 * @spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
         end
         
         # puts "reapply_constraints #{@rectangle.width} , #{@rectangle.height}"
@@ -54,9 +54,9 @@ end
 module Listable #use include to use module
     attr_reader :data
     attr_accessor :index
-    def initialize(root, *args, parent_list: nil, index: nil, &constraint)
+    def initialize root, *args, parent_list: nil, index: nil, &constraint
         @parent_list, @index = parent_list, index
-        super(root, *args, &constraint)
+        super root, *args, &constraint
     end
     def update_data data
         raise "Not implemented (or don't call super in this implementation)"

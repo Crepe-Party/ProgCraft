@@ -14,13 +14,13 @@ class GameUI < UIElement
     MAPS_MENU_HEIGHT = 250
     def build
         #menus
-        @sub_elements[:top_bar] = GameTopBar.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y, @rectangle.right-RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
+        @sub_elements[:top_bar] = GameTopBar.new(@root){ Rectangle2.new(@rectangle.x, @rectangle.y, @rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT) }
         #game
-        @sub_elements[:map_name] = MapName.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, MAPNAME_BAR_HEIGHT)}
-        @sub_elements[:map_game] = MapGameDisplay.new(@root){Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT + MAPNAME_BAR_HEIGHT, @rectangle.width-RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - MAPNAME_BAR_HEIGHT)}
+        @sub_elements[:map_name] = MapName.new(@root){ Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT, @rectangle.width - RIGHT_MENU_WIDTH, MAPNAME_BAR_HEIGHT) }
+        @sub_elements[:map_game] = MapGameDisplay.new(@root){ Rectangle2.new(@rectangle.x, @rectangle.y + TOP_BAR_HEIGHT + MAPNAME_BAR_HEIGHT, @rectangle.width - RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - MAPNAME_BAR_HEIGHT) }
         #code
-        @sub_elements[:code_menu] = CodeMenu.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT)}
-        @sub_elements[:code_display] = CodeDisplay.new(@root){Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height)}
+        @sub_elements[:code_menu] = CodeMenu.new(@root){ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT) }
+        @sub_elements[:code_display] = CodeDisplay.new(@root){ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height) }
     end
     def update dt
         super dt

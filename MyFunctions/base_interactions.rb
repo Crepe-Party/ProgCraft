@@ -23,7 +23,7 @@ def detection
     return false
 end
 
-def strict_to_f(val)
+def strict_to_f val
     begin
         val = Float(val)
     rescue => exception

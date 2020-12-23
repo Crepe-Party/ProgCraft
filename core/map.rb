@@ -6,7 +6,7 @@ class Map
     attr_accessor :name, :size, :robert_spawn, :robert_inventory, :game_objects
     def initialize
         @name = ''
-        @size = Vector2.new(10, 10)
+        @size = Vector2.new 10, 10
         @robert_spawn = Vector2.new
         @robert_inventory = Array.new
         @game_objects = Array.new
@@ -37,7 +37,7 @@ class Map
         @robert_inventory.each do |item|
             inventory << item.hash
         end
-        robert = {"position":{"x": @robert_spawn.x, "y": @robert_spawn.y}, "inventory": inventory}
+        robert = {"position": {"x": @robert_spawn.x, "y": @robert_spawn.y}, "inventory": inventory}
         elements = []
         @game_objects.each do |game_object|
             elements << game_object.hash

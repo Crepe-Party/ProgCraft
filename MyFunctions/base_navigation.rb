@@ -27,20 +27,20 @@ end
 def walk_forward
     wait_for_clearance
     puts "walk forward"
-    @robert.move_forward{self.instruction_finished}
+    @robert.move_forward{ self.instruction_finished }
 end
 def turn_right
     wait_for_clearance
     puts "turn right"
-    @robert.turn(:right){self.instruction_finished}
+    @robert.turn(:right){ self.instruction_finished }
 end
 def turn_left
     wait_for_clearance
     puts "turn left"
-    @robert.turn(:left){self.instruction_finished}
+    @robert.turn(:left){ self.instruction_finished }
 end
 def turn_back
     wait_for_clearance
     puts "turn back"
-    @robert.turn(:behind){self.instruction_finished}
+    @robert.turn(:behind){ self.instruction_finished }
 end

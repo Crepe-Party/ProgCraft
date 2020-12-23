@@ -15,13 +15,13 @@ class UIElement
 
     end
     def update dt
-        @sub_elements.each{|elem_name, sub_elem| sub_elem.update dt}
+        @sub_elements.each{ |elem_name, sub_elem| sub_elem.update dt }
     end
     def render extra_elements: nil, clipping_rect: nil
         #overflow clipping
         if @overflow == :hidden
             if clipping_rect
-                unless(clipping_rect = clipping_rect.intersection @rectangle)
+                unless (clipping_rect = clipping_rect.intersection @rectangle)
                     #nothing left to render
                     return {}
                 end
@@ -29,17 +29,17 @@ class UIElement
                 clipping_rect = @rectangle
             end
         end
-        to_render = @sub_elements.map{|elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect}
+        to_render = @sub_elements.map{ |elem_name, sub_elem| sub_elem.render clipping_rect: clipping_rect }
         if extra_elements
-            to_render += extra_elements.map{|sub_elem| sub_elem.render(clipping_rect: clipping_rect)} if extra_elements.instance_of? Array
-            to_render += extra_elements.map{|elem_name, sub_elem| sub_elem.render(clipping_rect: clipping_rect)} if extra_elements.instance_of? Hash
+            to_render += extra_elements.map{ |sub_elem| sub_elem.render(clipping_rect: clipping_rect) } if extra_elements.instance_of? Array
+            to_render += extra_elements.map{ |elem_name, sub_elem| sub_elem.render(clipping_rect: clipping_rect) } if extra_elements.instance_of? Hash
         end
         to_render
     end
     def apply_constraints
         return unless @root.ready_for_constraints
         @rectangle.assign!(@constraint.call) if @constraint
-        @sub_elements.each{|elem_name, sub_elem| sub_elem.apply_constraints}
+        @sub_elements.each{ |elem_name, sub_elem| sub_elem.apply_constraints }
     end
 
     def constrain &constraint
@@ -58,7 +58,7 @@ class UIElement
             self.background_elem.color = color
         else
             require_relative 'drawables/rectangle'
-            @sub_elements[:background_color] = Rectangle.new(@root, color){@rectangle}
+            @sub_elements[:background_color] = Rectangle.new(@root, color){ @rectangle }
         end
     end
     def background_elem

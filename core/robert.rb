@@ -116,7 +116,7 @@ class Robert
         complete_handler.call
     end
     # return direction when he look right, left or behind
-    def look_at direction
+    def look_at direction = nil
         return @direction if direction.nil?
 
         case @direction

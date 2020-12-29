@@ -15,12 +15,19 @@ class AppManager < Gosu::Window
         @text_input_receiver = nil
         @events_manager = EventsManager.new self
         @window_manager = WindowManager.new
+        @busy_string = "Busy..."
         
         @ready_for_constraints = false
         @main_ui = main_ui_class.new self
         @ready_for_constraints = true
 
-        @busy_string = "Busy..."
+        #text input events
+        @main_ui.add_event(:button_press, button: Gosu::KB_ESCAPE) do
+            unplug_text_input
+        end
+        @main_ui.add_event(:button_press, button: [Gosu::KB_RETURN, Gosu::KB_ENTER]) do
+            @events_manager.submit(@text_input_receiver) if @text_input_receiver
+        end
     end
     def needs_cursor?
         true

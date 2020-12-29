@@ -133,6 +133,6 @@ class GridGameContainer < Drawable
 
     def game_object_at_grid_position(position)
         return nil unless @selected_map
-        @selected_map.game_objects.find { |obj| obj.position.floor == position }
+        @selected_map.element_at position
     end
 end

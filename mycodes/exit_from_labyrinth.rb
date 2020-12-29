@@ -1,8 +1,12 @@
-pos_x = gps_x()
-pos_y = gps_y()
+
 step_counter = 0
 
-while pos_x != 2 and pos_y != 6
+def turn_around()
+    turn_right()
+    turn_right()
+end
+
+while gps_x() != 2 || gps_y() != 6
     if is_clear_path()
         walk_forward()
         step_counter += 1
@@ -14,9 +18,5 @@ while pos_x != 2 and pos_y != 6
         turn_around()
     end
 end
-say("you took "+step_counter+" steps")
-
-def turn_around()
-    turn_right()
-    turn_right()
-end
+say("you took " + step_counter.to_s + " steps") # concatenation
+say("you took #{step_counter} steps") # interpolation

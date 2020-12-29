@@ -21,11 +21,17 @@ class MapGameDisplay < GridGameContainer
     def whats_arbre_open= is_open
         return is_open if @whats_arbre_open == is_open
         @whats_arbre_open = is_open
+        if(is_open)
+            @sub_elements[:whats_arbre][:text_input].focus
+        else
+            @sub_elements[:whats_arbre][:text_input].unplug
+        end
         #animate
         @current_open_animation.cancel if @current_open_animation
         from_fract = @whats_arbre_top_fraction
         to_fract = is_open ? 0 : 1
-        @current_open_animation = @root.animate(0.5) do |progression|
+        @root.events_manager.available = false #prevent unintended clicks
+        @current_open_animation = @root.animate(0.5, on_finish: ->(){@root.events_manager.available = true}) do |progression|
             smooth = Transition.smooth_progression(progression)
             @whats_arbre_top_fraction = (to_fract - from_fract) * smooth + from_fract
             @sub_elements[:whats_arbre].apply_constraints

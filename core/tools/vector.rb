@@ -69,6 +69,9 @@ class Vector2
     def to_hash
         {x: @x, y: @y}
     end
+    def to_s
+        "x: #{@x}, y: #{y}"
+    end
 end
 
 class Rectangle2

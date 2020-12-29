@@ -1,5 +1,5 @@
-number1 = ask("Give me a number : ")
-number2 = ask("Give me another number : ")
+number1 = ask_number("Give me a number : ")
+number2 = ask_number("Give me another number : ")
 
 answer = number1 + number2
 

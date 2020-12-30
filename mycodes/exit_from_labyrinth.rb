@@ -5,7 +5,7 @@ def turn_around()
     turn_back()
 end
 
-while gps_x() != 2 || gps_y() != 6
+while !( gps_x() == 2 && gps_y() == 6)
     if is_clear_path()
         walk_forward()
         step_counter += 1

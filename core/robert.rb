@@ -3,7 +3,7 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -19,12 +19,12 @@ class Robert
 
     def initialize root, x = 0, y = 0
         @root = root
-        @start_pos = @position = Vector2.new(x,y)
+        @start_pos = @position = Vector2.new x, y
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
-        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)        
+        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
+        @inventory = []    
         reset
-    end
-    
+    end    
     def reset
         @current_animation = nil
         @state = :idle
@@ -38,7 +38,20 @@ class Robert
     def set_origin x, y
         @start_pos.x = x
         @start_pos.y = y
-        set_pos(x, y)
+        set_pos x, y
+    end
+    def inventory= inventory
+        @inventory = inventory if inventory.instance_of? Array
+    end
+    # put object in inventory
+    def take        
+        element = @root.level.maps.first.element_at @position
+        unless element.is_a? Interactable 
+            say("I can't take it!") 
+            return
+        end
+        @inventory << element    
+        @root.level.maps.first.game_objects.delete(element)  
     end
     def update
     end
@@ -93,6 +106,9 @@ class Robert
     def is_clear_right
         to_pos = front_pos look_at(:right)
         is_clear_position to_pos
+    end
+    def on_an_object
+        @root.level.maps.first.element_at @position
     end
     # exec method
     def move_forward &complete_handler

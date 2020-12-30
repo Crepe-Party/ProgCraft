@@ -53,6 +53,13 @@ class Robert
         @inventory << element    
         @root.level.maps.first.game_objects.delete(element)  
     end
+    def drop object = nil
+        object = @inventory.last unless object
+        @inventory.delete(object)
+        
+        object.position = @position
+        return object
+    end
     def update
     end
     def draw posX, posY

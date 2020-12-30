@@ -65,7 +65,6 @@ class GridGameContainer < Drawable
             Gosu.scale(@camera_zoom, @camera_zoom, @camera_zoom_origin.x, @camera_zoom_origin.y) do
                 Gosu.translate(camera_real_position.x, camera_real_position.y) do
                     #tiles
-                    #TODO: tiles
                     if @selected_map
                         #grid
                         0.upto(@selected_map.size.x) do |index|

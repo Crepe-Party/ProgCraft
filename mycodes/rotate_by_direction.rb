@@ -9,3 +9,4 @@ def turn_to(direction)
     end
 end
 turn_to("north")
+turn_to("north")

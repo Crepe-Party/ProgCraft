@@ -11,20 +11,26 @@ class Map
         @robert_inventory = Array.new
         @game_objects = Array.new
     end
+    def add_object object
+        @game_objects << object
+    end
+    def remove_object object
+        game_objects.delete object
+    end
     def load map
         @name = map['name']
         @size.x = map['size']['x']
         @size.y = map['size']['y']
         @robert_spawn.x = map['robert']['position']['x']
         @robert_spawn.y = map['robert']['position']['y']
-        map['robert']['inventory'].each do |item|
-            object = Object.const_get(item['type']).new
-            @robert_inventory << object
+        map['robert']['inventory'].each do |item|            
+            game_object = Object.const_get(item['type']).new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'))
+            @robert_inventory << game_object
         end
         map['elements'].each do |item|
             class_GameObject = Object.const_get(item['type'])
             game_object = class_GameObject.new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'), position: Vector2.new(item['position']['x'], item['position']['y']))
-            @game_objects << game_object
+            @game_objects << game_object            
         end
     end
     # return content at position, return wall when out of range

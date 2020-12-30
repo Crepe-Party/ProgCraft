@@ -22,7 +22,9 @@ end
 def detection
     return false
 end
-
+def take
+    @robert.take if @robert.on_an_object
+end
 def strict_to_f val
     begin
         val = Float(val)
@@ -30,4 +32,8 @@ def strict_to_f val
         return nil
     end
     val
+end
+def count_object_on_map object_name
+    object_class = Object.const_get("GameObjects::#{object_name.downcase.capitalize}")
+    @root.level.maps[0].game_objects.select { |gameObject| gameObject.is_a? object_class }.count
 end

@@ -3,7 +3,7 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -17,13 +17,14 @@ class Robert
         up:12,
     }
 
-    def initialize root, x=0, y=0
+    def initialize root, x = 0, y = 0
         @root = root
-        @start_pos = @position = Vector2.new(x,y)
+        @start_pos = @position = Vector2.new x, y
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
-        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)        
+        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
+        @inventory = []    
         reset
-    end
+    end    
     def reset
         @current_animation = nil
         @state = :idle
@@ -37,7 +38,27 @@ class Robert
     def set_origin x, y
         @start_pos.x = x
         @start_pos.y = y
-        set_pos(x, y)
+        set_pos x, y
+    end
+    def inventory= inventory
+        @inventory = inventory if inventory.instance_of? Array
+    end
+    # put object in inventory
+    def take        
+        element = @root.level.maps.first.element_at @position
+        unless element.is_a? Interactable 
+            say("I can't take it!") 
+            return
+        end
+        @inventory << element    
+        @root.level.maps.first.game_objects.delete(element)  
+    end
+    def drop object = nil
+        object = @inventory.last unless object
+        @inventory.delete(object)
+        
+        object.position = @position
+        return object
     end
     def update
     end
@@ -69,29 +90,32 @@ class Robert
             return
         end  
 
-        @root.animate(0.5, on_progression: ->(linear_progress)do        
+        @root.animate(0.5, on_progression: ->(linear_progress) do        
             ease_progress = Transition.smooth_progression linear_progress       
             @position = initial_pos + (target_pos - initial_pos)*ease_progress     
-        end, on_finish: -> {
+        end, on_finish: -> do
             @state = :idle
             complete_handler.call
-        })   
+        end)   
     end
     def is_clear_position target_pos
-        element = @root.level.maps.first.element_at(target_pos)
+        element = @root.level.maps.first.element_at target_pos
         element.nil? ? true : !element.solid?
     end
     def is_clear_path
-        to_pos = front_pos(@direction)  
+        to_pos = front_pos @direction
         is_clear_position to_pos
     end
     def is_clear_left
-        to_pos = front_pos(left_direction)  
+        to_pos = front_pos look_at(:left)  
         is_clear_position to_pos
     end
     def is_clear_right
-        to_pos = front_pos(right_direction)  
+        to_pos = front_pos look_at(:right)
         is_clear_position to_pos
+    end
+    def on_an_object
+        @root.level.maps.first.element_at @position
     end
     # exec method
     def move_forward &complete_handler
@@ -108,42 +132,29 @@ class Robert
         end
         to_pos
     end
-    def turn_left &complete_handler
-        @direction = left_direction
+    # robert turn :right, :left or :back
+    def turn direction, &complete_handler
+        @direction = look_at direction
         sleep 0.25
         complete_handler.call
     end
-    def turn_right &complete_handler
-        @direction = right_direction
-        sleep 0.25
-        complete_handler.call
-    end
-    def right_direction
+    # return direction when he look right, left or behind
+    def look_at direction = nil
+        return @direction if direction.nil?
+
         case @direction
         when :up 
-            target_direction = :right
+            target_direction = direction == :right ? :right : direction == :left ? :left : :down
         when :right 
-            target_direction = :down
+            target_direction = direction == :right ? :down : direction == :left ? :up : :left
         when :down 
-            target_direction = :left
+            target_direction = direction == :right ? :left : direction == :left ? :right : :up
         when :left 
-            target_direction = :up
+            target_direction = direction == :right ? :up   : direction == :left ? :down : :right
         end
         target_direction
     end
-    def left_direction       
-        case @direction        
-        when :up 
-            target_direction = :left
-        when :right 
-            target_direction = :up
-        when :down 
-            target_direction = :right
-        when :left 
-            target_direction = :down
-        end
-        target_direction
-    end
+
     def say text
         casted_text = text.to_s
         puts "Say:|| #{casted_text}"

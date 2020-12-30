@@ -45,7 +45,7 @@ class ExecutionManager
         end
     end
     def instruction_finished
-        sleep SLEEP_BETWEEN_INSTRUCTIONS
+        # sleep SLEEP_BETWEEN_INSTRUCTIONS
         @last_instruction_finished = true
     end
     def wait_for_clearance

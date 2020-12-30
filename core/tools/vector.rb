@@ -1,7 +1,7 @@
 class Vector2
     include Comparable
     attr_accessor :x, :y
-    def initialize x= 0, y= 0
+    def initialize x = 0, y = 0
         @x, @y = x, y
     end
     def * scl_or_vector
@@ -20,7 +20,7 @@ class Vector2
     end
     def / scl_or_vect
         return self * (1/scl_or_vect) unless scl_or_vect.instance_of? Vector2
-        self.scl(1.0/scl_or_vect.x, 1.0/scl_or_vect.y)
+        self.scl(1.0 / scl_or_vect.x, 1.0 / scl_or_vect.y)
     end
     def + vector
         self.clone.add! vector
@@ -43,8 +43,8 @@ class Vector2
         @x, @y = @x.floor, @y.floor
         self
     end
-    def assign! vector=nil, x:nil, y:nil
-        x,y= rectangle.to_a if vector
+    def assign! vector = nil, x: nil, y: nil
+        x, y = rectangle.to_a if vector
         @x = x if x
         @y = y if y
         self
@@ -55,12 +55,12 @@ class Vector2
     def inside? rectangle
         rectangle.includes? self
     end
-    def <=>(vector)
-        return nil unless vector.instance_of?(Vector2)
+    def <=> vector 
+        return nil unless vector.instance_of? Vector2 
         return 0 if @x == vector.x and @y == vector.y
         self.length <=> vector.length
     end
-    def == (vector)
+    def ==  vector 
         @x == vector.x && @y == vector.y
     end
     def to_a
@@ -76,8 +76,8 @@ end
 
 class Rectangle2
     attr_accessor :x, :y, :width, :height
-    def initialize x=0, y=0, width=0, height=0
-      @x, @y, @width, @height = x, y ,width, height
+    def initialize x = 0, y = 0, width = 0, height = 0
+      @x, @y, @width, @height = x, y , width, height
     end
     def position
         Vector2.new @x, @y
@@ -104,7 +104,7 @@ class Rectangle2
         self.clone.relative_to! **args
     end
     def relative_to! rectangle=nil, x:nil, y:nil, width:nil, height:nil
-        x,y,width,height = rectangle.to_a if rectangle
+        x, y, width, height = rectangle.to_a if rectangle
         self.x += x if x
         self.y += y if y
         self.width += width if width
@@ -114,7 +114,7 @@ class Rectangle2
     def intersects? rectangle
         return !(self.x > rectangle.right || self.y > rectangle.bottom || self.right < rectangle.x || self.bottom < rectangle.y)
     end
-    def assign! rectangle=nil, x:nil, y:nil, width:nil, height:nil
+    def assign! rectangle = nil, x: nil, y: nil, width: nil, height: nil
         x,y,width,height = rectangle.to_a if rectangle
         @x = x if x
         @y = y if y
@@ -122,8 +122,8 @@ class Rectangle2
         @height = height if height
         self
     end
-    def assign rectangle=nil, x:nil, y:nil, width:nil, height:nil
-        self.clone.assign!(rectangle, x:x, y:y, width:width, height:height)
+    def assign rectangle = nil, x: nil, y: nil, width: nil, height: nil
+        self.clone.assign!(rectangle, x: x, y: y, width: width, height: height)
     end
     def intersection rectangle
         return nil unless self.intersects? rectangle #no intersection

@@ -12,6 +12,7 @@ class ObjectsMenu < Scrollable
         objects_to_show = [
             GameObjects::Bush,
             GameObjects::Wall,
+            GameObjects::Apple,
             GameObjects::PineCone
         ]
         @sub_elements[:list].data = objects_to_show.map{|obj| {object: obj, selected: false}}

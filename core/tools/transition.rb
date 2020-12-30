@@ -14,7 +14,7 @@ class Transition
             self.cancel
         end
     end
-    def self.smooth_progression progression, timing_function= :ease
+    def self.smooth_progression progression, timing_function = :ease
         return progression * progression * (3 - 2 * progression) if timing_function == :ease
         progression
     end

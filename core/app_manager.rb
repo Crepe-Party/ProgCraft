@@ -66,10 +66,10 @@ class AppManager < Gosu::Window
     def busy= value
         @busy = value
         if @busy    
-            @main_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
+            @main_ui.sub_elements[:busy_loader] = Class.new(UIElement) do 
                 def build
                     self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
-                    @sub_elements[:background_text] = Text.new(@root, @busy_string, center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
+                    @sub_elements[:background_text] = Text.new(@root, @busy_string, center_text: true, color: Gosu::Color::BLACK, font_size: 50){ @rectangle }
                 end
             end.new(self){Rectangle2.new(0,0,self.width, self.height)}
             @main_ui.apply_constraints
@@ -85,7 +85,7 @@ class AppManager < Gosu::Window
 
         self.text_input
     end
-    def unplug_text_input element=nil
+    def unplug_text_input element = nil
         if element && element != @text_input_receiver
             element.text_input_unplugged if defined? element.text_input_unplugged
             return
@@ -116,9 +116,9 @@ class AppManager < Gosu::Window
                 break
             end
         end
-        to_remove.each{|stamp| @planned_actions.delete(stamp)}
+        to_remove.each{ |stamp| @planned_actions.delete stamp }
     end
-    def animate duration, start_time = Time.now.to_f, on_progression: ->(pr){yield pr}, on_finish: nil
+    def animate duration, start_time = Time.now.to_f, on_progression: ->(pr){ yield pr }, on_finish: nil
         new_animation = Transition.new(self, {
             start_stamp: start_time,
             duration: duration,
@@ -129,7 +129,7 @@ class AppManager < Gosu::Window
         new_animation
     end
     def cancel_animation animation
-        self.plan_action(:next_update){@animations.delete(animation)}
+        self.plan_action(:next_update){ @animations.delete(animation) }
     end
     def drop filename
         @events_manager.drop filename
@@ -143,7 +143,7 @@ class AppManager < Gosu::Window
         @events_manager.update
     end
     def mouse_pos
-        Vector2.new(self.mouse_x, self.mouse_y)
+        Vector2.new self.mouse_x, self.mouse_y
     end
     def draw
         render

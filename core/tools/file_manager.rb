@@ -6,7 +6,7 @@ module File_manager
     end
     def self.write_json path_file, json
         File.open(path_file,"w") do |file|
-            file.write(json.to_json)
+            file.write json.to_json 
         end
     end
     def self.read path_file

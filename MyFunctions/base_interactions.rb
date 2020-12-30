@@ -19,15 +19,27 @@ end
 def say text
     @robert.say text
 end
-def detection
-    return false
+def detection    
+    wait_for_clearance
+    instruction_finished   
+    @robert.on_an_object
 end
-
-def strict_to_f(val)
+def take
+    @robert.take if @robert.on_an_object
+end
+def drop
+    game_object = @robert.drop
+    @root.level.maps[0].add_object(game_object) if game_object
+end
+def strict_to_f val
     begin
         val = Float(val)
     rescue => exception
         return nil
     end
     val
+end
+def count_object_on_map object_name
+    object_class = Object.const_get("GameObjects::#{object_name.downcase.capitalize}")
+    @root.level.maps[0].game_objects.select { |gameObject| gameObject.is_a? object_class }.count
 end

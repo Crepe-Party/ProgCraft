@@ -16,7 +16,7 @@ class Level
         @name = @level['name']
         @level['maps'].each do |map|
             nmap = Map.new
-            nmap.load(map)
+            nmap.load map
             @maps << nmap
         end
     end

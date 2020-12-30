@@ -65,7 +65,6 @@ class GridGameContainer < Drawable
             Gosu.scale(@camera_zoom, @camera_zoom, @camera_zoom_origin.x, @camera_zoom_origin.y) do
                 Gosu.translate(camera_real_position.x, camera_real_position.y) do
                     #tiles
-                    #TODO: tiles
                     if @selected_map
                         #grid
                         0.upto(@selected_map.size.x) do |index|
@@ -106,7 +105,7 @@ class GridGameContainer < Drawable
         true
     end
 
-    def scroll(direction, distance)
+    def scroll direction, distance
         return unless scrollable?
         self.camera_position.y -= distance if direction == :up
         self.camera_position.y += distance if direction == :down
@@ -114,12 +113,12 @@ class GridGameContainer < Drawable
         self.camera_position.x += distance if direction == :right
     end
 
-    def zoom(factor, origin = @rectangle.center)
+    def zoom factor, origin = @rectangle.center
         @camera_zoom *= factor
         @camera_zoom_origin = origin
     end
 
-    def projected_position(screen_pos)
+    def projected_position screen_pos
         (screen_pos - @rectangle.position).add!(@camera_position)
     end
 
@@ -127,11 +126,11 @@ class GridGameContainer < Drawable
         (position / @grid_size).floor!
     end
 
-    def projected_grid_position(screen_pos)
+    def projected_grid_position screen_pos
         grid_position projected_position screen_pos
     end
 
-    def game_object_at_grid_position(position)
+    def game_object_at_grid_position position
         return nil unless @selected_map
         @selected_map.element_at position
     end

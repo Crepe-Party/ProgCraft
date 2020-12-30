@@ -10,7 +10,7 @@ class GameObject
         file_path = File.join(Config::ASSETS_DIR, img_path || self.class.default_texture)
         @id, @name, @texture, @position, @img_path = id, name, Gosu::Image.new(file_path), position, img_path
     end 
-    def draw x=@position.x, y=@position.y
+    def draw x = @position.x, y = @position.y
         @texture.draw(x, y, 0)
     end
     def hash

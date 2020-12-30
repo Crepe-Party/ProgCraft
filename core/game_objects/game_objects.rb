@@ -1,12 +1,14 @@
 require_relative 'interactable'
 module GameObjects
     class Apple < Interactable
-        
+        def self.default_texture
+            "apple_64x.png"
+        end        
     end
     class Axe < Interactable
         
     end
-    class Bush < Interactable
+    class Bush < GameObject
         def self.default_texture
             "bush_64x.png"
         end

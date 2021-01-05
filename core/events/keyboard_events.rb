@@ -12,9 +12,9 @@ module EventHandlers
         end
     end
     class ButtonDown < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
             is_button_down = button_down?(@button)
@@ -23,18 +23,18 @@ module EventHandlers
         end
     end
     class ButtonPress < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
             trigger if button_down?(@button)    
         end
     end 
     class ButtonUp < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
             is_button_up = !button_down?(@button)

@@ -11,29 +11,36 @@ class EventsManager
         @available = true;
     end
     def update
-        @events.each(&:check) if @available
+        # @events.each(&:check) if @available
+        if @available
+            @events.each do |event|
+                if event.check == true
+                    
+                end
+            end
+        end
     end
-    def add_event element, type, options, handler
+    def add_event element, type, options, handler, stop_propagation: true
         event = nil
         case type
         when :mouse_enter
-            event = EventHandlers::MouseEnter.new @window, element, handler
+            event = EventHandlers::MouseEnter.new @window, element, handler, stop_propagation: stop_propagation
         when :mouse_leave
-            event = EventHandlers::MouseLeave.new @window, element, handler
+            event = EventHandlers::MouseLeave.new @window, element, handler, stop_propagation: stop_propagation
         when :mouse_down
-            event = EventHandlers::MouseDown.new @window, element, handler, options[:button]
+            event = EventHandlers::MouseDown.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         when :mouse_up
-            event = EventHandlers::MouseUp.new @window, element, handler, options[:button]
+            event = EventHandlers::MouseUp.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         when :mouse_drag
-            event = EventHandlers::MouseDrag.new @window, element, handler, options[:button]
+            event = EventHandlers::MouseDrag.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         when :button_down
-            event = EventHandlers::ButtonDown.new @window, element, handler, options[:button]
+            event = EventHandlers::ButtonDown.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         when :click
-            event = EventHandlers::MouseDown.new @window, element, handler, options[:button] || Gosu::MS_LEFT
+            event = EventHandlers::MouseDown.new @window, element, handler, options[:button] || Gosu::MS_LEFT, stop_propagation: stop_propagation
         when :button_up
-            event = EventHandlers::ButtonUp.new @window, element, handler, options[:button]
+            event = EventHandlers::ButtonUp.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         when :button_press
-            event = EventHandlers::ButtonPress.new @window, element, handler, options[:button]
+            event = EventHandlers::ButtonPress.new @window, element, handler, options[:button], stop_propagation: stop_propagation
         end
 
         if event
@@ -44,9 +51,9 @@ class EventsManager
         #special events
         case type
         when :drop
-            event = EventHandlers::Drop.new @window, element, handler
+            event = EventHandlers::Drop.new @window, element, handler, stop_propagation: stop_propagation
         when :submit
-            event = EventHandlers::Submit.new @window, element, handler
+            event = EventHandlers::Submit.new @window, element, handler, stop_propagation: stop_propagation
         end
 
         if event

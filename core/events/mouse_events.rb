@@ -9,15 +9,17 @@ module EventHandlers
     class MouseEnter < MouseHandler
         def check
             is_inside = mouse_inside?
-            trigger if is_inside && !@is_inside               
+            res = trigger if is_inside && !@is_inside               
             @is_inside = is_inside
+            return res
         end
     end
     class MouseLeave < MouseHandler
         def check
             is_outside = !mouse_inside?
-            trigger if is_outside && !@is_outside               
+            res = trigger if is_outside && !@is_outside               
             @is_outside = is_outside
+            return res
         end
     end
     class MouseDown < MouseHandler
@@ -29,7 +31,8 @@ module EventHandlers
             super window, element, handler, stop_propagation: stop_propagation
         end
         def check
-            @button_event.check if mouse_inside?()
+            res = @button_event.check if mouse_inside?()
+            return res
         end
     end
     class MouseUp < MouseHandler
@@ -38,7 +41,8 @@ module EventHandlers
             super window, element, handler, stop_propagation: stop_propagation
         end
         def check
-            @button_event.check if mouse_inside?()
+            res = @button_event.check if mouse_inside?()
+            return res
         end
     end
     class MouseDrag < MouseHandler
@@ -48,15 +52,17 @@ module EventHandlers
             super window, element, handler, stop_propagation: stop_propagation
         end
         def check
+            res = nil
             @ms_down_evt.check
             @btn_up_evt.check
             if @dragging
                 mouse_pos = @window.mouse_pos
-                trigger({position: mouse_pos, last_position: @last_mouse_pos}) if @last_mouse_pos
+                res = trigger({position: mouse_pos, last_position: @last_mouse_pos}) if @last_mouse_pos
                 @last_mouse_pos = mouse_pos
             elsif @last_mouse_pos
                 @last_mouse_pos = nil
             end
+            return res
         end
     end
 end

@@ -11,10 +11,9 @@ class EventsManager
         @available = true;
     end
     def update
-        # @events.each(&:check) if @available
         if @available
             @events.each do |event|
-                if event.check == true
+                if event.check
                     
                 end
             end

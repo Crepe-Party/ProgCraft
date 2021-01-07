@@ -1,51 +1,51 @@
 # navigation functions
 def gps_x
-    wait_for_clearance
-    instruction_finished    
+    mark_instruction 
     @robert.position.x
 end 
 def gps_y
-    wait_for_clearance
-    instruction_finished    
+    mark_instruction   
     @robert.position.y
 end
 def is_clear_path
-    wait_for_clearance
-    instruction_finished
+    mark_instruction
     @robert.is_clear_path
 end
 def is_clear_right
-    wait_for_clearance
-    instruction_finished
+    mark_instruction
     @robert.is_clear_right
 end
 def is_clear_left
-    wait_for_clearance
-    instruction_finished    
+    mark_instruction    
     @robert.is_clear_left
 end
 def walk_forward
-    wait_for_clearance
+    start_instruction
     puts "walk forward"
-    @robert.move_forward{ self.instruction_finished }
+    @robert.move_forward{ finish_instruction }
+    wait_for_clearance
 end
 def turn_right
-    wait_for_clearance
+    start_instruction
     puts "turn right"
-    @robert.turn(:right){ self.instruction_finished }
+    @robert.turn(:right){ finish_instruction }
+    wait_for_clearance
 end
 def turn_left
-    wait_for_clearance
+    start_instruction
     puts "turn left"
-    @robert.turn(:left){ self.instruction_finished }
+    @robert.turn(:left){ finish_instruction }
+    wait_for_clearance
 end
 def turn_back
-    wait_for_clearance
+    start_instruction
     puts "turn back"
-    @robert.turn(:behind){ self.instruction_finished }
+    @robert.turn(:behind){ finish_instruction }
+    wait_for_clearance
 end
 
 def compass
+    mark_instruction
     return case @robert.look_at
     when :up then "north"
     when :down then "south"

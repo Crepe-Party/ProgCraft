@@ -25,6 +25,9 @@ class Game < AppManager
     def next
         @execution_manager.next_step
     end
+    def stop
+        @execution_manager.stop
+    end
     def load_map path_file
         @level_available = @level.load path_file
         unless @level_available.nil?

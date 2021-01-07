@@ -11,10 +11,13 @@ class EventsManager
         @available = true;
     end
     def update
+        events_stopped = []
         if @available
             @events.each do |event|
-                if event.check
-                    
+                unless events_stopped.include? event.class
+                    if event.check
+                        events_stopped << event.class if event.stop_propagation
+                    end
                 end
             end
         end

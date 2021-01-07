@@ -1,5 +1,5 @@
 class EventHandler
-    attr_reader :window, :element
+    attr_reader :window, :element, :stop_propagation
     def initialize window, element, handler, stop_propagation: true
         @window, @element, @handler, @stop_propagation = window, element, handler, stop_propagation
     end

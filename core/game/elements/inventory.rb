@@ -12,7 +12,6 @@ class InventoryDisplay < UIElement
             @sub_elements[:icon] = Image.new(@root, DEFAULT_ICON){@rectangle}
             @sub_elements[:count_bg] = Rectangle.new(@root){Rectangle2.new(@rectangle.right - 25, @rectangle.bottom - 25, 20, 20)}
             @sub_elements[:count] = Text.new(@root, color: Gosu::Color::WHITE){@sub_elements[:count_bg].rectangle.relative_to(y:3)}
-            self.add_event(:click){@root.select_object(@data[:object])}
         end
         def list_constraint parent_rect
             parent_rect.assign(width:parent_rect.height)

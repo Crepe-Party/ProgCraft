@@ -1,5 +1,6 @@
 # interaction functions
 def ask(text, indirect_call: false)
+    mark_instruction unless indirect_call
     say(text, indirect_call: true)
     answer = nil
     @root.whats_arbre.on_answer do |response|
@@ -7,10 +8,10 @@ def ask(text, indirect_call: false)
     end
     sleep 0.1 until answer
 
-    mark_instruction unless indirect_call
     answer
 end
 def ask_number(text, indirect_call: false)
+    mark_instruction unless indirect_call
     val = nil
     loop do
         next say("Not a number!", indirect_call: true) unless val = strict_to_f(ask(text, indirect_call: true))
@@ -19,7 +20,6 @@ def ask_number(text, indirect_call: false)
     i_val = val.to_i
     val = i_val if val == i_val
 
-    mark_instruction unless indirect_call
     val
 end
 def say(text, indirect_call: false)

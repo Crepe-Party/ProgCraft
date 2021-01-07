@@ -6,6 +6,7 @@ require_relative '../robert'
 require_relative 'execution_manager'
 class Game < AppManager
     attr :level, :robert
+    attr_reader :last_loaded_level
     def initialize
         super 1800, 900, {resizable: true}, main_ui_class: GameUI
         self.caption = "ProgCraft - The Game 🤩"
@@ -31,6 +32,7 @@ class Game < AppManager
     def load_map path_file
         @level_available = @level.load path_file
         unless @level_available.nil?
+            @last_loaded_level = path_file
             @main_ui.sub_elements[:map_name].path_file = path_file
             @main_ui.sub_elements[:map_game].selected_map = @level.maps[0]
             @robert.set_origin @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y

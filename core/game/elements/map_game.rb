@@ -20,7 +20,7 @@ class MapGameDisplay < GridGameContainer
             .on_click{ self.whats_arbre_open ^= true }
         super
         @sub_elements[:inventory_display] = InventoryDisplay.new(@root)
-            .constrain{@rectangle.relative_to(x:10, width: -WA_WIDTH-2*WA_MARGIN).assign!(height:INVENTORY_HEIGHT, y: @rectangle.bottom - (INVENTORY_HEIGHT * (@inventory_visibility_fraction || 1)))}
+            .constrain{@rectangle.relative_to(x:10, width: -WA_WIDTH-2*WA_MARGIN).assign!(height:INVENTORY_HEIGHT, y: @rectangle.bottom - (INVENTORY_HEIGHT * (@inventory_visibility_fraction || 0)))}
     end
     def whats_arbre_open= is_open
         return is_open if @whats_arbre_open == is_open
@@ -41,6 +41,16 @@ class MapGameDisplay < GridGameContainer
     def update_inventory
         return unless @root.robert
         inventory_data = @root.robert.inventory.group_by{|go|{type:go.class, name:go.name}}.map{|id,objs| {type: id[:type], name: id[:name], count: objs.count}}
-        @root.plan_action{ @sub_elements[:inventory_display][:list].data = inventory_data }
+        @root.plan_action do 
+            @sub_elements[:inventory_display][:list].data = inventory_data
+            has_items = inventory_data.empty?
+            next if has_items ==  @inventory_visible
+            @inventory_visible = has_items
+            #animate
+            @root.animate(0.5, from: (@inventory_visibility_fraction || 0), to: @inventory_visible?0:1, timing_function: :ease) do |progression| 
+                @inventory_visibility_fraction = progression
+                @sub_elements[:inventory_display].apply_constraints
+            end
+        end
     end
 end

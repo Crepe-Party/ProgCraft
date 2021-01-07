@@ -97,7 +97,7 @@ class AppManager < Gosu::Window
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end
-    def plan_action duration, &handler
+    def plan_action duration = :next_update, &handler
         duration = 0 if duration == :next_update
         #insert
         @planned_actions[(Time.now.to_f*1000 + duration*1000).ceil] = handler
@@ -118,10 +118,13 @@ class AppManager < Gosu::Window
         end
         to_remove.each{ |stamp| @planned_actions.delete stamp }
     end
-    def animate duration, start_time = Time.now.to_f, on_progression: ->(pr){ yield pr }, on_finish: nil
+    def animate duration, start_time = Time.now.to_f, from: 0, to: 1, timing_function: :linear, on_progression: ->(pr){ yield pr }, on_finish: nil
         new_animation = Transition.new(self, {
             start_stamp: start_time,
             duration: duration,
+            from: from,
+            to: to, 
+            timing_function: timing_function,
             handler: on_progression,
             completion_handler: on_finish
         })

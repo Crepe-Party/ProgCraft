@@ -22,7 +22,7 @@ class Robert
         @start_pos = @position = Vector2.new x, y
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
-        @inventory = []    
+        self.inventory = []    
         reset
     end    
     def reset
@@ -42,6 +42,7 @@ class Robert
     end
     def inventory= inventory
         @inventory = inventory if inventory.instance_of? Array
+        @root.inventory_updated if defined? @root.inventory_updated
     end
     # put object in inventory
     def take        
@@ -51,13 +52,15 @@ class Robert
             return
         end
         @inventory << element    
-        @root.level.maps.first.game_objects.delete(element)  
+        @root.level.maps.first.game_objects.delete(element)
+        @root.inventory_updated if defined? @root.inventory_updated
     end
     def drop object = nil
         object = @inventory.last unless object
         @inventory.delete(object)
         
         object.position = @position
+        @root.inventory_updated if defined? @root.inventory_updated
         return object
     end
     def update

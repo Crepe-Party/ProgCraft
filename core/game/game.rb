@@ -52,6 +52,9 @@ class Game < AppManager
     def update_line_display line_number
         @main_ui.sub_elements[:code_display].highlight line_number
     end
+    def inventory_updated
+        @main_ui.sub_elements[:map_game].update_inventory
+    end
     #accessors
     def whats_arbre
         @main_ui[:map_game][:whats_arbre]

@@ -57,3 +57,4 @@ build-iPhoneSimulator/
 *_icescrum_api_token.js
 
 /.idea/
+Gemfile.lock

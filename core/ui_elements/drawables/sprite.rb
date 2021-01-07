@@ -12,6 +12,6 @@ class Sprite < UIElement
         @tile.y = (@tile.y + 1) % @tileset_height if @tile.x == 0
     end
     def draw
-        @tileset[@tile.x, @tile.y].draw(@pos_x, @pos_y, 1)
+        @tileset[@tile.x, @tile.y].draw @pos_x, @pos_y, 1 
     end
 end

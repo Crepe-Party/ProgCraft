@@ -20,9 +20,11 @@ Robert can interact with the player by asking for informations or talking.
 ### Requirements users
 * ruby: `ruby 2.6.5p114`
 * IDE (recommanded: VScode)
+* if you have gem bundler : on the terminal execute `bundle`
+* if you don't have the gem bundler, install gems `gosu`, `fxruby`
 
 ### Developper tools
 > During the development the team as 
 * install `rubyinstaller-devkit-2.6.5-1-x64`
-* install gems `gosu`, `fxruby`, `ocra` (Due to an issue with ocra, no gemfile is available)
+* install `ocra` (Due to an issue with ocra, no gemfile is available)
 * install the solargraph gem if you want VScode to help you during development

@@ -7,7 +7,7 @@ class AppManager < Gosu::Window
     attr_reader :main_ui, :events_manager, :window_manager, :busy, :ready_for_constraints, :text_input_receiver, :keys_down
 
     def initialize width, height, options = {}, main_ui_class:
-        super width, height, options = {}
+        super width, height, options
         @keys_down = [] #allowing for sub-frame key press
         @planned_actions = {}
         @animations = []
@@ -15,12 +15,19 @@ class AppManager < Gosu::Window
         @text_input_receiver = nil
         @events_manager = EventsManager.new self
         @window_manager = WindowManager.new
+        @busy_string = "Busy..."
         
         @ready_for_constraints = false
         @main_ui = main_ui_class.new self
         @ready_for_constraints = true
 
-        @busy_string = "Busy..."
+        #text input events
+        @main_ui.add_event(:button_press, button: Gosu::KB_ESCAPE) do
+            unplug_text_input
+        end
+        @main_ui.add_event(:button_press, button: [Gosu::KB_RETURN, Gosu::KB_ENTER]) do
+            @events_manager.submit(@text_input_receiver) if @text_input_receiver
+        end
     end
     def needs_cursor?
         true
@@ -59,10 +66,10 @@ class AppManager < Gosu::Window
     def busy= value
         @busy = value
         if @busy    
-            @main_ui.sub_elements[:busy_loader]= Class.new(UIElement) do 
+            @main_ui.sub_elements[:busy_loader] = Class.new(UIElement) do 
                 def build
                     self.background_color=Gosu::Color.rgba(255, 255, 255, 150)
-                    @sub_elements[:background_text] = Text.new(@root, @busy_string, center_text: true, color: Gosu::Color::BLACK, font_size: 50){@rectangle}
+                    @sub_elements[:background_text] = Text.new(@root, @busy_string, center_text: true, color: Gosu::Color::BLACK, font_size: 50){ @rectangle }
                 end
             end.new(self){Rectangle2.new(0,0,self.width, self.height)}
             @main_ui.apply_constraints
@@ -78,7 +85,7 @@ class AppManager < Gosu::Window
 
         self.text_input
     end
-    def unplug_text_input element=nil
+    def unplug_text_input element = nil
         if element && element != @text_input_receiver
             element.text_input_unplugged if defined? element.text_input_unplugged
             return
@@ -90,7 +97,7 @@ class AppManager < Gosu::Window
     def add_event element, type, options = {}, &handler
         @events_manager.add_event(element, type, options, handler)
     end
-    def plan_action duration, &handler
+    def plan_action duration = :next_update, &handler
         duration = 0 if duration == :next_update
         #insert
         @planned_actions[(Time.now.to_f*1000 + duration*1000).ceil] = handler
@@ -109,12 +116,15 @@ class AppManager < Gosu::Window
                 break
             end
         end
-        to_remove.each{|stamp| @planned_actions.delete(stamp)}
+        to_remove.each{ |stamp| @planned_actions.delete stamp }
     end
-    def animate duration, start_time = Time.now.to_f, on_progression: ->(pr){yield pr}, on_finish: nil
+    def animate duration, start_time = Time.now.to_f, from: 0, to: 1, timing_function: :linear, on_progression: ->(pr){ yield pr }, on_finish: nil
         new_animation = Transition.new(self, {
             start_stamp: start_time,
             duration: duration,
+            from: from,
+            to: to, 
+            timing_function: timing_function,
             handler: on_progression,
             completion_handler: on_finish
         })
@@ -122,7 +132,7 @@ class AppManager < Gosu::Window
         new_animation
     end
     def cancel_animation animation
-        self.plan_action(:next_update){@animations.delete(animation)}
+        self.plan_action(:next_update){ @animations.delete(animation) }
     end
     def drop filename
         @events_manager.drop filename
@@ -136,7 +146,7 @@ class AppManager < Gosu::Window
         @events_manager.update
     end
     def mouse_pos
-        Vector2.new(self.mouse_x, self.mouse_y)
+        Vector2.new self.mouse_x, self.mouse_y
     end
     def draw
         render

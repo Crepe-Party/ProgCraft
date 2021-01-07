@@ -29,8 +29,7 @@ class WindowManager
         file = ""
         if save_dialog.execute != 0
             if File.exist? save_dialog.filename
-                if MBOX_CLICKED_NO == FXMessageBox.question(@fx_main_window, MBOX_YES_NO,
-                    "Overwrite file", "Overwrite existing file?")
+                if MBOX_CLICKED_NO == FXMessageBox.question(@fx_main_window, MBOX_YES_NO, "Overwrite file", "Overwrite existing file?")
                     return ""
                 end
             end            

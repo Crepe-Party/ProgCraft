@@ -1,7 +1,7 @@
 require_relative 'drawable'
 class Line < Drawable
     attr_accessor :color
-    def initialize root, color=Gosu::Color::BLACK, &constraint
+    def initialize root, color = Gosu::Color::BLACK, &constraint
         @color = color
         super(root, &constraint)
     end

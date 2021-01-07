@@ -1,7 +1,8 @@
 require_relative '../tools/vector'
 require_relative '../config'
 class GameObject
-    attr :id, :name, :texture, :img_path, :file_path
+    attr :id, :texture, :img_path, :file_path
+    attr_writer :name
     attr_accessor :position
     def self.default_texture
         'nothing_64x.png'
@@ -22,6 +23,9 @@ class GameObject
     end
     def solid?
         false
+    end
+    def name
+        @name || self.class.pretty_s
     end
     def self.pretty_s
         self.to_s.split('::').last

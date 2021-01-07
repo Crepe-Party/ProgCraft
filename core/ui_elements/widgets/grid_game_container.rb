@@ -7,10 +7,9 @@ class GridGameContainer < Drawable
     attr_accessor :camera_position, :selected_map, :robert
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
-        @bg_color = Gosu::Color::GREEN
         @camera_zoom = 1
         @camera_zoom_origin = Vector2.new
-        @camera_position = Vector2.new(0,0)
+        @camera_position = Vector2.new
         @map_size = Vector2.new(10,10)
         @grid_size = Vector2.new(65, 65)
         @grid_weight = 2

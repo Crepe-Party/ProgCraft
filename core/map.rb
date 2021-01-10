@@ -38,16 +38,15 @@ class Map
         return GameObjects::Wall.new if target_pos.x < 0 || target_pos.y < 0 || target_pos.x >= size.x || target_pos.y >= size.y
         return game_objects.find{ |object| object.position == target_pos }
     end
-    def hash
-        inventory = []
-        @robert_inventory.each do |item|
-            inventory << item.hash
-        end
-        robert = {"position": {"x": @robert_spawn.x, "y": @robert_spawn.y}, "inventory": inventory}
-        elements = []
-        @game_objects.each do |game_object|
-            elements << game_object.hash
-        end
-        {"name": @name, "robert": robert, "elements": elements, "size": size.to_hash}
+    def to_hash
+        {
+            name: @name, 
+            robert: {
+                position: @robert_spawn.to_hash,
+                inventory: @robert_inventory.map(&:to_hash)
+            }, 
+            elements: @game_objects.map(&:to_hash), 
+            size: size.to_hash
+        }
     end
 end

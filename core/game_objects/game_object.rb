@@ -14,11 +14,14 @@ class GameObject
     def draw x = @position.x, y = @position.y
         @texture.draw(x, y, 0)
     end
-    def hash
-        hash = {"type": self.class.to_s, "position": {"x": @position.x, "y": @position.y}}
-        hash["id"] = @id if @id
-        hash["name"] = @name if @name
-        hash["data"] = {"texture": @img_path} if @img_path
+    def to_hash
+        hash = {
+            type: self.class.to_s, 
+            position: @position.to_hash
+        }
+        hash[:id] = @id if @id
+        hash[:name] = @name if @name
+        hash[:data] = {texture: @img_path} if @img_path
         hash
     end
     def solid?

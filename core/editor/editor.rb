@@ -26,7 +26,9 @@ class Editor < AppManager
     end
     def change_map index
         @selected_map_index = index
-        @main_ui.sub_elements[:map_editor].selected_map = @level.maps[index]
+        @main_ui[:map_editor].selected_map = @level.maps[index]
+        #notify
+        @main_ui[:contextual_menu].on_map_update
     end
     def save_map path_file
         return if path_file.empty?

@@ -91,11 +91,12 @@ class TextInput < UIElement
         end
     end
     def value= text
+        text_val = text.to_s
         if @text_input_instance
-            @text_input_instance.text = text 
+            @text_input_instance.text = text_val 
         else
-            @value = text
-            on_text_change text
+            @value = text_val
+            on_text_change text_val
         end
     end
     def focus position = nil

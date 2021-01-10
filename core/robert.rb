@@ -163,4 +163,11 @@ class Robert
         puts "Say:|| #{casted_text}"
         @root.whats_arbre.push_message(casted_text)
     end
+
+    def self.default_texture
+        "robert_64x.png"
+    end
+    def self.pretty_s
+        "Robert"
+    end
 end

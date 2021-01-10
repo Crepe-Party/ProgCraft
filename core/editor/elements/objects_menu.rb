@@ -4,16 +4,19 @@ require_relative '../../ui_elements/widgets/button'
 require_relative '../../ui_elements/drawables/image'
 require_relative '../../ui_elements/drawables/text'
 require_relative '../../game_objects/game_objects'
+require_relative '../../robert'
 require_relative '../../config'
 class ObjectsMenu < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(100,100,100,255)      
-        @sub_elements[:list] = List.new(@root, ListObjectElement, direction: :vertical){Rectangle2.new(@scrl_rect.x, @scrl_rect.y, @scrl_rect.width, 0)}
+        @sub_elements[:list] = List.new(@root, ListObjectElement, direction: :vertical)
+        .constrain{Rectangle2.new(@scrl_rect.x, @scrl_rect.y, @scrl_rect.width, 0)}
         objects_to_show = [
             GameObjects::Bush,
             GameObjects::Wall,
             GameObjects::Apple,
-            GameObjects::PineCone
+            GameObjects::PineCone,
+            Robert
         ]
         @sub_elements[:list].data = objects_to_show.map{|obj| {object: obj, selected: false}}
         super

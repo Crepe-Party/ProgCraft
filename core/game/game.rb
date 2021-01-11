@@ -36,6 +36,7 @@ class Game < AppManager
             @main_ui.sub_elements[:map_name].path_file = path_file
             @main_ui.sub_elements[:map_game].selected_map = @level.maps[0]
             @robert.set_origin @level.maps[0].robert_spawn.x, @level.maps[0].robert_spawn.y
+            @robert.start_direction = @level.maps[0].robert_spawn_direction
             @robert.inventory = @level.maps[0].robert_inventory
         end
     end

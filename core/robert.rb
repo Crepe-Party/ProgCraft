@@ -3,7 +3,7 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
+    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -19,7 +19,8 @@ class Robert
 
     def initialize root, x = 0, y = 0
         @root = root
-        @start_pos = @position = Vector2.new x, y
+        @position = @start_pos = Vector2.new(x, y)
+        self.start_direction = :right
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
         self.inventory = []    
@@ -28,7 +29,7 @@ class Robert
     def reset
         @current_animation = nil
         @state = :idle
-        @direction = :right
+        @direction = @start_direction
         set_pos(@start_pos.x, @start_pos.y)
     end
     def set_pos x, y
@@ -40,6 +41,10 @@ class Robert
         @start_pos.y = y
         set_pos x, y
     end
+    def start_direction= new_direction
+        @start_direction = new_direction
+        @direction = new_direction
+    end
     def inventory= inventory
         @inventory = inventory if inventory.instance_of? Array
         @root.inventory_updated if defined? @root.inventory_updated
@@ -48,7 +53,7 @@ class Robert
     def take        
         element = @root.level.maps.first.element_at @position
         unless element.is_a? Interactable 
-            say("I can't take it!") 
+            say("I can't pick it up!") 
             return
         end
         @inventory << element    
@@ -162,5 +167,12 @@ class Robert
         casted_text = text.to_s
         puts "Say:|| #{casted_text}"
         @root.whats_arbre.push_message(casted_text)
+    end
+
+    def self.default_texture
+        "robert_64x.png"
+    end
+    def self.pretty_s
+        "Robert"
     end
 end

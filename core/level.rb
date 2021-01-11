@@ -21,7 +21,7 @@ class Level
         end
     end
     def save path_file
-        maps = @maps.map(&:hash)
+        maps = @maps.map(&:to_hash)
         json = {"name": @name, "maps": maps}
         File_manager.write_json path_file, json
     end

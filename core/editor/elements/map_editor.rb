@@ -1,4 +1,5 @@
 require_relative '../../ui_elements/widgets/grid_game_container'
+require_relative '../../robert'
 class MapEditorDisplay < GridGameContainer
     def build
         super
@@ -11,6 +12,17 @@ class MapEditorDisplay < GridGameContainer
         self.add_event(:mouse_down, button: Gosu::MS_LEFT) do |event|
             grid_pos = projected_grid_position(event[:position])
             p grid_pos
+            #robert
+            if(@root.selected_object_type == Robert)
+                if(@root.robert.position == grid_pos)
+                    #rotate robert
+                    target_direction = @root.robert.look_at(:right)
+                    @root.rotate_robert(target_direction)
+                else
+                    @root.move_robert(grid_pos)
+                end
+                next
+            end
             #select object
             if(obj = game_object_at_grid_position(grid_pos))
                 puts "already an object here"

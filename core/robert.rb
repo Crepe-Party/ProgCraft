@@ -4,6 +4,7 @@ require_relative 'tools/vector'
 require_relative 'config'
 class Robert
     attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
+    attr_accessor :start_direction
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -19,7 +20,8 @@ class Robert
 
     def initialize root, x = 0, y = 0
         @root = root
-        @start_pos = @position = Vector2.new x, y
+        @position = @start_pos = Vector2.new(x, y)
+        @direction = @start_direction = :right
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
         self.inventory = []    
@@ -28,7 +30,7 @@ class Robert
     def reset
         @current_animation = nil
         @state = :idle
-        @direction = :right
+        @direction = @start_direction
         set_pos(@start_pos.x, @start_pos.y)
     end
     def set_pos x, y
@@ -48,7 +50,7 @@ class Robert
     def take        
         element = @root.level.maps.first.element_at @position
         unless element.is_a? Interactable 
-            say("I can't take it!") 
+            say("I can't pick it up!") 
             return
         end
         @inventory << element    

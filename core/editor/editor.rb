@@ -32,6 +32,7 @@ class Editor < AppManager
         @main_ui[:map_editor].selected_map = map
         #robert
         move_robert(map.robert_spawn)
+        rotate_robert(map.robert_spawn_direction)
         #notify
         @main_ui[:contextual_menu].on_map_update
     end
@@ -39,6 +40,11 @@ class Editor < AppManager
         selected_map.robert_spawn = pos
         @robert.set_origin(pos.x,pos.y)
         @robert.reset
+    end
+    def rotate_robert(direction)
+        selected_map.robert_spawn_direction = direction
+        @robert.start_direction = direction
+        robert.reset
     end
     def save_map path_file
         return if path_file.empty?

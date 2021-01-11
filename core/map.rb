@@ -3,11 +3,12 @@ Dir[__dir__+'/game_objects/*'].each { |file|
     require_relative file
 }
 class Map
-    attr_accessor :name, :size, :robert_spawn, :robert_inventory, :game_objects
+    attr_accessor :name, :size, :robert_spawn, :robert_spawn_direction, :robert_inventory, :game_objects
     def initialize
         @name = ''
         @size = Vector2.new 10, 10
         @robert_spawn = Vector2.new
+        @robert_spawn_direction = :right
         @robert_inventory = Array.new
         @game_objects = Array.new
     end
@@ -23,6 +24,7 @@ class Map
         @size.y = map['size']['y']
         @robert_spawn.x = map['robert']['position']['x']
         @robert_spawn.y = map['robert']['position']['y']
+        @robert_spawn_direction = map['robert']['direction']&.to_sym || :right
         map['robert']['inventory'].each do |item|            
             game_object = Object.const_get(item['type']).new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'))
             @robert_inventory << game_object
@@ -43,6 +45,7 @@ class Map
             name: @name, 
             robert: {
                 position: @robert_spawn.to_hash,
+                direction: @robert_spawn_direction, 
                 inventory: @robert_inventory.map(&:to_hash)
             }, 
             elements: @game_objects.map(&:to_hash), 

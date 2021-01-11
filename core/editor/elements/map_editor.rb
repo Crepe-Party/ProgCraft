@@ -14,8 +14,13 @@ class MapEditorDisplay < GridGameContainer
             p grid_pos
             #robert
             if(@root.selected_object_type == Robert)
-                #initial direction should be implemented here
-                @root.move_robert(grid_pos)
+                if(@root.robert.position == grid_pos)
+                    #rotate robert
+                    target_direction = @root.robert.look_at(:right)
+                    @root.rotate_robert(target_direction)
+                else
+                    @root.move_robert(grid_pos)
+                end
                 next
             end
             #select object

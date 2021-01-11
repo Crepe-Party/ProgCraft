@@ -4,6 +4,7 @@ require_relative 'map_game'
 require_relative 'code_display'
 require_relative 'code_menu'
 require_relative 'map_name'
+require_relative '../../ui_elements/widgets/about_overlay'
 class GameUI < UIElement
     #dimensions
     TOP_BAR_HEIGHT = 50
@@ -21,6 +22,8 @@ class GameUI < UIElement
         #code
         @sub_elements[:code_menu] = CodeMenu.new(@root){ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT) }
         @sub_elements[:code_display] = CodeDisplay.new(@root){ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height) }
+        #legal stuff
+        @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
     end
     def update dt
         super dt

@@ -3,6 +3,7 @@ require_relative 'top_bar'
 # require_relative 'maps_menu'
 require_relative 'contextual_menu'
 # require_relative 'objectives_bar'
+require_relative '../../ui_elements/widgets/about_overlay'
 require_relative 'objects_menu'
 require_relative 'map_editor'
 
@@ -23,6 +24,8 @@ class EditorUI < UIElement
         # @sub_elements[:objectives_bar] = ObjectivesBar.new(@root){Rectangle2.new(@rectangle.x + LEFT_MENU_WIDTH, @rectangle.bottom - BOTTOM_BAR_HEIGHT, @rectangle.width - LEFT_MENU_WIDTH, BOTTOM_BAR_HEIGHT)}
         #game
         @sub_elements[:map_editor] = MapEditorDisplay.new(@root) { @rectangle.relative_to(x: LEFT_MENU_WIDTH, y: TOP_BAR_HEIGHT, width: -LEFT_MENU_WIDTH - RIGHT_MENU_WIDTH, height: -TOP_BAR_HEIGHT - BOTTOM_BAR_HEIGHT) }
+        #legal stuff
+        @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
         #fps
         # @sub_elements[:fps_text] = Text.new(@root, "... ups", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end

@@ -11,7 +11,7 @@ class Text < Drawable
     end
     def draw
         x_pos = @rectangle.x
-        y_pos = @rectangle.y
+        y_pos = @rectangle.y + 2 #+2 because idk
         if center_text
             text_width = @font.text_width @string, @scale
             x_pos += ((@rectangle.width - text_width) / 2) unless center_text == :vertical

@@ -3,8 +3,7 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
-    attr_accessor :start_direction
+    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -21,7 +20,7 @@ class Robert
     def initialize root, x = 0, y = 0
         @root = root
         @position = @start_pos = Vector2.new(x, y)
-        @direction = @start_direction = :right
+        self.start_direction = :right
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
         self.inventory = []    
@@ -41,6 +40,10 @@ class Robert
         @start_pos.x = x
         @start_pos.y = y
         set_pos x, y
+    end
+    def start_direction= new_direction
+        @start_direction = new_direction
+        @direction = new_direction
     end
     def inventory= inventory
         @inventory = inventory if inventory.instance_of? Array

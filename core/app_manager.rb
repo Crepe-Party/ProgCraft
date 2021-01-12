@@ -39,7 +39,7 @@ class AppManager < Gosu::Window
         @last_frame_stamp = time
 
         update_planned_actions
-        @animations.each{|a|a.update(time)}
+        @animations.each{ |a| a.update(time) }
         @main_ui.update delta_time
         @events_manager.update
 

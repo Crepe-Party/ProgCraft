@@ -11,6 +11,7 @@ class MapGameDisplay < GridGameContainer
         @whats_arbre_open = false
         @whats_arbre_top_fraction = 1
         self.background_color = Gosu::Color::rgba(0,128,0,255)
+        super
         @sub_elements[:whats_arbre] = WhatsArbre.new(@root, parent_element: self).constrain do 
             top_pos = @whats_arbre_top_fraction * (@rectangle.height - WA_MARGIN)
             @rectangle.relative_to(x: @rectangle.width - WA_WIDTH - WA_MARGIN, y: WA_MARGIN + top_pos, height: - 3 * WA_MARGIN - WA_BTN_SIZE).assign!(width: WA_WIDTH)
@@ -18,7 +19,6 @@ class MapGameDisplay < GridGameContainer
         @sub_elements[:whats_arbre_button] = Button.new(@root, background_image: 'icons/whatsapp_tree_64x.png', bg_color: Gosu::Color::rgba(255, 255, 255, 128))
             .constrain{ Rectangle2.new(@rectangle.right - WA_BTN_SIZE - WA_MARGIN, @rectangle.bottom - WA_BTN_SIZE - WA_MARGIN, WA_BTN_SIZE, WA_BTN_SIZE) }
             .on_click{ self.whats_arbre_open ^= true }
-        super
         @sub_elements[:inventory_display] = InventoryDisplay.new(@root)
             .constrain{@rectangle.relative_to(x:10, width: -WA_WIDTH-2*WA_MARGIN).assign!(height:INVENTORY_HEIGHT, y: @rectangle.bottom - (INVENTORY_HEIGHT * (@inventory_visibility_fraction || 0)))}
     end

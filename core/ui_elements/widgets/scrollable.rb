@@ -33,8 +33,8 @@ class Scrollable < UIElement
         super
     end
     def setup_scroll_events
-        add_event(:mouse_down, { button: Gosu::MS_WHEEL_DOWN }){ self.scroll_offset-=SCROLL_FACTOR; puts "scroll up" }
-        add_event(:mouse_down, { button: Gosu::MS_WHEEL_UP }){ self.scroll_offset+=SCROLL_FACTOR; puts "scroll down" }
+        add_event(:mouse_down, { button: Gosu::MS_WHEEL_DOWN }){ self.scroll_offset-=SCROLL_FACTOR; }
+        add_event(:mouse_down, { button: Gosu::MS_WHEEL_UP }){ self.scroll_offset+=SCROLL_FACTOR; }
         if scroll_buttons?
             @sub_elements[:after_button].add_event(:mouse_down, { button: Gosu::MS_LEFT }){ self.scroll_offset -= SCROLL_FACTOR }
             @sub_elements[:before_button].add_event(:mouse_down, { button: Gosu::MS_LEFT }){ self.scroll_offset += SCROLL_FACTOR }

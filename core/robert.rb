@@ -63,6 +63,10 @@ class Robert
     end
     def drop object = nil
         object = @inventory.last unless object
+        unless object
+            say("My inventory is empty...")
+            return nil
+        end
         @inventory.delete(object)
         
         object.position = @position

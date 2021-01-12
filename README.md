@@ -2,7 +2,7 @@
 # ProgCraft
 ## Description
 
-It's an application to learn logic programming to new developpers.  
+It's an application in Ruby to learn logic programming to new developpers.  
 The player/developper uses  basic instruction to move Robert on the map and interact with objects.  
 
 Basic instructions of Robert:  
@@ -18,7 +18,7 @@ Robert can interact with the player by asking for informations or talking.
 
 ## Environment
 ### Requirements users
-* ruby: `ruby 2.6.5p114`
+* ruby: `ruby 2.6.5p114` or later
 * IDE (recommanded: VScode)
 * if you have gem bundler : on the terminal execute `bundle`
 * if you don't have the gem bundler, install gems `gosu`, `fxruby`

@@ -10,7 +10,7 @@ class CodeDisplay < Scrollable
         self.background_color = Gosu::Color.rgba(0,0,0,255)
         @code_lines_text_keys = []
         @path_file = DEFAULT_PATH_FILE
-        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,30)).constrain{ @rectangle.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || 0) * LINE_HEIGHT) }
+        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,30)).constrain{ @scrl_rect.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || 0) * LINE_HEIGHT + 5) }
         sync
         super
     end

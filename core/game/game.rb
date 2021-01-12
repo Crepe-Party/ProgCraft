@@ -6,7 +6,7 @@ require_relative '../robert'
 require_relative 'execution_manager'
 class Game < AppManager
     attr :level, :robert
-    attr_reader :last_loaded_level
+    attr_reader :last_loaded_level, :main_ui
     def initialize
         super 1800, 900, {resizable: true}, main_ui_class: GameUI
         self.caption = "ProgCraft - The Game 🤩"

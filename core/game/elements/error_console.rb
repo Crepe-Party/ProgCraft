@@ -6,6 +6,7 @@ class ErrorConsole < Scrollable
         self.background_color = Gosu::Color::rgba(64,64,64,255)
         @sub_elements[:top_bar] = ConsoleTopBar.new(@root)
         .constrain{@rectangle.assign(height: TOP_BAR_HEIGHT)}
+        .add_event(:click){@root.main_ui.console_open^=true}
         
         @sub_elements[:errors_list] = List.new(@root, ConsoleEntry)
         .constrain{@scrl_rect.relative_to(y:TOP_BAR_HEIGHT)}
@@ -29,10 +30,10 @@ class ErrorConsole < Scrollable
     class ConsoleTopBar < UIElement
         def build
             self.background_color = Gosu::Color::rgba(128,128,128,255)
-            @sub_elements[:title] = Text.new(@root, "Console", color: Gosu::Color::WHITE)
-            @sub_elements[:toggle_button] = Button.new(@root, "▲")
-            .constrain{@rectangle.assign(x:@rectangle.right - 20, width: 20, height: 20)}
-            .on_click{@root.console_open^=true}
+            @sub_elements[:title] = Text.new(@root, "Console", color: Gosu::Color::WHITE, center_text: :vertical)
+            .constrain{@rectangle.relative_to(x: 10, width: -30)}
+            @sub_elements[:toggle_button] = Button.new(@root, "▲", bg_color: Gosu::Color::rgba(255,255,255,64))
+            .constrain{@rectangle.assign(x:@rectangle.right - 35, width: 35)}
         end
     end
     class ConsoleEntry < UIElement

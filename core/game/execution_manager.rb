@@ -21,12 +21,14 @@ class ExecutionManager
         @is_paused = false
         @running_program_thread = Thread.new do
             eval @program_text
+            @root.update_line_display -1000
         end
     end
     def stop
         puts "stop"
         @running_program_thread.exit
         @robert.reset
+        @root.update_line_display -1000
     end
     def play
         puts "play", @running_program_thread.status

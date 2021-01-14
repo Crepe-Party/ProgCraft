@@ -34,11 +34,20 @@ class CodeDisplay < Scrollable
     def clear_code
         @sub_elements.reject!{ |key,val| @code_lines_text_keys.include? key }
         @code_lines_text_keys.clear
+        
     end
     def sync
         Thread.new do
             loop do
-                (File.exist? @path_file) ? (load @path_file if @mtime != (File.mtime @path_file)) : clear_code
+                if (File.exist? @path_file)
+                    if @mtime != (File.mtime @path_file)
+                        load @path_file
+                        @root.load_program @path_file
+                    end
+                else 
+                    clear_code
+                    root.stop
+                end
                 sleep 1
             end
         end

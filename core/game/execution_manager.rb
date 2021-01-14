@@ -14,7 +14,6 @@ class ExecutionManager
     end
     def program_text= program_text
         stop
-        @robert.reset
         @program_text = program_text
     end
     def start

@@ -27,13 +27,22 @@ class GameUI < UIElement
         #code
         @sub_elements[:code_menu] = CodeMenu.new(@root){ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, @rectangle.y , RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT) }
         @sub_elements[:code_display] = CodeDisplay.new(@root)
-        .constrain{ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - ErrorConsole::TOP_BAR_HEIGHT - CONSOLE_HEIGHT * (@console_pos_progress || 0)) }
+        .constrain{ Rectangle2.new(@rectangle.right - RIGHT_MENU_WIDTH, TOP_BAR_HEIGHT, RIGHT_MENU_WIDTH, @rectangle.height - TOP_BAR_HEIGHT - ErrorConsole::TOP_BAR_HEIGHT * (1-(@console_open_progress || 0)) - CONSOLE_HEIGHT * (@console_open_progress || 0)) }
         @sub_elements[:console] = ErrorConsole.new(@root)
         .constrain{ rect = @sub_elements[:code_display].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
         #legal stuff
         @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
     end
     def console_open= is_open
+        return if is_open == @console_open
+        @console_open = is_open
         @sub_elements[:console].is_open = is_open
+        #animate
+        @current_console_animation.cancel if @current_console_animation
+        @current_console_animation = @root.animate(0.5, from: (@console_open_progress || 0), to: (is_open)?1:0, timing_function: :ease) do
+            |progress|
+            @console_open_progress = progress
+            apply_constraints
+        end
     end
 end

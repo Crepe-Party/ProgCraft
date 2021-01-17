@@ -30,8 +30,8 @@ class EditorUI < UIElement
         # @sub_elements[:fps_text] = Text.new(@root, "... ups", color: Gosu::Color::WHITE, center_text: false){Rectangle2.new(@rectangle.right - 60, @rectangle.height - 50, 60, 50)}
     end
 
-    def update(*args)
-        super *args
+    def update(**args)
+        super **args
         # @sub_elements[:fps_text].string = "#{(1/dt).floor} ups" if dt > 0
     end
 end

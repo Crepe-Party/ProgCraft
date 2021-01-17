@@ -35,6 +35,8 @@ class List < UIElement
 
         #propagate content change
         self.apply_constraints
+        self.apply_constraints #a second time because of some rendering logic issue with line breaks
+
 
         if(@list_elements.empty?)
             @rectangle.width = 0 if @direction == :horizontal
@@ -72,6 +74,8 @@ module Listable #use include to use module
             # @rectangle.x = @parent_list.rectangle.x + @parent_list.start_offset + (@rectangle.width + @parent_list.spacing) * @index
         end
         apply_constraints
+        apply_constraints #a second time because of some rendering logic issue with line breaks
+
         return @rectangle
     end
     def data= data

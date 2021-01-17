@@ -9,7 +9,7 @@ class AppManager < Gosu::Window
     def initialize width, height, options = {}, main_ui_class:
         super width, height, options
         @keys_down = [] #allowing for sub-frame key press
-        @planned_actions = {}
+        @planned_actions = []
         @animations = []
         @busy=false
         @text_input_receiver = nil
@@ -48,6 +48,7 @@ class AppManager < Gosu::Window
             puts "resolution changed! #{self.width} #{self.height}"
             @current_window_width, @current_window_height = self.width, self.height
             apply_constraints
+            apply_constraints #a second time because of some rendering logic issue with line breaks
         end
 
     end
@@ -100,23 +101,26 @@ class AppManager < Gosu::Window
     def plan_action duration = :next_update, &handler
         duration = 0 if duration == :next_update
         #insert
-        @planned_actions[(Time.now.to_f*1000 + duration*1000).ceil] = handler
-        #sort
-        @planned_actions = @planned_actions.keys.sort.map{|key| [key, @planned_actions[key]]}.to_h
+        @planned_actions.push({time:(Time.now.to_f + duration), handler: handler})
+        @has_new_planned_actions = true
     end
     def update_planned_actions
         return if @planned_actions.empty?
+        if(@has_new_planned_actions)
+            @planned_actions.sort_by!{|h|h[:time]}
+            @has_new_planned_actions = false
+        end
         time = Time.now.to_f*1000
         to_remove = []
-        @planned_actions.each do |stamp, handler|
-            if stamp <= time
-                to_remove.push stamp
-                handler.call
+        @planned_actions.each do |action|
+            if action[:time] <= time
+                to_remove.push action
+                action[:handler].call
             else
                 break
             end
         end
-        to_remove.each{ |stamp| @planned_actions.delete stamp }
+        @planned_actions -= to_remove unless to_remove.empty?
     end
     def animate duration, start_time = Time.now.to_f, from: 0, to: 1, timing_function: :linear, on_progression: ->(pr){ yield pr }, on_finish: nil
         new_animation = Transition.new(self, {

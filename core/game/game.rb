@@ -56,6 +56,9 @@ class Game < AppManager
     def inventory_updated
         @main_ui.sub_elements[:map_game].update_inventory
     end
+    def on_program_error error
+        self.plan_action{ @main_ui[:console].push_error(error)}
+    end
     #accessors
     def whats_arbre
         @main_ui[:map_game][:whats_arbre]

@@ -10,7 +10,7 @@ class ExecutionManager
         @is_paused = true
         @is_stepping = false
         @running_program_thread = Thread.new{}
-        @program_text = "say 'WARNING : program empty'"
+        @program_text = "say 'WARNING : program empty'; raise 'program empty.'"
     end
     def program_text= program_text
         stop
@@ -20,7 +20,11 @@ class ExecutionManager
         @instruction_finished = true
         @is_paused = false
         @running_program_thread = Thread.new do
-            eval @program_text
+            begin
+                eval(@program_text)
+            rescue Exception => error
+                @root.on_program_error(error)
+            end
             @root.update_line_display -1000
         end
     end

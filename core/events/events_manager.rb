@@ -13,7 +13,7 @@ class EventsManager
     def update
         events_stopped = []
         if @available
-            @events.reverse().each do |event|
+            @events.reverse.each do |event|
                 unless events_stopped.include? event.class
                     if event.check
                         events_stopped << event.class if event.stop_propagation

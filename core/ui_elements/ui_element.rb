@@ -38,7 +38,7 @@ class UIElement
     end
     def apply_constraints
         return unless @root.ready_for_constraints
-        @rectangle.assign!(@constraint.call) if @constraint
+        @rectangle.assign!(@constraint.call(self)) if @constraint
         @sub_elements.each{ |elem_name, sub_elem| sub_elem.apply_constraints }
     end
 

@@ -174,7 +174,7 @@ class Robert
     def say text
         casted_text = text.to_s
         puts "Say:|| #{casted_text}"
-        @root.whats_arbre.push_message(casted_text)
+        @root.plan_action{@root.whats_arbre.push_message(casted_text)} #why plan action: idk
     end
 
     def self.default_texture

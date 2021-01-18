@@ -35,6 +35,8 @@ class List < UIElement
 
         #propagate content change
         self.apply_constraints
+        self.apply_constraints #a second time because of some rendering logic issue with line breaks
+
 
         if(@list_elements.empty?)
             @rectangle.width = 0 if @direction == :horizontal
@@ -66,12 +68,12 @@ module Listable #use include to use module
         @rectangle.assign!(list_constraint @parent_list.rectangle)
         if @parent_list.direction == :vertical
             @rectangle.y += (previous_rect.bottom + @parent_list.spacing)
-            # @rectangle.y = @parent_list.rectangle.y + @parent_list.start_offset + (@rectangle.height + @parent_list.spacing) * @index 
         else
             @rectangle.x += (previous_rect.right + @parent_list.spacing)
-            # @rectangle.x = @parent_list.rectangle.x + @parent_list.start_offset + (@rectangle.width + @parent_list.spacing) * @index
         end
         apply_constraints
+        apply_constraints #a second time because of some rendering logic issue with line breaks
+
         return @rectangle
     end
     def data= data

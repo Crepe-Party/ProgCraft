@@ -40,8 +40,8 @@ class MapGameDisplay < GridGameContainer
     end
     def update_inventory
         return unless @root.robert
-        inventory_data = @root.robert.inventory.group_by{|go|{type:go.class, name:go.name}}.map{|id,objs| {type: id[:type], name: id[:name], count: objs.count}}
         @root.plan_action do 
+            inventory_data = @root.robert.inventory.group_by{|go|{type:go.class, name:go.name}}.map{|id,objs| {type: id[:type], name: id[:name], count: objs.count}}
             @sub_elements[:inventory_display][:list].data = inventory_data
             has_items = inventory_data.empty?
             next if has_items ==  @inventory_visible

@@ -6,7 +6,7 @@ require_relative '../robert'
 require_relative 'execution_manager'
 class Game < AppManager
     attr :level, :robert
-    attr_reader :last_loaded_level
+    attr_reader :last_loaded_level, :last_loaded_program, :main_ui
     def initialize
         super 1800, 900, {resizable: true}, main_ui_class: GameUI
         self.caption = "ProgCraft - The Game 🤩"
@@ -45,6 +45,7 @@ class Game < AppManager
     def load_program path_file
         stop
         unless path_file.empty?
+            @last_loaded_program = path_file
             @main_ui.sub_elements[:code_menu].path_file = path_file
             @main_ui.sub_elements[:code_display].load path_file
             @execution_manager.program_text = @main_ui.sub_elements[:code_display].code
@@ -59,6 +60,9 @@ class Game < AppManager
     end
     def inventory_updated
         @main_ui.sub_elements[:map_game].update_inventory
+    end
+    def on_program_error error
+        self.plan_action{ @main_ui[:console].push_error(error)}
     end
     #accessors
     def whats_arbre

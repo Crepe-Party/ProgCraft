@@ -13,7 +13,6 @@ class ExecutionManager
         @program_text = "say 'WARNING : program empty'"
     end
     def program_text= program_text
-        stop
         @program_text = program_text
     end
     def start

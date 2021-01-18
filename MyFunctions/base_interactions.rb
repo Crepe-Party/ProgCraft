@@ -34,6 +34,10 @@ def take
     @robert.take if @robert.on_an_object
     mark_instruction
 end
+def give object_name, quantity = 1
+    object_class = Object.const_get("GameObjects::#{object_name.downcase.capitalize}")
+    @robert.give object_class.new, quantity
+end
 def drop
     game_object = @robert.drop
     @root.level.maps[0].add_object(game_object) if game_object

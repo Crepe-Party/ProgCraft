@@ -37,16 +37,19 @@ class CodeDisplay < Scrollable
         
     end
     def sync
+        actual_state = :empty
         Thread.new do
             loop do
                 if (File.exist? @path_file)
+                    actual_state = :loaded unless actual_state == :loaded
                     if @mtime != (File.mtime @path_file)
                         load @path_file
                         @root.load_program @path_file
                     end
-                else 
+                elsif actual_state != :empty
                     clear_code
                     root.stop
+                    actual_state = :empty
                 end
                 sleep 1
             end

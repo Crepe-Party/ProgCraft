@@ -21,6 +21,7 @@ class ExecutionManager
         @running_program_thread = Thread.new do
             eval @program_text
             @root.update_line_display -1000
+            @robert.say("My program is completely finished") unless @program_text == "say 'WARNING : program empty'"
         end
     end
     def stop

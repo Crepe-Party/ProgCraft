@@ -73,10 +73,6 @@ class Robert
         @root.inventory_updated if defined? @root.inventory_updated
         return object
     end
-    def give object_type
-        @inventory << object_type.new
-        @root.inventory_updated if defined? @root.inventory_updated
-    end
     def update
     end
     def draw posX, posY

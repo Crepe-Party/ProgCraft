@@ -55,16 +55,6 @@ class ErrorConsole < Scrollable
             @root.plan_action{@sub_elements[:errors_list].data = new_data}
         end
     end
-    # def error_final_message(error)
-    #     error_type = error.class.to_s
-    #     # error_message = uncolorize_string(error.full_message).gsub!(/\)$/, '')
-    #     error_message = uncolorize_string(error.full_message)
-    #     error_type + error_message.split(error_type)[1...].join
-    # end
-    # def uncolorize_string(string)
-    #     string.gsub(/\x1b\[[0-9]*m/, "")
-    # end
-    
     #sub classes
     class ConsoleTopBar < UIElement
         def build

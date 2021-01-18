@@ -27,7 +27,8 @@ class Robert
         reset
     end    
     def reset
-        @current_animation = nil
+        @root.cancel_animation @current_animation if @current_animation
+        @inventory = []
         @state = :idle
         @direction = @start_direction
         set_pos(@start_pos.x, @start_pos.y)
@@ -73,6 +74,12 @@ class Robert
         @root.inventory_updated if defined? @root.inventory_updated
         return object
     end
+    def give object, quantity = 1
+        raise "give required an interactible GameObject" unless object.is_a? Interactable
+        quantity.times { @inventory << object }
+        @root.inventory_updated if defined? @root.inventory_updated
+        return object
+    end
     def update
     end
     def draw posX, posY
@@ -103,7 +110,7 @@ class Robert
             return
         end  
 
-        @root.animate(0.5, on_progression: ->(linear_progress) do        
+        @current_animation = @root.animate(0.5, on_progression: ->(linear_progress) do        
             ease_progress = Transition.smooth_progression linear_progress       
             @position = initial_pos + (target_pos - initial_pos)*ease_progress     
         end, on_finish: -> do

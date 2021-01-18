@@ -3,6 +3,7 @@ require_relative '../../ui_elements/widgets/list'
 class ErrorConsole < Scrollable
     TOP_BAR_HEIGHT = 50
     def build
+        @detailed_error_sessions = []
         self.background_color = Gosu::Color::rgba(32,32,32,255)
         
         @sub_elements[:errors_list] = List.new(@root, ConsoleEntry)
@@ -26,16 +27,43 @@ class ErrorConsole < Scrollable
         super
     end
     def clear
+        @detailed_error_sessions.clear
         self.scroll_offset = 0
         @sub_elements[:errors_list].data = []
     end
     def push_error(error)
-        @sub_elements[:errors_list].data += [{
-            time: Time.now,
-            error: error
-        }]
         @root.main_ui.console_open = true
+        pretty_backtrace = error.backtrace.first.sub(/^\(eval\):/, "#{@root.last_loaded_program ? File.basename(@root.last_loaded_program) : 'eval'}:\1") #prettier location
+        time = Time.now
+        @sub_elements[:errors_list].data += [{
+            time: time,
+            error: "#{pretty_backtrace} (#{error.class.to_s}) => ..."
+        }]
+        #slow error handling
+        data_index = @sub_elements[:errors_list].data.length - 1
+        error_session_id = rand
+        @detailed_error_sessions.push(error_session_id)
+        Thread.new do
+            #simple message
+            error_string = error.to_s
+            #exit thread if reset has occured
+            next unless @detailed_error_sessions.include?(error_session_id)
+            @detailed_error_sessions -= [error_session_id]
+            new_data = @sub_elements[:errors_list].data.clone
+            new_data[data_index] = new_data[data_index].clone
+            new_data[data_index][:error] = "#{pretty_backtrace} (#{error.class.to_s}) => #{error_string}"
+            @root.plan_action{@sub_elements[:errors_list].data = new_data}
+        end
     end
+    # def error_final_message(error)
+    #     error_type = error.class.to_s
+    #     # error_message = uncolorize_string(error.full_message).gsub!(/\)$/, '')
+    #     error_message = uncolorize_string(error.full_message)
+    #     error_type + error_message.split(error_type)[1...].join
+    # end
+    # def uncolorize_string(string)
+    #     string.gsub(/\x1b\[[0-9]*m/, "")
+    # end
     
     #sub classes
     class ConsoleTopBar < UIElement
@@ -55,9 +83,8 @@ class ErrorConsole < Scrollable
             @sub_elements[:error] = Text.new(@root, break_lines: true, center_text: false, color: Gosu::Color::rgba(255,64,64,255)){@rectangle.relative_to(x:TIME_WIDTH + 5, width: -TIME_WIDTH - 5)}
         end
         def update_data new_data
-            puts "ok #{new_data[:error].to_s}"
             @sub_elements[:time].string = "#{new_data[:time].hour}:#{new_data[:time].min.to_s.rjust(2, '0')}"
-            @sub_elements[:error].string = (new_data[:error].to_s)
+            @sub_elements[:error].string = new_data[:error]
         end
         def list_constraint parent_rect
             parent_rect.assign(y:0, height: @sub_elements[:error].text_height)

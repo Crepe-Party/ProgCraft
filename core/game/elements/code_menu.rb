@@ -3,7 +3,7 @@ require_relative '../../ui_elements/drawables/text'
 require_relative '../../ui_elements/widgets/button'
 require_relative '../../config'
 class CodeMenu < UIElement
-    attr_accessor :path_file
+    attr_reader :path_file
     BUTTON_WIDTH = 100
     def build
         self.background_color = Gosu::Color.rgba(200, 200, 200, 255)

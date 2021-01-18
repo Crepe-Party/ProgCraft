@@ -26,7 +26,7 @@ class Text < Drawable
         @rendered_text = @break_lines ? text_constrained_to_width(@string) : @string
     end
     def string= new_string
-        @string = new_string
+        @string = new_string.to_s
         apply_constraints
         new_string
     end

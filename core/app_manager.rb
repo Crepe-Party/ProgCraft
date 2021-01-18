@@ -38,8 +38,8 @@ class AppManager < Gosu::Window
         delta_time = time - (@last_frame_stamp || time)
         @last_frame_stamp = time
 
-        update_planned_actions
-        @animations.each{|a|a.update(time)}
+        update_planned_actions(time: time)
+        @animations.each{ |a| a.update(time) }
         @main_ui.update delta_time
         @events_manager.update
 
@@ -104,13 +104,12 @@ class AppManager < Gosu::Window
         @planned_actions.push({time:(Time.now.to_f + duration), handler: handler})
         @has_new_planned_actions = true
     end
-    def update_planned_actions
+    def update_planned_actions(time: Time.now.to_f)
         return if @planned_actions.empty?
         if(@has_new_planned_actions)
             @planned_actions.sort_by!{|h|h[:time]}
             @has_new_planned_actions = false
         end
-        time = Time.now.to_f*1000
         to_remove = []
         @planned_actions.each do |action|
             if action[:time] <= time

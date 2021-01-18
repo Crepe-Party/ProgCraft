@@ -25,20 +25,16 @@ class Map
         @robert_spawn.x = map['robert']['position']['x']
         @robert_spawn.y = map['robert']['position']['y']
         @robert_spawn_direction = map['robert']['direction']&.to_sym || :right
-        map['robert']['inventory'].each do |item|            
-            game_object = Object.const_get(item['type']).new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'))
-            @robert_inventory << game_object
-        end
-        map['elements'].each do |item|
-            class_GameObject = Object.const_get(item['type'])
-            game_object = class_GameObject.new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'), position: Vector2.new(item['position']['x'], item['position']['y']))
-            @game_objects << game_object            
-        end
+        @robert_inventory = map['robert']['inventory'].map { |item| Object.const_get(item['type']).new(id: item['id'], name: item['name'], img_path: item.dig('data','texture')) }
+        @game_objects = map['elements'].map { |item| Object.const_get(item['type']).new(id: item['id'], name: item['name'], img_path: item.dig('data','texture'), position: Vector2.new(item['position']['x'], item['position']['y'])) }
+        self
     end
     # return content at position, return wall when out of range
     def element_at target_pos
-        return GameObjects::Wall.new if target_pos.x < 0 || target_pos.y < 0 || target_pos.x >= size.x || target_pos.y >= size.y
         return game_objects.find{ |object| object.position == target_pos }
+    end
+    def outside_the_area? target_pos
+        return target_pos.x < 0 || target_pos.y < 0 || target_pos.x >= size.x || target_pos.y >= size.y
     end
     def to_hash
         {

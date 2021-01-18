@@ -30,6 +30,7 @@ class Game < AppManager
         @execution_manager.stop
     end
     def load_map path_file
+        stop
         @level_available = @level.load path_file
         unless @level_available.nil?
             @last_loaded_level = path_file
@@ -39,14 +40,17 @@ class Game < AppManager
             @robert.start_direction = @level.maps[0].robert_spawn_direction
             @robert.inventory = @level.maps[0].robert_inventory
         end
+        @robert.reset
     end
     def load_program path_file
+        stop
         unless path_file.empty?
             @last_loaded_program = path_file
             @main_ui.sub_elements[:code_menu].path_file = path_file
             @main_ui.sub_elements[:code_display].load path_file
             @execution_manager.program_text = @main_ui.sub_elements[:code_display].code
         end
+        @robert.reset
     end
     def edit_program
         @main_ui.sub_elements[:code_menu].edit

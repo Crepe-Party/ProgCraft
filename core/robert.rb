@@ -52,6 +52,7 @@ class Robert
     # put object in inventory
     def take        
         element = @root.level.maps.first.element_at @position
+        
         unless element.is_a? Interactable 
             say("I can't pick it up!") 
             return
@@ -62,11 +63,19 @@ class Robert
     end
     def drop object = nil
         object = @inventory.last unless object
+        unless object
+            say("My inventory is empty...")
+            return nil
+        end
         @inventory.delete(object)
         
         object.position = @position
         @root.inventory_updated if defined? @root.inventory_updated
         return object
+    end
+    def give object_type
+        @inventory << object_type.new
+        @root.inventory_updated if defined? @root.inventory_updated
     end
     def update
     end
@@ -107,7 +116,10 @@ class Robert
         end)   
     end
     def is_clear_position target_pos
-        element = @root.level.maps.first.element_at target_pos
+        map = @root.level.maps.first
+        return false if map.outside_the_area? target_pos
+
+        element = map.element_at target_pos
         element.nil? ? true : !element.solid?
     end
     def is_clear_path

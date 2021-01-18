@@ -26,7 +26,9 @@ class GameTopBar < UIElement
                 @root.load_map @root.window_manager.open_file initial_dir: Config::MY_MAPS_DIR, patterns: ["Json files (*.json)", "ProgCraft Maps (*.json)"], preferred_file_filter: 1
                 @root.busy = false
             end
-
+        @sub_elements[:reload_map_button] = Button.new(@root, background_image: 'icons/reload.png', background_image_cover: true)
+            .constrain{@sub_elements[:load_map_button].rectangle.relative_to(x:150).assign!(width: 40)}
+            .on_click{@root.load_map @root.last_loaded_level if @root.last_loaded_level}
         @sub_elements[:load_program_button] = Button.new(@root, "Load Program")
             .constrain{ Rectangle2.new(@rectangle.right - 150 - 5, @rectangle.y + 5, 150, 40) }
             .on_click do

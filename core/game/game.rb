@@ -32,6 +32,7 @@ class Game < AppManager
     def reset    
         stop
         load_map last_loaded_level if last_loaded_level
+        @robert.reset
     end
     def load_map path_file
         @level_available = @level.load path_file
@@ -43,7 +44,6 @@ class Game < AppManager
             @robert.start_direction = @level.maps[0].robert_spawn_direction
             @robert.inventory = @level.maps[0].robert_inventory
         end
-        @robert.reset
     end
     def load_program path_file
         unless path_file.empty?

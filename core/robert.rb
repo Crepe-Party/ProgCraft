@@ -40,7 +40,6 @@ class Robert
     def set_origin x, y
         @start_pos.x = x
         @start_pos.y = y
-        set_pos x, y
     end
     def start_direction= new_direction
         @start_direction = new_direction

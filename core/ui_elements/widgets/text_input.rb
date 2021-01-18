@@ -36,12 +36,12 @@ class TextInput < UIElement
     def unplug
         @root.unplug_text_input self
     end
-    def apply_constraints *args
+    def apply_constraints **args
         @sub_elements[:cursor].rectangle.assign! width: 0, height: 0 
         @sub_elements[:selection].rectangle.assign! width: 0, height: 0
         if @text_input_instance
             text = self.text_elem.string
-            cursor_offset = offset_at_text_pos text, @text_input_instance.caret_pos
+            cursor_offset = text_elem.offset_at_text_pos text, @text_input_instance.caret_pos
             
             if @text_input_instance.selection_start == @text_input_instance.caret_pos
                 #cursor
@@ -50,24 +50,14 @@ class TextInput < UIElement
                     .assign!(width: @cursor_width)
             else
                 #selection
-                selection_offset = offset_at_text_pos text, @text_input_instance.selection_start 
+                selection_offset = text_elem.offset_at_text_pos text, @text_input_instance.selection_start 
                 selection = [cursor_offset, selection_offset].sort!
                 @sub_elements[:selection].rectangle = self.text_elem.rectangle
                     .relative_to(x: selection[0])
                     .assign!(width: selection[1] - selection[0])
             end
         end
-        super *args
-    end
-    def offset_at_text_pos text, pos
-        self.text_elem.font.text_width text[0...pos], 1 
-    end
-    def text_pos_at_offset text, offset
-        final_pos = 0
-        text.length.downto(0) do |pos|
-            break final_pos = pos + 1 if offset > offset_at_text_pos(text, pos)
-        end
-        final_pos
+        super **args
     end
     def update dt
         super dt
@@ -102,7 +92,7 @@ class TextInput < UIElement
     def focus position = nil
         puts "focus on text input"
         if position
-            new_caret_pos = text_pos_at_offset(self.value, position.x - self.text_elem.rectangle.x)
+            new_caret_pos = text_elem.text_pos_at_offset(self.value, position.x - self.text_elem.rectangle.x)
             self.caret_pos = new_caret_pos
         end
         @root.plug_text_input(self)# unless @text_input_instance

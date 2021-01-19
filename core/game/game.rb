@@ -44,6 +44,7 @@ class Game < AppManager
             @robert.start_direction = @level.maps[0].robert_spawn_direction
             @robert.inventory = @level.maps[0].robert_inventory
         end
+        @robert.reset
     end
     def load_program path_file
         unless path_file.empty?

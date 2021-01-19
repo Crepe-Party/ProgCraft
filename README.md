@@ -2,7 +2,7 @@
 # ProgCraft
 ## Description
 
-It's an application to learn logic programming to new developpers.  
+It's an application in Ruby to learn logic programming to new developpers.  
 The player/developper uses  basic instruction to move Robert on the map and interact with objects.  
 
 Basic instructions of Robert:  

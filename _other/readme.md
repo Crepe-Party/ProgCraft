@@ -1,12 +1,11 @@
-use watcher to develop Progcraft, when you update files.  
-When you update files the watcher reload the program. 
+[Source repository with updated version](https://github.com/nicolas-maitre/ruby_watcher)
 
-# How to use
-write ruby, the location of watcher and the app to watch.
-Example on root of progcrat project  
-  
-```
-ruby _other/watcher game.rb
-```
+# ruby_watcher
+script to restart your ruby script when a change occurs in the working directory
 
-you can ignore specific folders and files with `.watchignore`
+## Usage  
+`ruby watcher.rb [script to launch] [directory to watch(optional)]`
+
+## .watchignore file
+should be placed at the root of the directory.  
+each line contains a forbidden path to match.

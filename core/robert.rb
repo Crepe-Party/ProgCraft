@@ -3,7 +3,8 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
+    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr_reader :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -62,21 +63,20 @@ class Robert
         @root.inventory_updated if defined? @root.inventory_updated
     end
     def drop object = nil
-        object = @inventory.last unless object
+        object = @inventory.last unless object      
         unless object
             say("My inventory is empty...")
             return nil
         end
-        @inventory.delete(object)
-        
-        object.position = @position
+        @inventory.slice!(@inventory.index(object))
+        object.position = @position.clone
         @root.inventory_updated if defined? @root.inventory_updated
         return object
     end
     def give object, quantity = 1
         raise "give required an interactible GameObject" unless object.is_a? Interactable
-        quantity.times { @inventory << object }
-        @root.inventory_updated if defined? @root.inventory_updated
+        quantity.times { @inventory << object.clone }
+        @root.inventory_updated if defined? @root.inventory_updated   
         return object
     end
     def update

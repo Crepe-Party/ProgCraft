@@ -36,12 +36,21 @@ def take
     mark_instruction
 end
 def give object_name, quantity = 1
-    object_class = Object.const_get("GameObjects::#{object_name.downcase.capitalize}")
-    @robert.give object_class.new, quantity
+    game_object_name = GameObjects.constants.find { |c| GameObjects.const_get(c).is_a?(Class) && GameObjects.const_get(c).pretty_s.downcase == object_name.downcase }
+    
+    start_instruction
+    @root.plan_action do
+        object_class = GameObjects.const_get(game_object_name)
+        @robert.give object_class.new, quantity
+        finish_instruction
+    end
+    wait_for_clearance
 end
-def drop
-    game_object = @robert.drop
-    @root.level.maps[0].add_object(game_object) if game_object
+def drop    
+    @root.plan_action do
+        game_object = @robert.drop
+        @root.level.maps[0].add_object(game_object) if game_object
+    end
     mark_instruction
 end
 def strict_to_f val

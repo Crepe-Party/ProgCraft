@@ -9,6 +9,8 @@ class Editor < AppManager
         super 1280, 720, {resizable: true}, main_ui_class: EditorUI
         self.caption = "ProgCraft - The Level Editor 🤩"
         @busy_string = "Loading..."
+        @robert = Robert.new self
+        @main_ui[:map_editor].robert = @robert
         new_level
     end
     def load_map path_file
@@ -26,7 +28,23 @@ class Editor < AppManager
     end
     def change_map index
         @selected_map_index = index
-        @main_ui.sub_elements[:map_editor].selected_map = @level.maps[index]
+        map = @level.maps[index]
+        @main_ui[:map_editor].selected_map = map
+        #robert
+        move_robert(map.robert_spawn)
+        rotate_robert(map.robert_spawn_direction)
+        #notify
+        @main_ui[:contextual_menu].on_map_update
+    end
+    def move_robert(pos)
+        selected_map.robert_spawn = pos
+        @robert.set_origin(pos.x,pos.y)
+        @robert.reset
+    end
+    def rotate_robert(direction)
+        selected_map.robert_spawn_direction = direction
+        @robert.start_direction = direction
+        robert.reset
     end
     def save_map path_file
         return if path_file.empty?
@@ -37,5 +55,8 @@ class Editor < AppManager
         @selected_object_type = object_type
         objects_list = @main_ui[:objects_menu][:list]
         objects_list.data = objects_list.data.map{|datum| {**datum, selected: (datum[:object] == object_type)}}
+    end
+    def selected_map
+        @level.maps[@selected_map_index]
     end
 end

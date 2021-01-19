@@ -37,6 +37,12 @@ class WhatsArbre < UIElement
     end
     def push message
         @sub_elements[:scroll][:list].data += [message]
+        
+        # TODO block auto-scroll  if user is looking at old messages
+        if @sub_elements[:scroll][:list].list_elements.last.rectangle.bottom > @rectangle.bottom - INPUT_SECT_HEIGHT - Scrollable::SCROLL_BUTTONS_SIZE
+            message_height = @sub_elements[:scroll][:list].list_elements.last.rectangle.height + 20
+            @sub_elements[:scroll].scroll_offset -= message_height
+        end
     end
     def clear
         @sub_elements[:scroll][:list].data = []
@@ -69,8 +75,10 @@ class WhatsArbre < UIElement
         PADDING = 10
         def build
             self.background_color = LOCAL_MESSAGE_COLOR
-            @sub_elements[:title] = Text.new(@root, center_text: false){ @rectangle.assign(height: 20).relative_to(x: PADDING, y: PADDING) }
-            @sub_elements[:text] = Text.new(@root, center_text: false){ @rectangle.relative_to(x: PADDING, y: 20 + 2 * PADDING, width: -2 * PADDING, height: -20 - 2 * PADDING) }
+            @sub_elements[:title] = Text.new(@root, center_text: false)
+            .constrain{ @rectangle.assign(height: 20).relative_to(x: PADDING, y: PADDING, width: -2*PADDING) }
+            @sub_elements[:text] = Text.new(@root, center_text: false, break_lines: true)
+            .constrain{|el| r=@sub_elements[:title].rectangle; r.assign(y: r.bottom + PADDING, height: el.text_height)}
         end
         def update_data message
             @sub_elements[:title].string = message.source
@@ -79,10 +87,13 @@ class WhatsArbre < UIElement
             self.background_color = (@is_foreign ? FOREIGN_MESSAGE_COLOR : LOCAL_MESSAGE_COLOR)
         end
         def list_constraint parent_rect
+            base_rect = parent_rect
+                .assign(y:0, height: @sub_elements[:title].rectangle.height + @sub_elements[:text].rectangle.height + 3*PADDING)
+                .relative_to!(x: MARGIN, width: -2*MARGIN - SIDE_OFFSET)
             if @is_foreign
-                parent_rect.assign(y: 0, height: 100).relative_to!(x: MARGIN, width: -SIDE_OFFSET - 2 * MARGIN)
+                base_rect
             else
-                parent_rect.assign(y: 0, height: 100).relative_to!(x: SIDE_OFFSET + MARGIN, width: -SIDE_OFFSET - 2 * MARGIN)
+                base_rect.relative_to!(x: SIDE_OFFSET)
             end
         end
     end

@@ -5,7 +5,8 @@ module EventHandlers
     class Drop < MouseHandler
         def check filename
             is_inside = mouse_inside?
-            trigger({filename: filename}) if is_inside
+            res = trigger({filename: filename}) if is_inside
+            return res
         end
     end
     class Submit < EventHandler

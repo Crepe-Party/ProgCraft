@@ -10,7 +10,7 @@ class CodeDisplay < Scrollable
         self.background_color = Gosu::Color.rgba(0,0,0,255)
         @code_lines_text_keys = []
         @path_file = DEFAULT_PATH_FILE
-        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,30)).constrain{ @rectangle.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || 0) * LINE_HEIGHT) }
+        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,50)).constrain{ @scrl_rect.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || -1000) * LINE_HEIGHT + 5) }
         sync
         super
     end
@@ -36,9 +36,23 @@ class CodeDisplay < Scrollable
         @code_lines_text_keys.clear
     end
     def sync
+        old_path_file = @path_file
+        actual_state = :empty
         Thread.new do
             loop do
-                (File.exist? @path_file) ? (load @path_file if @mtime != (File.mtime @path_file)) : clear_code
+                if (File.exist? @path_file)
+                    actual_state = :loaded unless actual_state == :loaded
+                    if @mtime != (File.mtime @path_file) || old_path_file != @path_file
+                        old_path_file = @path_file
+                        load @path_file
+                        @root.load_program @path_file
+                        @root.stop
+                    end
+                elsif actual_state != :empty
+                    clear_code
+                    root.stop
+                    actual_state = :empty
+                end
                 sleep 1
             end
         end

@@ -1,4 +1,3 @@
-
 require_relative 'event_handler'
 module EventHandlers
     class ButtonHandler < EventHandler
@@ -12,34 +11,37 @@ module EventHandlers
         end
     end
     class ButtonDown < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
             is_button_down = button_down?(@button)
-            trigger if is_button_down && !@is_button_down              
+            res = trigger if is_button_down && !@is_button_down
             @is_button_down = is_button_down
+            return res
         end
     end
     class ButtonPress < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
-            trigger if button_down?(@button)    
+            res = trigger if button_down?(@button)
+            return res
         end
     end 
     class ButtonUp < ButtonHandler
-        def initialize window, element, handler, button
+        def initialize window, element, handler, button, stop_propagation: true
             @button = button
-            super window, element, handler
+            super window, element, handler, stop_propagation: stop_propagation
         end
         def check
             is_button_up = !button_down?(@button)
-            trigger({}) if is_button_up && !@is_button_up              
+            res = trigger if is_button_up && !@is_button_up              
             @is_button_up = is_button_up
+            return res
         end
     end
 end

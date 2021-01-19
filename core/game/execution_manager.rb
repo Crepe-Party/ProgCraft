@@ -10,24 +10,29 @@ class ExecutionManager
         @is_paused = true
         @is_stepping = false
         @running_program_thread = Thread.new{}
-        @program_text = "say 'WARNING : program empty'"
+        @empty_program = @program_text = "say 'WARNING : program empty'; raise 'program empty.'"
     end
     def program_text= program_text
-        stop
-        @robert.reset
         @program_text = program_text
     end
     def start
         @instruction_finished = true
         @is_paused = false
         @running_program_thread = Thread.new do
-            eval @program_text
+            begin
+                eval(@program_text)
+            rescue Exception => error
+                @root.on_program_error(error)
+            end
+            @root.update_line_display -1000
+            @robert.say("My program is completely finished") unless @program_text == @empty_program
         end
     end
     def stop
         puts "stop"
         @running_program_thread.exit
         @robert.reset
+        @root.update_line_display -1000
     end
     def play
         puts "play", @running_program_thread.status

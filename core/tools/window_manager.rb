@@ -10,6 +10,7 @@ class WindowManager
 
     def open_file initial_dir: "/", title: "Open file", patterns: ["All Files (*)"], preferred_file_filter: 0
         open_dialog = FXFileDialog.new(@fx_main_window, title)
+        @fx_main_window.position(500,500,0,0)
         open_dialog.directory = initial_dir
         open_dialog.patternList = patterns
         open_dialog.currentPattern = preferred_file_filter

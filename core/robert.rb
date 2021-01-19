@@ -3,7 +3,8 @@ require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
 class Robert
-    attr :position, :direction, :tileset, :tileset_height, :tileset_width, :tile, :inventory
+    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr_reader :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
     TILE_BY_LINE = 4
@@ -19,16 +20,18 @@ class Robert
 
     def initialize root, x = 0, y = 0
         @root = root
-        @start_pos = @position = Vector2.new x, y
+        @position = @start_pos = Vector2.new(x, y)
+        self.start_direction = :right
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
         self.inventory = []    
         reset
     end    
     def reset
-        @current_animation = nil
+        @root.cancel_animation @current_animation if @current_animation
+        @inventory = []
         @state = :idle
-        @direction = :right
+        @direction = @start_direction
         set_pos(@start_pos.x, @start_pos.y)
     end
     def set_pos x, y
@@ -38,7 +41,10 @@ class Robert
     def set_origin x, y
         @start_pos.x = x
         @start_pos.y = y
-        set_pos x, y
+    end
+    def start_direction= new_direction
+        @start_direction = new_direction
+        @direction = new_direction
     end
     def inventory= inventory
         @inventory = inventory if inventory.instance_of? Array
@@ -47,8 +53,9 @@ class Robert
     # put object in inventory
     def take        
         element = @root.level.maps.first.element_at @position
+        
         unless element.is_a? Interactable 
-            say("I can't take it!") 
+            say("I can't pick it up!") 
             return
         end
         @inventory << element    
@@ -56,11 +63,20 @@ class Robert
         @root.inventory_updated if defined? @root.inventory_updated
     end
     def drop object = nil
-        object = @inventory.last unless object
-        @inventory.delete(object)
-        
-        object.position = @position
+        object = @inventory.last unless object      
+        unless object
+            say("My inventory is empty...")
+            return nil
+        end
+        @inventory.slice!(@inventory.index(object))
+        object.position = @position.clone
         @root.inventory_updated if defined? @root.inventory_updated
+        return object
+    end
+    def give object, quantity = 1
+        raise "give required an interactible GameObject" unless object.is_a? Interactable
+        quantity.times { @inventory << object.clone }
+        @root.inventory_updated if defined? @root.inventory_updated   
         return object
     end
     def update
@@ -93,7 +109,7 @@ class Robert
             return
         end  
 
-        @root.animate(0.5, on_progression: ->(linear_progress) do        
+        @current_animation = @root.animate(0.5, on_progression: ->(linear_progress) do        
             ease_progress = Transition.smooth_progression linear_progress       
             @position = initial_pos + (target_pos - initial_pos)*ease_progress     
         end, on_finish: -> do
@@ -102,7 +118,10 @@ class Robert
         end)   
     end
     def is_clear_position target_pos
-        element = @root.level.maps.first.element_at target_pos
+        map = @root.level.maps.first
+        return false if map.outside_the_area? target_pos
+
+        element = map.element_at target_pos
         element.nil? ? true : !element.solid?
     end
     def is_clear_path
@@ -161,6 +180,13 @@ class Robert
     def say text
         casted_text = text.to_s
         puts "Say:|| #{casted_text}"
-        @root.whats_arbre.push_message(casted_text)
+        @root.plan_action{@root.whats_arbre.push_message(casted_text)} #why plan action: idk
+    end
+
+    def self.default_texture
+        "robert_64x.png"
+    end
+    def self.pretty_s
+        "Robert"
     end
 end

@@ -14,14 +14,10 @@ class Level
         return if @level.nil?
         @maps.clear
         @name = @level['name']
-        @level['maps'].each do |map|
-            nmap = Map.new
-            nmap.load map
-            @maps << nmap
-        end
+        @maps = @level['maps'].map { |map| Map.new.load(map) }
     end
     def save path_file
-        maps = @maps.map(&:hash)
+        maps = @maps.map(&:to_hash)
         json = {"name": @name, "maps": maps}
         File_manager.write_json path_file, json
     end

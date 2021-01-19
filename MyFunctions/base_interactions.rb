@@ -28,15 +28,29 @@ def say(text, indirect_call: false)
 end
 def detection
     mark_instruction
-    @robert.on_an_object
+    result = @robert.on_an_object
+    result ? result.class.pretty_s : nil
 end
 def take
     @robert.take if @robert.on_an_object
     mark_instruction
 end
-def drop
-    game_object = @robert.drop
-    @root.level.maps[0].add_object(game_object) if game_object
+def give object_name, quantity = 1
+    game_object_name = GameObjects.constants.find { |c| GameObjects.const_get(c).is_a?(Class) && GameObjects.const_get(c).pretty_s.downcase == object_name.downcase }
+    
+    start_instruction
+    @root.plan_action do
+        object_class = GameObjects.const_get(game_object_name)
+        @robert.give object_class.new, quantity
+        finish_instruction
+    end
+    wait_for_clearance
+end
+def drop    
+    @root.plan_action do
+        game_object = @robert.drop
+        @root.level.maps[0].add_object(game_object) if game_object
+    end
     mark_instruction
 end
 def strict_to_f val
@@ -48,6 +62,5 @@ def strict_to_f val
     val
 end
 def count_object_on_map object_name
-    object_class = Object.const_get("GameObjects::#{object_name.downcase.capitalize}")
-    @root.level.maps[0].game_objects.select { |gameObject| gameObject.is_a? object_class }.count
+    @root.level.maps[0].game_objects.select { |gameObject| gameObject.class.pretty_s.downcase == object_name.downcase }.count
 end

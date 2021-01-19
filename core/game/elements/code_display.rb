@@ -34,17 +34,19 @@ class CodeDisplay < Scrollable
     def clear_code
         @sub_elements.reject!{ |key,val| @code_lines_text_keys.include? key }
         @code_lines_text_keys.clear
-        
     end
     def sync
+        old_path_file = @path_file
         actual_state = :empty
         Thread.new do
             loop do
                 if (File.exist? @path_file)
                     actual_state = :loaded unless actual_state == :loaded
-                    if @mtime != (File.mtime @path_file)
+                    if @mtime != (File.mtime @path_file) || old_path_file != @path_file
+                        old_path_file = @path_file
                         load @path_file
                         @root.load_program @path_file
+                        @root.stop
                     end
                 elsif actual_state != :empty
                     clear_code

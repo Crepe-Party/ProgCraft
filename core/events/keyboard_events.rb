@@ -1,4 +1,3 @@
-
 require_relative 'event_handler'
 module EventHandlers
     class ButtonHandler < EventHandler

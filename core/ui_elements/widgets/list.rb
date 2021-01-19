@@ -1,5 +1,5 @@
 class List < UIElement
-    attr_reader :element_class, :data, :direction, :spacing, :start_offset
+    attr_reader :element_class, :data, :direction, :spacing, :start_offset, :list_elements
     #elements class should implement "Listable"
     def initialize root, element_class, direction: :vertical, spacing: 0, start_offset: 0, parent_element: nil, &constraint
         #direction: :vertical, :horizontal, :wrap

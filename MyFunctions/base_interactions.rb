@@ -28,7 +28,8 @@ def say(text, indirect_call: false)
 end
 def detection
     mark_instruction
-    @robert.on_an_object
+    result = @robert.on_an_object
+    result ? result.class.pretty_s : nil
 end
 def take
     @robert.take if @robert.on_an_object

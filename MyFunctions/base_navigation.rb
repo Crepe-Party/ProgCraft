@@ -37,13 +37,6 @@ def turn_left
     @robert.turn(:left){ finish_instruction }
     wait_for_clearance
 end
-def turn_back
-    start_instruction
-    puts "turn back"
-    @robert.turn(:behind){ finish_instruction }
-    wait_for_clearance
-end
-
 def compass
     mark_instruction
     return case @robert.look_at

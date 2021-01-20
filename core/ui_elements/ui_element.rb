@@ -23,7 +23,7 @@ class UIElement
             if clipping_rect
                 unless (clipping_rect = clipping_rect.intersection @rectangle)
                     #nothing left to render
-                    return {}
+                    return []
                 end
             else
                 clipping_rect = @rectangle
@@ -76,5 +76,10 @@ class UIElement
 
     def [] key
         self.sub_elements[key]
+    end
+
+    def inspect
+        #for circular references reason
+        "UIElement{#{self.class}}"
     end
 end

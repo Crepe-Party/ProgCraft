@@ -29,8 +29,7 @@ class CodeDisplay < Scrollable
         @code = new_code
         @sub_elements[:code_lines].data = @code.lines
     end
-end
-def clear_code
+    def clear_code
         self.code = ""
     end
     def sync
@@ -64,8 +63,10 @@ def clear_code
         LINE_NUMBER_LENGTH = 4
         CODE_FONT = Gosu::Font.new(20 ,name: "Consolas")
         def build
-            @sub_elements[:line_number] = Text.new(@root, color: Gosu::Color::AQUA, font: CODE_FONT, center_text: false){|el| @rectangle.assign(width: el.text_width)}
-            @sub_elements[:code_line] = Text.new(@root, color: Gosu::Color::WHITE, font: CODE_FONT, break_lines: true, center_text: false){num_width = @sub_elements[:line_number].rectangle.width; @rectangle.relative_to(x: num_width, width: -num_width)}
+            @sub_elements[:line_number] = Text.new(@root, color: Gosu::Color::AQUA, font: CODE_FONT, center_text: false)
+            .constrain{|el| @rectangle.assign(width: el.text_width)}
+            @sub_elements[:code_line] = Text.new(@root, color: Gosu::Color::WHITE, font: CODE_FONT, break_lines: true, center_text: false)
+            .constrain{num_width = @sub_elements[:line_number].rectangle.width; @rectangle.relative_to(x: num_width, width: -num_width)}
         end
         def update_data new_data
             puts "new data: #{new_data}"
@@ -75,4 +76,5 @@ def clear_code
         def list_constraint parent_rect
             parent_rect.assign(y:0, height: @sub_elements[:code_line].text_height)
         end
+    end
 end

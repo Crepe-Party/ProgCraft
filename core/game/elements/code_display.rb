@@ -1,16 +1,19 @@
+require_relative '../../ui_elements/widgets/list'
 require_relative '../../ui_elements/widgets/scrollable'
 require_relative '../../ui_elements/drawables/text'
 require_relative '../../tools/file_manager'
 require_relative '../../config'
 class CodeDisplay < Scrollable
-    attr :code, :mtime 
-    LINE_HEIGHT = 20
+    attr_reader :code
     DEFAULT_PATH_FILE = File.join(Config::MY_CODES_DIR, "sans_titre.rb")
     def build
-        self.background_color = Gosu::Color.rgba(0,0,0,255)
-        @code_lines_text_keys = []
         @path_file = DEFAULT_PATH_FILE
-        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,50)).constrain{ @scrl_rect.assign(height: LINE_HEIGHT).relative_to!(y: (@line_number || -1000) * LINE_HEIGHT + 5) }
+
+        self.background_color = Gosu::Color.rgba(0,0,0,255)
+        @sub_elements[:code_lines] = List.new(@root, CodeLine){@scrl_rect}
+        @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,50))
+        .constrain{(@sub_elements[:code_lines].list_elements[@line_number || 0]&.rectangle) || Rectangle2.new}
+        
         sync
         super
     end
@@ -20,38 +23,33 @@ class CodeDisplay < Scrollable
     def load path_file
         @path_file = path_file
         @mtime = File.mtime @path_file
-        clear_code
-        @code = File_manager.read @path_file
-        code_lines = @code.split("\n")
-        code_lines.each_with_index do |code_line, index|
-            element = Text.new(@root, "#{(index+1).to_s.rjust(4)}  #{code_line}\n", center_text: false, color: Gosu::Color::WHITE, font: Gosu::Font.new(20 ,name: "Consolas")){ @scrl_rect.relative_to(y: index * LINE_HEIGHT+5) }
-            key = index.to_s
-            @sub_elements[key] = element
-            @code_lines_text_keys << key
-        end
-        apply_constraints
+        self.code = File_manager.read @path_file
     end
-    def clear_code
-        @sub_elements.reject!{ |key,val| @code_lines_text_keys.include? key }
-        @code_lines_text_keys.clear
+    def code= new_code
+        @code = new_code
+        @sub_elements[:code_lines].data = @code.lines
+    end
+end
+def clear_code
+        self.code = ""
     end
     def sync
         old_path_file = @path_file
-        actual_state = :empty
+        current_state = :empty
         Thread.new do
             loop do
                 if (File.exist? @path_file)
-                    actual_state = :loaded unless actual_state == :loaded
+                    current_state = :loaded unless current_state == :loaded
                     if @mtime != (File.mtime @path_file) || old_path_file != @path_file
                         old_path_file = @path_file
                         load @path_file
                         @root.load_program @path_file
                         @root.stop
                     end
-                elsif actual_state != :empty
+                elsif current_state != :empty
                     clear_code
                     root.stop
-                    actual_state = :empty
+                    current_state = :empty
                 end
                 sleep 1
             end
@@ -61,4 +59,20 @@ class CodeDisplay < Scrollable
         @line_number = line_number.to_i-1
         apply_constraints
     end
+    class CodeLine < UIElement
+        include Listable
+        LINE_NUMBER_LENGTH = 4
+        CODE_FONT = Gosu::Font.new(20 ,name: "Consolas")
+        def build
+            @sub_elements[:line_number] = Text.new(@root, color: Gosu::Color::AQUA, font: CODE_FONT, center_text: false){|el| @rectangle.assign(width: el.text_width)}
+            @sub_elements[:code_line] = Text.new(@root, color: Gosu::Color::WHITE, font: CODE_FONT, break_lines: true, center_text: false){num_width = @sub_elements[:line_number].rectangle.width; @rectangle.relative_to(x: num_width, width: -num_width)}
+        end
+        def update_data new_data
+            puts "new data: #{new_data}"
+            @sub_elements[:line_number].string = (@index + 1).to_s.rjust(LINE_NUMBER_LENGTH) + " "
+            @sub_elements[:code_line].string = new_data
+        end
+        def list_constraint parent_rect
+            parent_rect.assign(y:0, height: @sub_elements[:code_line].text_height)
+        end
 end

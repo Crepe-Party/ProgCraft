@@ -32,6 +32,13 @@ class GameUI < UIElement
         .constrain{ rect = @sub_elements[:code_display].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
         #legal stuff
         @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
+
+        #debug heights
+        # 0.upto(10) do |ind|
+        #     @sub_elements["debug_line_#{ind}"] = Rectangle.new(@root, Gosu::Color::RED){@rectangle.assign(y:ind*100, height:5)}
+        #     @sub_elements["debug_line_text_#{ind}"] = Text.new(@root, ind*100, color:Gosu::Color::RED, center_text: false)
+        #     .constrain{@rectangle.assign(y:ind*100 - 20, height:5)}
+        # end
     end
     def smaller_screen?
         @root.width < 1200

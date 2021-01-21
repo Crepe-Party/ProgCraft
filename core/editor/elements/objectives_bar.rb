@@ -12,7 +12,7 @@ class ObjectivesBar < Scrollable
         self.background_color = Gosu::Color.rgba(50,50,50,255)
         #list
         @sub_elements[:list] = List.new(@root, ObjectiveAdapter, direction: :horizontal, spacing: 10)
-        .constrain{Rectangle2.new(@scrl_rect.x, @scrl_rect.y, nil, @scrl_rect.height)}
+        .constrain{@scrl_rect}
         
         # @root.plan_action :next_frame do
             @sub_elements[:list].data = 10.times.map{{name: '...', type: nil}}#preload

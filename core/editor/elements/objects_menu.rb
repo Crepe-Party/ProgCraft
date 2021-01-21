@@ -10,7 +10,7 @@ class ObjectsMenu < Scrollable
     def build
         self.background_color = Gosu::Color.rgba(100,100,100,255)      
         @sub_elements[:list] = List.new(@root, ListObjectElement, direction: :vertical)
-        .constrain{Rectangle2.new(@scrl_rect.x, @scrl_rect.y, @scrl_rect.width, 0)}
+        .constrain{@scrl_rect}
         objects_to_show = [
             GameObjects::Bush,
             GameObjects::Wall,

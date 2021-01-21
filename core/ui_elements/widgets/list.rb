@@ -20,6 +20,14 @@ class List < UIElement
         previous_rect = @rectangle.relative_to(y: @start_offset - @spacing).assign!(height: 0) if @direction == :vertical
         previous_rect = @rectangle.relative_to(x: @start_offset - @spacing).assign!(width: 0) if @direction == :horizontal
         @list_elements.each{ |elem| previous_rect = elem.apply_list_contraints previous_rect }
+        #dynamic height
+        if(@list_elements.empty?)
+            @rectangle.width = 0 if @direction == :horizontal
+            @rectangle.height = 0 if @direction == :vertical
+        else
+            @rectangle.width = (2 * @spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
+            @rectangle.height = (2 * @spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
+        end 
     end
     def data= new_data
         @data = new_data
@@ -35,18 +43,14 @@ class List < UIElement
 
         #propagate content change
         self.apply_constraints
-        self.apply_constraints #a second time because of some rendering logic issue with line breaks
-
-
-        if(@list_elements.empty?)
-            @rectangle.width = 0 if @direction == :horizontal
-            @rectangle.height = 0 if @direction == :vertical
-        else
-            @rectangle.width = (2 * @spacing + (@list_elements.last.rectangle.right - @rectangle.x)) if @direction == :horizontal
-            @rectangle.height = (2 * @spacing + (@list_elements.last.rectangle.bottom - @rectangle.y)) if @direction == :vertical
-        end        
+        self.apply_constraints #a second time because of some rendering logic issue with line breaks and lists
+      
         new_data
     end
+    # def sub_elements
+    #     return [] if @list_elements.empty?
+    #     [(0...@list_elements.length).to_a, @list_elements].transpose.to_h
+    # end
 end
 
 module Listable #use include to use module
@@ -71,8 +75,8 @@ module Listable #use include to use module
         else
             @rectangle.x += (previous_rect.right + @parent_list.spacing)
         end
-        apply_constraints
-        apply_constraints #a second time because of some rendering logic issue with line breaks
+        self.apply_constraints
+        self.apply_constraints #a second time because of some rendering logic issue with line breaks and lists
 
         return @rectangle
     end

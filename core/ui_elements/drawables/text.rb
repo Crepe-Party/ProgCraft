@@ -15,9 +15,8 @@ class Text < Drawable
         x_pos = @rectangle.x
         y_pos = @rectangle.y + 2 #+2 because idk
         if center_text
-            text_width = @font.text_width @string, @scale
-            x_pos += ((@rectangle.width - text_width) / 2) unless center_text == :vertical
-            y_pos += ((@rectangle.height - @font.height) / 2) unless center_text == :horizontal
+            x_pos += ((@rectangle.width - self.text_width) / 2) unless center_text == :vertical
+            y_pos += ((@rectangle.height - self.text_height) / 2) unless center_text == :horizontal
         end
         @font.draw_text(@rendered_text, x_pos, y_pos, 0, @scale, @scale, @color)
     end
@@ -43,9 +42,13 @@ class Text < Drawable
     def text_height
         @rendered_text.lines.count * @font.height
     end
+    def text_width
+        # @rendered_text.lines.map{|txt|@font.text_width(txt)}.max
+        (@font&.text_width(@rendered_text)) || 0
+    end
     #breaks on spaces to 
     def text_constrained_to_width(text)
-        lines = text.lines.map{|line| line.split(" ")}
+        lines = text.lines.map{|line| line.split(/ /, -1)} # /[[:space:]]/ and /\b\s/ can also be used
         lines.each_with_index do |words, line_index|
             words.count.downto(1) do |words_count|
                 line_words = words[...words_count]

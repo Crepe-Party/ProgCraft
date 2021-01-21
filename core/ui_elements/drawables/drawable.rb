@@ -11,6 +11,7 @@ class Drawable < UIElement
         [self]
     end
     def draw_with_clipping
+        return unless @should_render
         if @clipping_rect
             Gosu.clip_to(@clipping_rect.x, @clipping_rect.y, @clipping_rect.width, @clipping_rect.height) do 
                 draw

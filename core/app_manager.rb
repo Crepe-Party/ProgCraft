@@ -48,7 +48,7 @@ class AppManager < Gosu::Window
             puts "resolution changed! #{self.width} #{self.height}"
             @current_window_width, @current_window_height = self.width, self.height
             apply_constraints
-            apply_constraints #a second time because of some rendering logic issue with line breaks
+            apply_constraints #a second time because of some rendering logic issue with line breaks and lists
         end
 
     end

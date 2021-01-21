@@ -5,12 +5,21 @@ class AboutOverlay < UIElement
         @sub_elements[:button] = Button.new(@root, "About", bg_color: Gosu::Color::rgba(255,255,255,128))
         .constrain{Rectangle2.new(5,@rectangle.height-25,100,20)}
         .on_click do 
-            @current_transition.cancel if @current_transition
+            @current_transition&.cancel
             @about_shown = !(@about_shown || false)
-            @root.animate(0.5, from: @position_progress, to: @about_shown?0:1, timing_function: :ease) do |progress|
-                @position_progress = progress
-                apply_constraints
-            end
+            @sub_elements.each{|k,el|el.should_render = true}
+            @root.animate(0.5, from: @position_progress, to: @about_shown?0:1, timing_function: :ease,
+                on_progression: ->(progress) do
+                    @position_progress = progress
+                    self.apply_constraints
+                end,
+                on_finish: ->do
+                    puts @about_shown
+                    return if @about_shown 
+                    @sub_elements.each{|k,el|el.should_render = false}
+                    @sub_elements[:button].should_render = true
+                end
+            )
         end
 
         #popup
@@ -42,5 +51,8 @@ class AboutOverlay < UIElement
 
         @sub_elements[:heart] = Text.new(@root, "<3", color: Gosu::Color::WHITE)
         .constrain{rect = @sub_elements[:background].rectangle; Rectangle2.new(rect.right - 20, rect.bottom - 15)}
+    
+        @sub_elements.each{|k,el|el.should_render = false}
+        @sub_elements[:button].should_render = true
     end
 end

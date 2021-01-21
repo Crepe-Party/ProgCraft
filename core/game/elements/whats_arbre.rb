@@ -36,13 +36,9 @@ class WhatsArbre < UIElement
             end
     end
     def push message
+        should_autoscroll = (@sub_elements[:scroll].scroll_size - @sub_elements[:scroll].scroll_offset) < 10
         @sub_elements[:scroll][:list].data += [message]
-        
-        # TODO block auto-scroll  if user is looking at old messages
-        if @sub_elements[:scroll][:list].list_elements.last.rectangle.bottom > @rectangle.bottom - INPUT_SECT_HEIGHT - Scrollable::SCROLL_BUTTONS_SIZE
-            message_height = @sub_elements[:scroll][:list].list_elements.last.rectangle.height + 20
-            @sub_elements[:scroll].scroll_offset -= message_height
-        end
+        @sub_elements[:scroll].scroll_to(:end) if should_autoscroll
     end
     def clear
         @sub_elements[:scroll][:list].data = []
@@ -75,7 +71,7 @@ class WhatsArbre < UIElement
         PADDING = 10
         def build
             self.background_color = LOCAL_MESSAGE_COLOR
-            @sub_elements[:title] = Text.new(@root, center_text: false)
+            @sub_elements[:title] = Text.new(@root, color: Gosu::Color::BLUE, center_text: false)
             .constrain{ @rectangle.assign(height: 20).relative_to(x: PADDING, y: PADDING, width: -2*PADDING) }
             @sub_elements[:text] = Text.new(@root, center_text: false, break_lines: true)
             .constrain{|el| r=@sub_elements[:title].rectangle; r.assign(y: r.bottom + PADDING, height: el.text_height)}

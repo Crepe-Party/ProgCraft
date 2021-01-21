@@ -9,7 +9,7 @@ class CodeDisplay < Scrollable
     def build
         @path_file = DEFAULT_PATH_FILE
 
-        self.background_color = Gosu::Color.rgba(0,0,0,255)
+        self.background_color = Gosu::Color::BLACK
         @sub_elements[:code_lines] = List.new(@root, CodeLine){@scrl_rect}
         @sub_elements[:highlight] =  Rectangle.new(@root, Gosu::Color::rgba(255,255,255,50))
         .constrain{(@sub_elements[:code_lines].list_elements[@line_number || 0]&.rectangle) || Rectangle2.new}
@@ -41,9 +41,11 @@ class CodeDisplay < Scrollable
                     current_state = :loaded unless current_state == :loaded
                     if @mtime != (File.mtime @path_file) || old_path_file != @path_file
                         old_path_file = @path_file
-                        load @path_file
-                        @root.load_program @path_file
-                        @root.stop
+                        @root.plan_action do
+                            load @path_file
+                            @root.load_program @path_file
+                            @root.stop
+                        end
                     end
                 elsif current_state != :empty
                     clear_code

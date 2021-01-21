@@ -14,7 +14,6 @@ class AboutOverlay < UIElement
                     self.apply_constraints
                 end,
                 on_finish: ->do
-                    puts @about_shown
                     return if @about_shown 
                     @sub_elements.each{|k,el|el.should_render = false}
                     @sub_elements[:button].should_render = true

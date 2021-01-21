@@ -17,6 +17,8 @@ class ErrorConsole < Scrollable
         .constrain{Rectangle2.new(@rectangle.right - 45, @rectangle.bottom - 45, 40,40)}
         .on_click{self.clear}
 
+        @no_scroll_elements += [:top_bar, :clear_btn]
+
         def is_open= is_open
             @sub_elements[:top_bar][:toggle_button].text = is_open ? "▼" : "▲"
         end
@@ -35,10 +37,12 @@ class ErrorConsole < Scrollable
         @root.main_ui.console_open = true
         pretty_backtrace = error.backtrace.first.sub(/^\(eval\):/, "#{@root.last_loaded_program ? File.basename(@root.last_loaded_program) : 'eval'}:\1") #prettier location
         time = Time.now
+        should_autoscroll = (self.scroll_size - self.scroll_offset) < 10
         @sub_elements[:errors_list].data += [{
             time: time,
             error: "#{pretty_backtrace} (#{error.class.to_s}) => ..."
         }]
+        self.scroll_to(:end) if should_autoscroll
         #slow error handling
         data_index = @sub_elements[:errors_list].data.length - 1
         error_session_id = rand
@@ -52,7 +56,10 @@ class ErrorConsole < Scrollable
             new_data = @sub_elements[:errors_list].data.clone
             new_data[data_index] = new_data[data_index].clone
             new_data[data_index][:error] = "#{pretty_backtrace} (#{error.class.to_s}) => #{error_string}"
-            @root.plan_action{@sub_elements[:errors_list].data = new_data}
+            @root.plan_action do 
+                @sub_elements[:errors_list].data = new_data 
+                self.scroll_to(:end) if should_autoscroll
+            end
         end
     end
     #sub classes
@@ -67,13 +74,13 @@ class ErrorConsole < Scrollable
     end
     class ConsoleEntry < UIElement
         include Listable
-        TIME_WIDTH = 50
+        TIME_WIDTH = 70
         def build
             @sub_elements[:time] = Text.new(@root, break_lines: true, center_text: false, color: Gosu::Color::WHITE){@rectangle.assign(width: TIME_WIDTH)}
             @sub_elements[:error] = Text.new(@root, break_lines: true, center_text: false, color: Gosu::Color::rgba(255,64,64,255)){@rectangle.relative_to(x:TIME_WIDTH + 5, width: -TIME_WIDTH - 5)}
         end
         def update_data new_data
-            @sub_elements[:time].string = "#{new_data[:time].hour}:#{new_data[:time].min.to_s.rjust(2, '0')}"
+            @sub_elements[:time].string = "#{new_data[:time].hour}:#{new_data[:time].min.to_s.rjust(2, '0')}:#{new_data[:time].sec.to_s.rjust(2, '0')}"
             @sub_elements[:error].string = new_data[:error]
         end
         def list_constraint parent_rect

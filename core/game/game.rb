@@ -55,9 +55,6 @@ class Game < AppManager
         end
         @robert.reset
     end
-    def edit_program
-        @main_ui.sub_elements[:code_menu].edit
-    end 
     def update_line_display line_number
         @main_ui.sub_elements[:code_display].highlight line_number
     end

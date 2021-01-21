@@ -3,7 +3,8 @@ require_relative 'button'
 class Scrollable < UIElement
     attr_reader :scroll_offset
     SCROLL_BUTTONS_SIZE = 30
-    SCROLL_FACTOR = 30
+    MOUSE_SCROLL_FACTOR = 30
+    BUTTON_SCROLL_FACTOR = 100
     def setup
         @no_scroll_elements = [:before_button, :after_button, :background_color] #if some elements don't scroll, add them in this list
     end
@@ -33,11 +34,11 @@ class Scrollable < UIElement
         super
     end
     def setup_scroll_events
-        add_event(:mouse_down, { button: Gosu::MS_WHEEL_DOWN }){ self.scroll_offset+=SCROLL_FACTOR; }
-        add_event(:mouse_down, { button: Gosu::MS_WHEEL_UP }){ self.scroll_offset-=SCROLL_FACTOR; }
+        add_event(:mouse_down, { button: Gosu::MS_WHEEL_DOWN }){ self.scroll_offset+=MOUSE_SCROLL_FACTOR; }
+        add_event(:mouse_down, { button: Gosu::MS_WHEEL_UP }){ self.scroll_offset-=MOUSE_SCROLL_FACTOR; }
         if scroll_buttons?
-            @sub_elements[:after_button].add_event(:mouse_down, { button: Gosu::MS_LEFT }){ self.scroll_offset += SCROLL_FACTOR }
-            @sub_elements[:before_button].add_event(:mouse_down, { button: Gosu::MS_LEFT }){ self.scroll_offset -= SCROLL_FACTOR }
+            @sub_elements[:after_button].on_click{ self.scroll_to(self.scroll_offset + BUTTON_SCROLL_FACTOR, 0.1) }
+            @sub_elements[:before_button].on_click{ self.scroll_to(self.scroll_offset - BUTTON_SCROLL_FACTOR, 0.1) }
         end
     end
     

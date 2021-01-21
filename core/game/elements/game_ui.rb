@@ -31,8 +31,10 @@ class GameUI < UIElement
         .constrain{ Rectangle2.new(@rectangle.right - responsive_right_menu_width, TOP_BAR_HEIGHT, responsive_right_menu_width, @rectangle.height - TOP_BAR_HEIGHT - ToolsBar::BAR_HEIGHT - ErrorConsole::TOP_BAR_HEIGHT * (1-(@console_open_progress || 0)) - CONSOLE_HEIGHT * (@console_open_progress || 0)) }
         @sub_elements[:tools_bar] = ToolsBar.new(@root)
         .constrain{ rect = @sub_elements[:code_display].rectangle; rect.assign(y:rect.bottom, height: ToolsBar::BAR_HEIGHT)}
+        @sub_elements[:tools_bar_separation] = ToolsBarSeparation.new(@root)
+        .constrain{ rect = @sub_elements[:tools_bar].rectangle; rect.assign(y:rect.bottom, height: 2)}
         @sub_elements[:console] = ErrorConsole.new(@root)
-        .constrain{ rect = @sub_elements[:tools_bar].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
+        .constrain{ rect = @sub_elements[:tools_bar_separation].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
         #legal stuff
         @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
 

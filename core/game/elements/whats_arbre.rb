@@ -71,7 +71,7 @@ class WhatsArbre < UIElement
         PADDING = 10
         def build
             self.background_color = LOCAL_MESSAGE_COLOR
-            @sub_elements[:title] = Text.new(@root, center_text: false)
+            @sub_elements[:title] = Text.new(@root, color: Gosu::Color::BLUE, center_text: false)
             .constrain{ @rectangle.assign(height: 20).relative_to(x: PADDING, y: PADDING, width: -2*PADDING) }
             @sub_elements[:text] = Text.new(@root, center_text: false, break_lines: true)
             .constrain{|el| r=@sub_elements[:title].rectangle; r.assign(y: r.bottom + PADDING, height: el.text_height)}

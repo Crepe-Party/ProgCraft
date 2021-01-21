@@ -5,6 +5,7 @@ require_relative 'code_display'
 require_relative 'code_menu'
 require_relative 'map_name'
 require_relative 'error_console'
+require_relative 'tools_bar'
 require_relative '../../ui_elements/widgets/about_overlay'
 class GameUI < UIElement
     attr_reader :console_open
@@ -27,9 +28,11 @@ class GameUI < UIElement
         #code
         @sub_elements[:code_menu] = CodeMenu.new(@root){ Rectangle2.new(@rectangle.right - responsive_right_menu_width, @rectangle.y , responsive_right_menu_width, TOP_BAR_HEIGHT) }
         @sub_elements[:code_display] = CodeDisplay.new(@root)
-        .constrain{ Rectangle2.new(@rectangle.right - responsive_right_menu_width, TOP_BAR_HEIGHT, responsive_right_menu_width, @rectangle.height - TOP_BAR_HEIGHT - ErrorConsole::TOP_BAR_HEIGHT * (1-(@console_open_progress || 0)) - CONSOLE_HEIGHT * (@console_open_progress || 0)) }
+        .constrain{ Rectangle2.new(@rectangle.right - responsive_right_menu_width, TOP_BAR_HEIGHT, responsive_right_menu_width, @rectangle.height - TOP_BAR_HEIGHT - ToolsBar::BAR_HEIGHT - ErrorConsole::TOP_BAR_HEIGHT * (1-(@console_open_progress || 0)) - CONSOLE_HEIGHT * (@console_open_progress || 0)) }
+        @sub_elements[:tools_bar] = ToolsBar.new(@root)
+        .constrain{ rect = @sub_elements[:code_display].rectangle; rect.assign(y:rect.bottom, height: ToolsBar::BAR_HEIGHT)}
         @sub_elements[:console] = ErrorConsole.new(@root)
-        .constrain{ rect = @sub_elements[:code_display].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
+        .constrain{ rect = @sub_elements[:tools_bar].rectangle; rect.assign(y:rect.bottom, height: CONSOLE_HEIGHT)}
         #legal stuff
         @sub_elements[:about_stuff] = AboutOverlay.new(@root){@rectangle}
 

@@ -1,23 +1,27 @@
 require_relative '../tools/vector'
 class UIElement
-    attr_accessor :rectangle, :overflow
+    attr_accessor :rectangle, :overflow, :should_render
     attr_reader :sub_elements, :root, :parent_element
     def initialize root, rectangle = nil, parent_element: nil, &constraint
         @root, @parent_element = root, parent_element
         @rectangle = rectangle || Rectangle2.new
         self.constrain(&constraint) if constraint
         @overflow = :visible
+        @should_render = true
         @sub_elements = {}
 
+        setup
         build
     end
+    def setup
+    end
     def build
-
     end
     def update dt
         @sub_elements.each{ |elem_name, sub_elem| sub_elem.update dt }
     end
     def render extra_elements: nil, clipping_rect: nil
+        return [] unless @should_render
         #overflow clipping
         if @overflow == :hidden
             if clipping_rect

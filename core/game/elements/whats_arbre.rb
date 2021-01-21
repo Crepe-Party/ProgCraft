@@ -36,13 +36,9 @@ class WhatsArbre < UIElement
             end
     end
     def push message
+        should_autoscroll = (@sub_elements[:scroll].scroll_size - @sub_elements[:scroll].scroll_offset) < 10
         @sub_elements[:scroll][:list].data += [message]
-        
-        # TODO block auto-scroll  if user is looking at old messages
-        if @sub_elements[:scroll][:list].list_elements.last.rectangle.bottom > @rectangle.bottom - INPUT_SECT_HEIGHT - Scrollable::SCROLL_BUTTONS_SIZE
-            message_height = @sub_elements[:scroll][:list].list_elements.last.rectangle.height + 20
-            @sub_elements[:scroll].scroll_offset -= message_height
-        end
+        @sub_elements[:scroll].scroll_to(:end) if should_autoscroll
     end
     def clear
         @sub_elements[:scroll][:list].data = []

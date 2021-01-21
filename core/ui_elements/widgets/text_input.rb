@@ -79,6 +79,7 @@ class TextInput < UIElement
             self.text_elem.string = new_text
             self.text_elem.color = @text_color
         end
+        @root.events_manager.change(self)
     end
     def value= text
         text_val = text.to_s

@@ -10,7 +10,7 @@ class ExecutionManager
         @is_paused = true
         @is_stepping = false
         @running_program_thread = Thread.new{}
-        @empty_program = @program_text = "say 'WARNING : program empty'; raise 'program empty.'"
+        @empty_program = @program_text = "say('WARNING : program empty', indirect_call: true); raise 'program empty.'"
     end
     def program_text= program_text
         @program_text = program_text
@@ -25,7 +25,7 @@ class ExecutionManager
                 @root.on_program_error(error)
             end
             @root.update_line_display -1000
-            @robert.say("My program is completely finished") unless @program_text == @empty_program
+            @robert.say("My program is completely finished", ) unless @program_text == @empty_program
         end
     end
     def stop

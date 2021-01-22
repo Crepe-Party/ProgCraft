@@ -8,7 +8,6 @@ class GameTopBar < UIElement
             .constrain{@rectangle.relative_to(x:5, y:5, height:-10).assign!(width:40)}
             .on_click do
                 @root.reset
-                @root.robert.say("Player has stopped the program.")
             end 
         @sub_elements[:play_button] = Button.new(@root, "", background_image: 'icons/forward.png', background_image_cover: true)
             .constrain{@sub_elements[:stop_button].rectangle.relative_to(x: 50)}

@@ -3,21 +3,22 @@ require_relative '../drawables/text'
 class TextInput < UIElement
     attr_accessor :border_width
     attr_reader :placeholder, :value
-    def initialize root, placeholder: nil, border_width: 5, cursor_width: 2, border_color: Gosu::Color::BLACK, bg_color: Gosu::Color::GRAY, cursor_color: Gosu::Color::RED, text_color: Gosu::Color::WHITE, placeholder_color: Gosu::Color::rgba(255,255,255,128), selection_color: Gosu::Color::rgba(128, 128, 255, 100), &constraint
+    def initialize root, placeholder: nil, value: "", border_width: 5, cursor_width: 2, border_color: Gosu::Color::BLACK, bg_color: Gosu::Color::GRAY, cursor_color: Gosu::Color::RED, text_color: Gosu::Color::WHITE, placeholder_color: Gosu::Color::rgba(255,255,255,128), selection_color: Gosu::Color::rgba(128, 128, 255, 100), &constraint
         super root, &constraint
         @border_width = border_width
         @cursor_width = cursor_width
         @placeholder = placeholder
         @placeholder_color = placeholder_color
-        @value = ""
         @text_color = text_color
         @cursor_position = 0
         self.background_color = border_color;
+
 
         @sub_elements[:inside_rect] = Rectangle.new(@root, bg_color){ @rectangle.relative_to(x: @border_width, y:@border_width, width: -2 * @border_width, height: -2 * @border_width) }
         @sub_elements[:text] = Text.new(@root, @placeholder || "", color: placeholder_color, center_text: :vertical, overflow: :hidden){ @sub_elements[:inside_rect].rectangle }
         @sub_elements[:cursor] = Rectangle.new @root, cursor_color
         @sub_elements[:selection] = Rectangle.new @root, selection_color
+        self.value = value
     end
     def build
         super

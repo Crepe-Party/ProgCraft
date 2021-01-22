@@ -159,7 +159,7 @@ class Robert
     # robert turn :right, :left or :back
     def turn direction, &complete_handler
         @direction = look_at direction
-        sleep 0.25
+        sleep 0.25 / @speed
         complete_handler.call
     end
     # return direction when he look right, left or behind

@@ -3,7 +3,6 @@ require_relative 'button'
 class Scrollable < UIElement
     attr_reader :scroll_offset
     SCROLL_UI_SIZE = 30
-    MIN_SCROLLBAR_SIZE = 120
     MOUSE_SCROLL_FACTOR = 30
     BUTTON_SCROLL_FACTOR = 100
     def setup
@@ -20,7 +19,7 @@ class Scrollable < UIElement
                 scrl_size = self.scroll_size
                 rect_size = vertical? ? @rectangle.height : @rectangle.width
                 bar_zone_size = (rect_size - 2 * (SCROLL_UI_SIZE + 10)).clamp(0..)
-                sb_size = MIN_SCROLLBAR_SIZE.clamp(0..(bar_zone_size / 2)).clamp((bar_zone_size - scrl_size)..)
+                sb_size = (bar_zone_size / 2).clamp((bar_zone_size - scrl_size)..)
                 available_size = (bar_zone_size - sb_size).clamp(1..)
                 scroll_fraction = (scrl_size <= 0) ? 0 : (self.scroll_offset / scrl_size.to_f)
                 sb_position = scroll_fraction * available_size + SCROLL_UI_SIZE + 10

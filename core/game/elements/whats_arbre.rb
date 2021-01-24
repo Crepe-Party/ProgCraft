@@ -38,6 +38,7 @@ class WhatsArbre < UIElement
     def push message
         should_autoscroll = (@sub_elements[:scroll].scroll_size - @sub_elements[:scroll].scroll_offset) < 10
         @sub_elements[:scroll][:list].data += [message]
+        apply_constraints
         @sub_elements[:scroll].scroll_to(:end) if should_autoscroll
     end
     def clear

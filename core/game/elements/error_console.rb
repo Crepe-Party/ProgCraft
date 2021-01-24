@@ -23,7 +23,7 @@ class ErrorConsole < Scrollable
             @sub_elements[:top_bar][:toggle_button].text = is_open ? "▼" : "▲"
         end
 
-        def scroll_buttons?
+        def scroll_ui?
             false
         end
         super

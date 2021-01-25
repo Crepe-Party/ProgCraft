@@ -19,6 +19,7 @@ class ObjectsMenu < Scrollable
             Robert
         ]
         @sub_elements[:list].data = objects_to_show.map{|obj| {object: obj, selected: false}}
+        apply_constraints
         super
     end
     def vertical?

@@ -28,6 +28,7 @@ class CodeDisplay < Scrollable
     def code= new_code
         @code = new_code
         @sub_elements[:code_lines].data = @code.lines
+        apply_constraints
     end
     def clear_code
         self.code = ""

@@ -23,7 +23,7 @@ class ErrorConsole < Scrollable
             @sub_elements[:top_bar][:toggle_button].text = is_open ? "▼" : "▲"
         end
 
-        def scroll_buttons?
+        def scroll_ui?
             false
         end
         super
@@ -74,7 +74,7 @@ class ErrorConsole < Scrollable
     end
     class ConsoleEntry < UIElement
         include Listable
-        TIME_WIDTH = 70
+        TIME_WIDTH = 80
         def build
             @sub_elements[:time] = Text.new(@root, break_lines: true, center_text: false, color: Gosu::Color::WHITE){@rectangle.assign(width: TIME_WIDTH)}
             @sub_elements[:error] = Text.new(@root, break_lines: true, center_text: false, color: Gosu::Color::rgba(255,64,64,255)){@rectangle.relative_to(x:TIME_WIDTH + 10, width: -TIME_WIDTH - 5)}

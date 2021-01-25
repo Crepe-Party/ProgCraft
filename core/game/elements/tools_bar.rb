@@ -22,24 +22,20 @@ class ToolsBar < UIElement
                 @root.robert.speed = value.clamp(0.1...)
             end
         
-        @sub_elements[:speed_button] = Button.new(@root, "x1")
-            .constrain do
-                rect = @sub_elements[:text_input].rectangle
-                rect.assign(x: rect.right + 10, width: 30, height: INPUTS_HEIGHT )
-            end
-            .add_event(:click) do
-                new_speed = incr_speed.first
-                @sub_elements[:text_input].value = new_speed
-                @root.robert.speed = new_speed.to_f
-            end
-
+        # create x buttons with a default speed value
+        SPEEDS.each_with_index do |val, ind|
+            @sub_elements["speed_button_#{ind}".to_sym] = Button.new(@root, ind+1)
+                .constrain do
+                    rect = @sub_elements[:text_input].rectangle
+                    rect.assign(x: rect.right + 10 + 40 * ind, width: 30, height: INPUTS_HEIGHT )
+                end
+                .add_event(:click) do
+                    @sub_elements[:text_input].value = val
+                end
+        end
 
         @sub_elements[:tools_bar_separation] = ToolsBarSeparation.new(@root)
         .constrain{ rect = @rectangle; rect.assign(y:rect.bottom - SEPARATION_HEIGHT, height: SEPARATION_HEIGHT)}
-    end
-
-    def incr_speed
-        SPEEDS.rotate!
     end
 end
 class ToolsBarSeparation < UIElement    

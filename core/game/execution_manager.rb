@@ -25,7 +25,6 @@ class ExecutionManager
                 @root.on_program_error(error)
             end
             @root.update_line_display -1000
-            @robert.say("My program is completely finished", ) unless @program_text == @empty_program
         end
     end
     def stop

@@ -62,7 +62,7 @@ class Game < AppManager
         @main_ui.sub_elements[:map_game].update_inventory
     end
     def on_program_error error
-        puts "PROGRAM ERROR #{error.full_message}"
+        puts "PROGRAM ERROR"
         self.plan_action{ @main_ui[:console].push_error(error)}
     end
     #accessors

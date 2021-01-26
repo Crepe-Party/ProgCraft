@@ -28,6 +28,7 @@ class CodeDisplay < Scrollable
     def code= new_code
         @code = new_code
         @sub_elements[:code_lines].data = @code.lines
+        apply_constraints
     end
     def clear_code
         self.code = ""
@@ -71,7 +72,6 @@ class CodeDisplay < Scrollable
             .constrain{num_width = @sub_elements[:line_number].rectangle.width; @rectangle.relative_to(x: num_width, width: -num_width)}
         end
         def update_data new_data
-            puts "new data: #{new_data}"
             @sub_elements[:line_number].string = (@index + 1).to_s.rjust(LINE_NUMBER_LENGTH) + " "
             @sub_elements[:code_line].string = new_data
         end

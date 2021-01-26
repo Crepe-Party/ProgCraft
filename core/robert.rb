@@ -4,6 +4,7 @@ require_relative 'tools/vector'
 require_relative 'config'
 class Robert
     attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr_accessor :speed
     attr_reader :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
@@ -25,6 +26,7 @@ class Robert
         @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
         @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
         self.inventory = []    
+        @speed = 1
         reset
     end    
     def reset
@@ -109,7 +111,7 @@ class Robert
             return
         end  
 
-        @current_animation = @root.animate(0.5, on_progression: ->(linear_progress) do        
+        @current_animation = @root.animate(0.5 / @speed, on_progression: ->(linear_progress) do        
             ease_progress = Transition.smooth_progression linear_progress       
             @position = initial_pos + (target_pos - initial_pos)*ease_progress     
         end, on_finish: -> do
@@ -157,7 +159,7 @@ class Robert
     # robert turn :right, :left or :back
     def turn direction, &complete_handler
         @direction = look_at direction
-        sleep 0.25
+        sleep 0.25 / @speed
         complete_handler.call
     end
     # return direction when he look right, left or behind

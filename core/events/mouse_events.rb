@@ -57,7 +57,7 @@ module EventHandlers
             @btn_up_evt.check
             if @dragging
                 mouse_pos = @window.mouse_pos
-                res = trigger({position: mouse_pos, last_position: @last_mouse_pos}) if @last_mouse_pos
+                res = trigger(position: mouse_pos, last_position: @last_mouse_pos, position_diff: mouse_pos - @last_mouse_pos) if @last_mouse_pos
                 @last_mouse_pos = mouse_pos
             elsif @last_mouse_pos
                 @last_mouse_pos = nil

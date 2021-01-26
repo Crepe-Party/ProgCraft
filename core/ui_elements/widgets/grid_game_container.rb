@@ -4,6 +4,7 @@ class GridGameContainer < Drawable
     CONTINUOUS_SCROLL_FACTOR = 200
     INSTANT_SCROLL_FACTOR = 40
     INSTANT_ZOOM_FACTOR = 1.1
+    CAMERA_START_POS = Vector2.new(-10, -10)
     attr_accessor :camera_position, :selected_map, :robert
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
@@ -23,7 +24,7 @@ class GridGameContainer < Drawable
             if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:right, INSTANT_SCROLL_FACTOR)
             elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
-                zoom(1.0 / INSTANT_ZOOM_FACTOR, event[:position])
+                zoom(1.0 / INSTANT_ZOOM_FACTOR)
             else
                 scroll(:down, INSTANT_SCROLL_FACTOR)
             end
@@ -32,15 +33,22 @@ class GridGameContainer < Drawable
             if (@root.button_down? Gosu::KB_LEFT_SHIFT) || (@root.button_down? Gosu::KB_RIGHT_SHIFT)
                 scroll(:left, INSTANT_SCROLL_FACTOR)
             elsif (zoomable? && (@root.button_down? Gosu::KB_LEFT_CONTROL) || (@root.button_down? Gosu::KB_RIGHT_CONTROL))
-                zoom(INSTANT_ZOOM_FACTOR, event[:position])
+                zoom(INSTANT_ZOOM_FACTOR)
             else
                 scroll(:up, INSTANT_SCROLL_FACTOR)
             end
         end
-        self.add_event(:mouse_drag, button: Gosu::MS_MIDDLE) do |event|
+        self.add_event(:mouse_drag, button: Gosu::MS_MIDDLE) do |evt|
             next unless scrollable?
-            @camera_position.add!((event[:last_position] - event[:position]))
+            @camera_position.add!((Vector2.new - evt[:position_diff]).scl!(1/@camera_zoom))
+            apply_constraints
         end
+        @sub_elements[:reset_btn] = Button.new(@root, background_image: 'icons/center_cam.png', background_image_cover: true) do |button| 
+            button.should_render = (@camera_zoom!=1 || @camera_position!=CAMERA_START_POS)
+            @rectangle.assign(x: @rectangle.right - 45, width: 40, height:40).relative_to!(y: 5)
+        end
+        .on_click{reset_camera}
+
         self.add_event(:button_down, button: 'r') { reset_camera }
     end
 
@@ -92,8 +100,9 @@ class GridGameContainer < Drawable
     end
 
     def reset_camera
-        @camera_position.assign!(x: -10, y: -10)
+        @camera_position = CAMERA_START_POS.clone
         @camera_zoom = 1
+        apply_constraints
     end
 
     def scrollable?
@@ -110,11 +119,13 @@ class GridGameContainer < Drawable
         self.camera_position.y += distance if direction == :down
         self.camera_position.x -= distance if direction == :left
         self.camera_position.x += distance if direction == :right
+        apply_constraints
     end
 
     def zoom factor, origin = @rectangle.center
         @camera_zoom *= factor
         @camera_zoom_origin = origin
+        apply_constraints
     end
 
     def projected_position screen_pos

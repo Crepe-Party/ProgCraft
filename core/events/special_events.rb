@@ -11,4 +11,6 @@ module EventHandlers
     end
     class Submit < EventHandler
     end
+    class Change < EventHandler
+    end
 end

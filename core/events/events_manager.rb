@@ -56,6 +56,8 @@ class EventsManager
             event = EventHandlers::Drop.new @window, element, handler, stop_propagation: stop_propagation
         when :submit
             event = EventHandlers::Submit.new @window, element, handler, stop_propagation: stop_propagation
+        when :change
+            event = EventHandlers::Change.new @window, element, handler, stop_propagation: stop_propagation
         end
 
         if event
@@ -77,7 +79,12 @@ class EventsManager
     end
     def submit input
         return unless @available
-        event = @custom_events.find{|evt| evt.class == EventHandlers::Submit && evt.element == input}
-        event.trigger({value: input.value, input: input}) if event
+        events = @custom_events.select{|evt| evt.class == EventHandlers::Submit && evt.element == input}
+        events.each{|ev| ev.trigger({value: input.value, input: input})} if events
+    end
+    def change input
+        return unless @available
+        events = @custom_events.select{|evt| evt.class == EventHandlers::Change && evt.element == input}
+        events.each{|ev| ev.trigger({value: input.value, input: input})} if events
     end
 end

@@ -25,14 +25,14 @@ module EventHandlers
     class MouseDown < MouseHandler
         def initialize window, element, handler, button, stop_propagation: true
             @button_event = ButtonDown.new window, element, ->(event){
+                next unless mouse_inside?()
                 event[:position] = @window.mouse_pos
                 trigger(event)
             }, button
             super window, element, handler, stop_propagation: stop_propagation
         end
         def check
-            res = @button_event.check if mouse_inside?()
-            return res
+            @button_event.check
         end
     end
     class MouseUp < MouseHandler

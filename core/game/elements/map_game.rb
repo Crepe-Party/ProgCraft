@@ -32,8 +32,7 @@ class MapGameDisplay < GridGameContainer
         end
         #animate
         @current_open_animation.cancel if @current_open_animation
-        @root.events_manager.available = false #prevent unintended clicks
-        @current_open_animation = @root.animate(0.5, from: @whats_arbre_top_fraction, to:(is_open ? 0 : 1), timing_function: :ease, on_finish: -> (){ @root.events_manager.available = true }) do |progression|
+        @current_open_animation = @root.animate(0.5, from: @whats_arbre_top_fraction, to:(is_open ? 0 : 1), timing_function: :ease) do |progression|
             @whats_arbre_top_fraction = progression
             @sub_elements[:whats_arbre].apply_constraints
         end

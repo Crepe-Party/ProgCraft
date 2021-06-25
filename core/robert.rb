@@ -2,9 +2,9 @@ require_relative 'ui_elements/drawables/sprite'
 require_relative 'ui_elements/ui_element'
 require_relative 'tools/vector'
 require_relative 'config'
-class Robert
-    attr :position, :direction, :start_direction, :tileset, :tileset_height, :tileset_width, :tile
-    attr_accessor :speed
+class Robert < GameObject
+    attr :start_direction, :tileset, :tileset_height, :tileset_width, :tile
+    attr_accessor :speed, :state, :direction, :position
     attr_reader :inventory
     TILE_HEIGHT = 256
     TILE_WIDTH = 256
@@ -111,9 +111,8 @@ class Robert
             return
         end  
 
-        @current_animation = @root.animate(0.5 / @speed, on_progression: ->(linear_progress) do        
-            ease_progress = Transition.smooth_progression linear_progress       
-            @position = initial_pos + (target_pos - initial_pos)*ease_progress     
+        @current_animation = @root.animate(0.5 / @speed, timing_function: :ease, on_progression: ->(progress) do        
+            @position = initial_pos + (target_pos - initial_pos)*progress     
         end, on_finish: -> do
             @state = :idle
             complete_handler.call
@@ -183,6 +182,17 @@ class Robert
         casted_text = text.to_s
         puts "Say:|| #{casted_text}"
         @root.plan_action{@root.whats_arbre.push_message(casted_text)} #why plan action: idk
+    end
+
+    def spin duration: 2.0, rotations: 5, direction: :right, on_finish: nil
+        total_turns = rotations * 4
+        turns_done = 0
+        @current_animation = @root.animate(duration, on_progression: ->(progress) do 
+            if(progress * total_turns > turns_done )
+                @direction = look_at direction
+                turns_done += 1
+            end
+        end, on_finish: on_finish)
     end
 
     def self.default_texture

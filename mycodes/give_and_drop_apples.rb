@@ -1,5 +1,5 @@
 give("apple", 5)
-@robert.inventory.clone.each do |item|
+until @robert.inventory.empty? do
     drop
     walk_forward
 end

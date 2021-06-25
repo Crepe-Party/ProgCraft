@@ -20,6 +20,7 @@ class Transition
     def self.smooth_progression progression, timing_function = :ease
         return progression * progression * (3 - 2 * progression) if timing_function == :ease
         return 1-(1-progression*2)**2 if timing_function == :bounce
+        return Transition.smooth_progression(progression / 2, :ease) * 2 if timing_function == :ease_in
         progression
     end
 end

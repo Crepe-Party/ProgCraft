@@ -31,7 +31,12 @@ class Game < AppManager
     end
     def reset    
         stop
-        load_map last_loaded_level if last_loaded_level
+        if last_loaded_level
+            load_map last_loaded_level 
+        else
+            #clear default map
+            @main_ui.sub_elements[:map_game].selected_map.game_objects.clear
+        end
         @robert.reset
     end
     def load_map path_file
@@ -62,7 +67,7 @@ class Game < AppManager
         @main_ui.sub_elements[:map_game].update_inventory
     end
     def on_program_error error
-        puts "PROGRAM ERROR"
+        puts "PROGRAM ERROR #{error}"
         self.plan_action{ @main_ui[:console].push_error(error)}
     end
     #accessors

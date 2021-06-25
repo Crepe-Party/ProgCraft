@@ -4,8 +4,8 @@ require_relative '../drawables/text'
 require_relative '../drawables/image'
 require_relative "../../config"
 class Button < UIElement
-    def initialize root, text = "", bg_color: Gosu::Color::WHITE, bg_color_hover: Gosu::Color.rgba(200, 200, 200, 255), text_color: Gosu::Color::BLACK, background_image: nil, background_image_cover: false, &constraint
-        @text, @background_color, @background_color_hover, @text_color, @background_image, @background_image_cover = text, bg_color, bg_color_hover, text_color, background_image, background_image_cover
+    def initialize root, text = "", bg_color: Gosu::Color::WHITE, bg_color_hover: Gosu::Color.rgba(200, 200, 200, 255), text_color: Gosu::Color::BLACK, text_color_hover: Gosu::Color::BLACK, background_image: nil, background_image_cover: false, &constraint
+        @text, @background_color, @background_color_hover, @text_color, @text_color_hover, @background_image, @background_image_cover = text, bg_color, bg_color_hover, text_color, text_color_hover, background_image, background_image_cover
         super root, &constraint 
     end
     def build
@@ -29,9 +29,11 @@ class Button < UIElement
     def setup_mouse_hover        
         add_event(:mouse_enter) do
             background_elem.color = @background_color_hover
+            text_elem.color = @text_color_hover
         end
         add_event(:mouse_leave) do
             background_elem.color = @background_color
+            text_elem.color = @text_color
         end
     end
     def on_click &handler

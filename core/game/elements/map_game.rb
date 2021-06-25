@@ -3,6 +3,7 @@ require_relative './whats_arbre'
 require_relative './inventory'
 class MapGameDisplay < GridGameContainer
     attr_reader :whats_arbre_open
+    attr_accessor :static
     WA_MARGIN = 20
     WA_BTN_SIZE = 80
     WA_WIDTH = 400
@@ -51,5 +52,11 @@ class MapGameDisplay < GridGameContainer
                 @sub_elements[:inventory_display].apply_constraints
             end
         end
+    end
+    def zoomable?
+        !@static
+    end
+    def scrollable?
+        !@static
     end
 end

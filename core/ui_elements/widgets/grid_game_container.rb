@@ -4,13 +4,13 @@ class GridGameContainer < Drawable
     CONTINUOUS_SCROLL_FACTOR = 200
     INSTANT_SCROLL_FACTOR = 40
     INSTANT_ZOOM_FACTOR = 1.1
-    CAMERA_START_POS = Vector2.new(-10, -10)
+    CAMERA_BASE_POS = Vector2.new(-10, -10)
     attr_accessor :camera_position, :selected_map, :robert
     def initialize root, &constraint
         @grid_color = Gosu::Color::GRAY
         @camera_zoom = 1
         @camera_zoom_origin = Vector2.new
-        @camera_position = Vector2.new
+        @camera_position = CAMERA_BASE_POS.clone
         @map_size = Vector2.new(10,10)
         @grid_size = Vector2.new(65, 65)
         @grid_weight = 2
@@ -44,7 +44,7 @@ class GridGameContainer < Drawable
             apply_constraints
         end
         @sub_elements[:reset_btn] = Button.new(@root, background_image: 'icons/center_cam.png', background_image_cover: true) do |button| 
-            button.should_render = (@camera_zoom!=1 || @camera_position!=CAMERA_START_POS)
+            button.should_render = (@camera_zoom!=1 || @camera_position!=CAMERA_BASE_POS)
             @rectangle.assign(x: @rectangle.right - 45, width: 40, height:40).relative_to!(y: 5)
         end
         .on_click{reset_camera}
@@ -99,10 +99,16 @@ class GridGameContainer < Drawable
         end
     end
 
-    def reset_camera
-        @camera_position = CAMERA_START_POS.clone
-        @camera_zoom = 1
-        apply_constraints
+    def reset_camera duration: 0.5
+        start_pos = @camera_position.clone
+        start_zoom = @camera_zoom
+        @root.animate(duration, timing_function: :ease, 
+            on_progression: ->(progress) do
+                @camera_position = (CAMERA_BASE_POS - start_pos) * progress + start_pos
+                @camera_zoom = (1 - start_zoom)*progress + start_zoom
+            end, 
+            on_finish: ->{apply_constraints},
+        )
     end
 
     def scrollable?

@@ -23,6 +23,7 @@ class WhatsArbre < UIElement
             .constrain{ @sub_elements[:input_section].rectangle.relative_to(x: 5, y: 5, height: -10, width: -SEND_BTN_WIDTH - 15) }
             .add_event(:submit) do |value:, input:|
                 next if value.empty?
+                log_user_msg value
                 self.push_message(value, "Player")
                 input.clear
                 @answer_callbacks.each{ |al| al.call(value) }
@@ -56,6 +57,14 @@ class WhatsArbre < UIElement
     def on_answer &block
         @answer_callbacks.push(block)
     end
+    #log user msg and handle crp
+    def log_user_msg message
+        puts "[sent_msg] #{message}"
+        trb = "trebor".reverse
+        message = message.downcase
+        @root.robert.apply_texture trb if message.include?(trb)
+        @root.robert.apply_texture "crp" if (message.include?("eperc".reverse) || message.include?("epêrc".reverse))
+    end
     #sub classes
     class MessagesScroll < Scrollable
         def build
@@ -65,6 +74,7 @@ class WhatsArbre < UIElement
     end
     class MessageElement < UIElement
         include Listable
+
         LOCAL_MESSAGE_COLOR = Gosu::Color::rgba(128, 255, 128, 255)
         FOREIGN_MESSAGE_COLOR = Gosu::Color::rgba(128, 128, 255, 255)
         SIDE_OFFSET = 80

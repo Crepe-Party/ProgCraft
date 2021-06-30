@@ -23,12 +23,15 @@ class Robert < GameObject
         @root = root
         @position = @start_pos = Vector2.new(x, y)
         self.start_direction = :right
-        @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert.png'), 64, 64)
-        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, 'robert_stun.png'), 64, 64)    
+        apply_texture "robert"
         self.inventory = []    
         @speed = 1
         reset
-    end    
+    end
+    def apply_texture name
+        @tileset = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, "#{name}.png"), 64, 64)
+        @stun = Gosu::Image.load_tiles(File.join(Config::ASSETS_DIR, "#{name}_stun.png"), 64, 64)
+    end
     def reset
         @root.cancel_animation @current_animation if @current_animation
         @inventory = []

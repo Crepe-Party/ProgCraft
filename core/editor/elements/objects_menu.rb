@@ -48,12 +48,12 @@ class ObjectsMenu < Scrollable
         def list_constraint parent_rect
             parent_rect.assign(y:0, height: HEIGHT)
         end
-        def update_data object:, selected:
-            icon_path = File.join(Config::ASSETS_DIR, object.default_texture)
+        def update_data data
+            icon_path = File.join(Config::ASSETS_DIR, data[:object].default_texture)
             icon_path = DEFAULT_ICON unless File.exists? icon_path
             @sub_elements[:icon].source = icon_path
-            @sub_elements[:name].string = object.pretty_s
-            self.background_color = selected ? SELECTED_BG_COLOR : UNSELECTED_BG_COLOR
+            @sub_elements[:name].string = data[:object].pretty_s
+            self.background_color = data[:selected] ? SELECTED_BG_COLOR : UNSELECTED_BG_COLOR
         end
     end
 end

@@ -67,8 +67,12 @@ class ExecutionManager
     def wait_for_clearance
         sleep CLEARANCE_CHECK_INTERVAL until @instruction_finished and !@is_paused #loop until availible to continue execution
     end
+    def inspect
+        "ExecutionManager" #if not, tries to dump the whole program into the console
+    end
     # game functions
     Dir.glob(File.join(Config::MY_FUNCTIONS_DIR, "*.rb")).each do|file|
         require_relative file
     end
+    
 end

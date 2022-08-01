@@ -6,6 +6,6 @@ class EventHandler
     def check
     end
     def trigger(params={})
-        @handler.call(params)
+        @handler.call(**params)
     end
 end

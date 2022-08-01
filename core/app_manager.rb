@@ -122,7 +122,7 @@ class AppManager < Gosu::Window
         @planned_actions -= to_remove unless to_remove.empty?
     end
     def animate duration, start_time = Time.now.to_f, from: 0, to: 1, timing_function: :linear, on_progression: ->(pr){ yield pr }, on_finish: nil
-        new_animation = Transition.new(self, {
+        new_animation = Transition.new(self, 
             start_stamp: start_time,
             duration: duration,
             from: from,
@@ -130,7 +130,7 @@ class AppManager < Gosu::Window
             timing_function: timing_function,
             handler: on_progression,
             completion_handler: on_finish
-        })
+        )
         @animations.push new_animation
         new_animation
     end

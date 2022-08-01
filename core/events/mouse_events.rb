@@ -24,7 +24,7 @@ module EventHandlers
     end
     class MouseDown < MouseHandler
         def initialize window, element, handler, button, stop_propagation: true
-            @button_event = ButtonDown.new window, element, ->(event){
+            @button_event = ButtonDown.new window, element, ->(event = {}){
                 next unless mouse_inside?()
                 event[:position] = @window.mouse_pos
                 trigger(event)
@@ -47,8 +47,8 @@ module EventHandlers
     end
     class MouseDrag < MouseHandler
         def initialize window, element, handler, button, stop_propagation: true
-            @ms_down_evt = MouseDown.new(window, element, ->(evt){@dragging = true}, button)
-            @btn_up_evt = ButtonUp.new(window, element, ->(evt){@dragging = false}, button)
+            @ms_down_evt = MouseDown.new(window, element, ->(evt=nil){@dragging = true}, button)
+            @btn_up_evt = ButtonUp.new(window, element, ->(evt=nil){@dragging = false}, button)
             super window, element, handler, stop_propagation: stop_propagation
         end
         def check

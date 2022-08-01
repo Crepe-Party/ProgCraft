@@ -80,11 +80,11 @@ class EventsManager
     def submit input
         return unless @available
         events = @custom_events.select{|evt| evt.class == EventHandlers::Submit && evt.element == input}
-        events.each{|ev| ev.trigger({value: input.value, input: input})} if events
+        events.each{|ev| ev.trigger(value: input.value, input: input)} if events
     end
     def change input
         return unless @available
         events = @custom_events.select{|evt| evt.class == EventHandlers::Change && evt.element == input}
-        events.each{|ev| ev.trigger({value: input.value, input: input})} if events
+        events.each{|ev| ev.trigger(value: input.value, input: input)} if events
     end
 end
